@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CategoryType {
+  DOCUMENTS
+  ELECTRONICS
+  BOOKS_AND_NOTES
+  ACCESSORIES
+  STATIONERY
+  OTHERS
+}
+
+enum ClaimStatus {
+  PENDING
+  REJECTED
+  CANCELLED
+  SOLVED
+}
+
+model User {
+  id String @id @default(uuid()) @db.Uuid()
+  firebaseUid String @unique @db.VarChar(255)
+  fullName String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  profilePic String? @db.Text()
+  createdAt DateTime @default(now())
+  reports Report[]
+  claims Claim[]
+}
+
+model Report {
+  id String @id @default(uuid()) @db.Uuid()
+  finderId String @db.Uuid()
+  category CategoryType
+  title String @db.VarChar(255)
+  description String @db.Text()
+  location String @db.VarChar(255)
+  contactInfo String? @db.VarChar(255)
+  images String[]
+  status String @default("UNSOLVED") @db.VarChar(20)
+  createdAt DateTime @default(now())
+  finder User @relation(fields: [finderId], references: [id], onDelete: Cascade)
+  claim Claim?
+}
+
+model Claim {
+  id String @id @default(uuid()) @db.Uuid()
+  reportId String @unique @db.Uuid()
+  claimerId String @db.Uuid()
+  status ClaimStatus @default(PENDING)
+  finderConfirmed Boolean @default(false)
+  ownerConfirmed Boolean @default(false)
+  claimedAt DateTime @default(now())
+  report Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  claimer User @relation(fields: [claimerId], references: [id], onDelete: Cascade)
+}
