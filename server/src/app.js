@@ -13,7 +13,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://iiuc-lost-found.vercel.app" // Add your Production URL here once verified
+    "https://iiuc-lost-found.vercel.app"
   ],
   credentials: true
 }));
@@ -21,6 +21,14 @@ app.use(cors({
 app.use(authRoutes);
 app.use(reportRoutes);
 app.use(claimRoutes);
+
+app.get("/", (req, res) => {
+  res.send("IIUC Lost & Found API is running successfully.");
+});
+
+app.get("/ping", (req, res) => {
+  res.send("Server is awake! 🟢");
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
