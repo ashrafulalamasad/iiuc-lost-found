@@ -59,32 +59,21 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-slate-900 pt-40 pb-16">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl sm:text-6xl font-bold text-white mb-6 tracking-tight"
-          >
+      <section className="relative overflow-hidden bg-slate-900 min-h-[70vh] sm:min-h-[90vh] flex items-center justify-center">
+        {/* Background Image & Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img src="/iiuc-drone-bg.png" alt="IIUC Campus" className="w-full h-full object-cover" />
+          {/* Subtle gradient only at the very bottom for smooth transition to next section, otherwise clear */}
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-slate-50 to-transparent" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+          <h1 className="text-5xl sm:text-7xl font-extrabold text-white mb-24 tracking-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
             Find what's lost, <br />
-            <span className="text-blue-500">Return what's found.</span>
-          </motion.h1>
+            <span className="text-blue-200 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">Return what's found.</span>
+          </h1>
           
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg sm:text-xl text-slate-300 mb-10 max-w-2xl mx-auto"
-          >
-            The official lost and found platform for IIUC students. Report items you've found or search for things you've lost.
-          </motion.p>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button 
               to="/find" 
               icon={Search}
@@ -99,15 +88,15 @@ export default function Home() {
             <Button 
               to="/report" 
               icon={PlusCircle}
-              bgColor="bg-white"
-              textColor="text-blue-600"
-              hoverBgColor="bg-green-600"
-              hoverTextColor="text-black"
+              bgColor="bg-green-600"
+              textColor="text-black"
+              hoverBgColor="bg-red-600"
+              hoverTextColor="text-white"
               className="w-xs sm:w-auto"
             >
               Report Found Item
             </Button>
-          </motion.div>
+          </div>
         </div>
       </section>
 

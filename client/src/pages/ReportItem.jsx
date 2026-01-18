@@ -206,7 +206,7 @@ export default function ReportItem() {
               </label>
               <input
                 type="text"
-                minLength={5}
+                minLength={11}
                 placeholder="A valid phone number"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
                 value={formData.contactInfo}

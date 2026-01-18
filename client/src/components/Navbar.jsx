@@ -30,7 +30,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-blue-100 text-red-600 shadow-md fixed left-4 right-4 md:left-6 md:right-6 top-4 rounded-full z-50 transition-all duration-500 ease-in-out ${
+      className={`max-w-7xl mx-auto bg-blue-200 text-red-600 shadow-md fixed left-4 right-4 md:left-6 md:right-6 top-4 rounded-full z-50 transition-all duration-500 ease-in-out ${
         showNavbar ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
       }`}
     >
@@ -67,7 +67,7 @@ const Navbar = () => {
         <div
           className={`font-medium absolute lg:static top-20 left-0 w-full lg:w-auto lg:bg-transparent lg:p-0 transition-all duration-300 z-50 ${
             isOpen
-              ? "flex flex-col w-full items-center bg-blue-100 rounded-4xl shadow-lg top-24 px-0 py-6 gap-6 animate-slideDown"
+              ? "flex flex-col w-full items-center bg-blue-200 rounded-4xl shadow-lg top-24 px-0 py-6 gap-6 animate-slideDown"
               : "hidden lg:flex lg:flex-row gap-x-3 xl:gap-x-6 items-center"
           }`}
         >
