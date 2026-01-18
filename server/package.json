@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
+    "build": "npm install && npx prisma generate && npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,13 +24,13 @@
     "jsonwebtoken": "^9.0.3",
     "nodemon": "^3.1.11",
     "pg": "^8.16.3",
-    "zod": "^4.2.1"
-  },
-  "devDependencies": {
-    "@types/node": "^25.0.3",
-    "@types/pg": "^8.16.0",
+    "zod": "^4.2.1",
     "prisma": "^7.2.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "@types/pg": "^8.16.0"
   }
 }

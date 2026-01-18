@@ -11,7 +11,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cors({
-  origin: "*",
+  origin: [
+    "http://localhost:5173",
+    "https://iiuc-lost-found.vercel.app" // Add your Production URL here once verified
+  ],
   credentials: true
 }));
 
