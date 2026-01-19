@@ -156,10 +156,13 @@ const Navbar = () => {
           ) : (
             <Button
               to="/login"
-              variant="primary"
               size="md"
               icon={LogIn}
-              className="bg-blue-700 hover:bg-green-600 hover:text-black shadow-none border-none"
+              bgColor="bg-blue-600"
+              textColor="text-white"
+              hoverBgColor="bg-green-600"
+              hoverTextColor="group-hover/btn:text-black"
+              className="w-xs sm:w-auto"
               onClick={() => {
                 setOpen(false);
                 handleNavClick();

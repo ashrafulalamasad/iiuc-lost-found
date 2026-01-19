@@ -105,7 +105,7 @@ export default function Home() {
         <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-10 mb-10 flex items-center justify-between">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">Recently Reported</h2>
           <div className="w-sm ml-12 flex items-center justify-end gap-2">
-            <Button to="/find" icon={ArrowRight} bgColor="bg-blue-600" textColor="text-white" hoverBgColor="bg-purple-500" hoverTextColor="text-black">
+            <Button to="/find" icon={ArrowRight} bgColor="bg-blue-600" textColor="text-white" hoverBgColor="bg-green-600" hoverTextColor="group-hover/btn:text-black">
               View All
             </Button>
           </div>

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Button from "../components/Button";
 
 export default function Login() {
   const { login } = useAuth();
@@ -22,9 +23,13 @@ export default function Login() {
         <p className="mb-12 text-gray-300 text-base sm:text-lg">
           Sign in to access your account
         </p>
-        <button
+        <Button
           onClick={handleLogin}
-          className="flex items-center justify-center bg-[#23272f] hover:bg-blue-700 text-white font-bold py-2 sm:py-3 md:py-4 px-4 sm:px-8 md:px-12 rounded-full shadow mx-auto w-auto transition border-3 border-green-700 hover:border-red-600 cursor-pointer"
+          bgColor="bg-blue-800"
+          hoverBgColor="bg-white"
+          textColor="text-white"
+          hoverTextColor="group-hover/btn:text-black"
+          className="mx-auto w-auto border-3 border-green-700 hover:border-red-600 cursor-pointer"
         >
           <span className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 w-full">
             <img src="/google.png" alt="Google" className="w-6 h-6" />
@@ -33,7 +38,7 @@ export default function Login() {
             </span>
             <span className="text-xl md:text-2xl">→</span>
           </span>
-        </button>
+        </Button>
         <div className="mt-12 mb-12 text-white text-sm sm:text-base font-semibold">
           Note : Only IIUC G-Suite mails (
           <span className="font-mono">@ugrad.iiuc.ac.bd</span>) are allowed for
