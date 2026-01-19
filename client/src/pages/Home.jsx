@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, PlusCircle, ArrowRight, ShieldCheck, Users, CheckCircle, TrendingUp, Package, AlertCircle, Loader2, Hand } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Button from '../components/Button_New';
+import Button from '../components/Button';
 import Card from '../components/Card';
 import { reportsAPI, authAPI, transformReports } from '../services/api';
 
@@ -80,7 +80,7 @@ export default function Home() {
               bgColor="bg-blue-600"
               textColor="text-white"
               hoverBgColor="bg-white"
-              hoverTextColor="text-black"
+              hoverTextColor="group-hover/btn:text-black"
               className="w-xs sm:w-auto"
             >
               Find Lost Items
@@ -91,7 +91,7 @@ export default function Home() {
               bgColor="bg-green-600"
               textColor="text-black"
               hoverBgColor="bg-red-600"
-              hoverTextColor="text-white"
+              hoverTextColor="group-hover/btn:text-white"
               className="w-xs sm:w-auto"
             >
               Report Found Item

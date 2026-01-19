@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, PlusCircle } from 'lucide-react';
 import ImageUpload from '../components/ImageUpload';
 import { reportsAPI, CATEGORIES } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import Button from '../components/Button';
 
 export default function ReportItem() {
   const navigate = useNavigate();
@@ -215,7 +216,7 @@ export default function ReportItem() {
               <p className="text-xs md:text-sm text-slate-500 mt-2">This will be visible to users who want to claim the item. Leave it blank if item is not with you.</p>
             </div>
 
-            <button
+            {/* <button
               type="submit"
               disabled={loading}
               className="px-10 py-4 mx-auto flex items-center justify-center bg-blue-600 text-white rounded-full font-semibold hover:bg-green-600 hover:text-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
@@ -228,7 +229,27 @@ export default function ReportItem() {
               ) : (
                 'Submit Report'
               )}
-            </button>
+            </button> */}
+            <div className="text-center">
+              <Button
+                icon={PlusCircle}
+                type="submit"
+                disabled={loading}
+                bgColor="bg-blue-600"
+                textColor="text-white"
+                hoverBgColor="bg-green-600"
+                hoverTextColor="group-hover/btn:text-black"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 size={20} className="animate-spin" />
+                    Submitting...
+                  </span>
+                ) : (
+                  "Submit Report"
+                )}
+              </Button>
+            </div>
           </form>
         </div>
       </div>

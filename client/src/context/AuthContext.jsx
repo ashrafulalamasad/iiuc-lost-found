@@ -45,13 +45,11 @@ export const AuthProvider = ({ children }) => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
 
-    // Check if email domain is @ugrad.iiuc.ac.bd
-    // if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
-    //   await signOut(auth);
-    //   throw new Error("Only @ugrad.iiuc.ac.bd emails are allowed.");
-    // }
+    if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
+      await signOut(auth);
+      throw new Error("Only @ugrad.iiuc.ac.bd emails are allowed.");
+    }
 
-    // Sync with backend after successful Firebase login
     await syncWithBackend(user);
 
     return user;
@@ -65,16 +63,14 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Double check domain on session restore
-        // if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
-        //   signOut(auth);
-        //   setCurrentUser(null);
-        //   setBackendUser(null);
-        // } else {
-        setCurrentUser(user);
-        // Sync with backend on session restore
-        await syncWithBackend(user);
-        //}
+        if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
+          signOut(auth);
+          setCurrentUser(null);
+          setBackendUser(null);
+        } else {
+          setCurrentUser(user);
+          await syncWithBackend(user);
+        }
       } else {
         setCurrentUser(null);
         setBackendUser(null);

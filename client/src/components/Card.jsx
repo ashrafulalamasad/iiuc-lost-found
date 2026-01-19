@@ -1,5 +1,5 @@
 import { MapPin, Phone, Tag, Clock, Eye } from 'lucide-react';
-import Button from './Button_New';
+import Button from './Button';
 import { getCategoryLabel } from '../services/api';
 
 export default function Card({ post }) {
@@ -53,10 +53,10 @@ export default function Card({ post }) {
           {post.description}
         </p>
 
-        <div className="pt-4 border-t border-slate-100">
-          {/* Location, Time Info and View Details Button */}
-          <div className="flex flex-col xl:flex-row xl:items-center gap-3">
-            {/* Left side - Location and Time Info */}
+        <div className="pt-4 border-t border-slate-100 mt-auto">
+          <div className="flex gap-4 flex-col min-[500px]:flex-row min-[500px]:items-center md:flex-col md:items-stretch">
+            
+            {/* Text Section (Left Aligned) */}
             <div className="space-y-2.5 flex-1 min-w-0">
               <div className="flex items-center gap-2.5 text-sm text-slate-600">
                 <div className="p-1.5 bg-slate-100 rounded-full text-slate-500">
@@ -77,16 +77,16 @@ export default function Card({ post }) {
                 )}
               </div>
             </div>
-
-            {/* View Details Button */}
-            <div className="xl:w-auto">
+            {/* Button Section (Right Aligned) */}
+            <div className="flex justify-end w-full min-[500px]:w-auto md:w-full">
               <Button
                 to={`/item/${post.id}`}
                 icon={Eye}
                 bgColor="bg-green-600"
                 textColor="text-white"
-                hoverBgColor="bg-sky-400"
-                hoverTextColor="text-black"
+                hoverBgColor="bg-red-600"
+                hoverTextColor="group-hover/btn:text-black"
+                className="shadow-md"
               >
                 View Details
               </Button>
