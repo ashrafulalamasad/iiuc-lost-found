@@ -28,7 +28,13 @@ const GenderModal = ({ onGenderSelect, userName, isUpdating = false }) => {
       zIndex: 99999,
       overflowY: 'auto'
     }}>
-      <div className="modal-container" style={{ maxWidth: '500px' }}>
+      <div className="modal-container" style={{ 
+        maxWidth: '500px',
+        width: '100%',
+        backgroundColor: 'white',
+        borderRadius: '12px',
+        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+      }}>
         <div className="modal-header" style={{ 
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           padding: '1.5rem',
