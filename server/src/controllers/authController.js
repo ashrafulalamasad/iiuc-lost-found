@@ -4,8 +4,7 @@ import { prisma } from "../database/prisma.js";
 export const userSchema = z.object({
   firebaseUid: z.string(),
   fullName: z.string(),
-  //email: z.email().endsWith("@ugrad.iiuc.ac.bd", { message: "Must be IIUC mail" }),
-  email: z.email(),
+  email: z.email().endsWith("@ugrad.iiuc.ac.bd", { message: "Must be IIUC mail" }),
   profilePic: z.string().optional(),
 });
 
