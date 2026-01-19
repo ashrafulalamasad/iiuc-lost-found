@@ -23,12 +23,18 @@ enum ClaimStatus {
   SOLVED
 }
 
+enum Gender {
+  MALE
+  FEMALE
+}
+
 model User {
   id String @id @default(uuid()) @db.Uuid()
   firebaseUid String @unique @db.VarChar(255)
   fullName String @db.VarChar(255)
   email String @unique @db.VarChar(255)
   profilePic String? @db.Text()
+  gender Gender?
   createdAt DateTime @default(now())
   reports Report[]
   claims Claim[]

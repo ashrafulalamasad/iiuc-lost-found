@@ -8,16 +8,33 @@ import ClaimActions from '../components/ClaimActions';
 export default function ItemDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { userId, currentUser } = useAuth();
+  const { userId, currentUser, backendUser } = useAuth();
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
+  
+  // Check if current user and finder are opposite genders
+  const isOppositeGender = backendUser?.gender && item?.finder?.gender && 
+    backendUser.gender !== item.finder.gender;
+  
+  // Check if location requires meeting with finder
+  const requiresMeeting = item?.destination === 'With Me (Self)';
+
+  // Protect route - redirect to login if not authenticated
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/login', { replace: true, state: { from: `/item/${id}` } });
+    }
+  }, [currentUser, navigate, id]);
 
   // Fetch item from backend
   useEffect(() => {
+    // Don't fetch if user is not logged in
+    if (!currentUser) return;
+    
     const fetchItem = async () => {
       setLoading(true);
       setError(null);
@@ -39,7 +56,7 @@ export default function ItemDetails() {
     };
 
     fetchItem();
-  }, [id]);
+  }, [id, currentUser]);
 
   // Loading state
   if (loading) {
@@ -321,10 +338,16 @@ export default function ItemDetails() {
                 <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-full">
                   <User size={20} />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h2 className="text-lg font-bold">Finder Contact Information</h2>
                   <p className="text-blue-100 text-sm">Reach out to claim this item</p>
                 </div>
+                {/* Gender Badge */}
+                {item.finder.gender && (
+                  <div className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+                    {item.finder.gender === 'MALE' ? '♂ Male' : '♀ Female'}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-3">
@@ -364,17 +387,40 @@ export default function ItemDetails() {
                     </div>
                     <div>
                       <div className="text-xs text-blue-100 mb-0.5">Phone</div>
-                      <a 
-                        href={`tel:${item.finder.phone}`}
-                        className="font-semibold hover:underline"
-                      >
-                        {item.finder.phone || 'Not Provided'}
-                      </a>
+                      {isOppositeGender ? (
+                        <div className="font-semibold text-blue-100">
+                          🔒 Hidden (Opposite Gender)
+                        </div>
+                      ) : (
+                        <a 
+                          href={item.finder.phone ? `tel:${item.finder.phone}` : undefined}
+                          className={item.finder.phone ? "font-semibold hover:underline" : "font-semibold"}
+                        >
+                          {item.finder.phone || 'Not Provided'}
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            
+            {/* Warning for opposite gender + meeting required */}
+            {isOppositeGender && requiresMeeting && currentUser && (
+              <div className="bg-amber-50 border-2 border-amber-400 rounded-xl p-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">⚠️</span>
+                  <div>
+                    <h4 className="text-sm font-semibold text-amber-900 mb-1">
+                      Opposite Gender Meeting Required
+                    </h4>
+                    <p className="text-xs text-amber-800 leading-relaxed">
+                      This item requires meeting the finder of opposite gender. Please bring a <strong>same-gender friend or staff member</strong> when collecting the item, as per university policy. Any violation will result in disciplinary action.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Claim Actions Component */}
             <ClaimActions

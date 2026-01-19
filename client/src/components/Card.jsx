@@ -1,8 +1,11 @@
 import { MapPin, Phone, Tag, Clock, Eye } from 'lucide-react';
 import Button from './Button';
 import { getCategoryLabel } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Card({ post }) {
+  const { currentUser } = useAuth();
+  
   // Get display label for category (handles both backend enum and display values)
   const categoryDisplay = getCategoryLabel(post.category) || post.category;
   
@@ -80,7 +83,7 @@ export default function Card({ post }) {
             {/* Button Section (Right Aligned) */}
             <div className="flex justify-end w-full min-[500px]:w-auto md:w-full">
               <Button
-                to={`/item/${post.id}`}
+                to={currentUser ? `/item/${post.id}` : '/login'}
                 icon={Eye}
                 bgColor="bg-green-600"
                 textColor="text-white"
@@ -88,7 +91,7 @@ export default function Card({ post }) {
                 hoverTextColor="group-hover/btn:text-black"
                 className="shadow-md"
               >
-                View Details
+                {currentUser ? 'View Details' : 'Login to View'}
               </Button>
             </div>
           </div>

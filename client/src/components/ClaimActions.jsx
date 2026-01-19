@@ -18,6 +18,10 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
   const isClaimer = claim && currentUserId === claim?.claimerId;
   const isOtherUser = claim && !isFinder && !isClaimer;
   
+  // Check if location requires meeting with finder
+  const requiresMeeting = report?.destination === 'With Me (Self)';
+  const isDesignatedLocation = !requiresMeeting;
+  
   // Treat cancelled/rejected claims as "no active claim" - item can be claimed again
   const isInactiveClaim = claim && (claim.status === CLAIM_STATUS.CANCELLED || claim.status === CLAIM_STATUS.REJECTED);
   const hasActiveClaim = claim && !isInactiveClaim;
@@ -88,10 +92,14 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
           <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
               <CheckCircle size={20} className="text-green-600" />
-              <h3 className="text-lg font-bold text-green-900">Finder Confirmed!</h3>
+              <h3 className="text-lg font-bold text-green-900">
+                {requiresMeeting ? 'Finder Confirmed Handover!' : 'Item Available for Collection!'}
+              </h3>
             </div>
             <p className="text-green-700 text-sm">
-              The finder has confirmed the handover. Please confirm you received it.
+              {requiresMeeting 
+                ? 'The finder has confirmed the handover. Please confirm you received it.'
+                : `The item is at ${report.destination}. Please collect it and confirm.`}
             </p>
           </div>
 
@@ -100,7 +108,7 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
             className="btn-primary w-full flex items-center justify-center gap-2 py-4 bg-green-600 text-white rounded-xl text-lg font-bold hover:bg-green-700 active:scale-[0.98] transition-all shadow-lg hover:shadow-xl"
           >
             <CheckCircle size={22} />
-            Confirm Received
+            {requiresMeeting ? 'Confirm Received from Finder' : 'Confirm Collected from Location'}
           </button>
         </div>
       );
@@ -115,7 +123,9 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
             <h3 className="text-lg font-bold text-blue-900">Waiting for Owner</h3>
           </div>
           <p className="text-blue-700 text-sm">
-            You've marked this as solved. Waiting for the owner to confirm they received the item.
+            {requiresMeeting
+              ? "You've confirmed the handover. Waiting for the owner to confirm they received it."
+              : `You've confirmed the item is at ${report.destination}. Waiting for owner to collect and confirm.`}
           </p>
         </div>
       );
@@ -149,7 +159,9 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
                   <h3 className="text-lg font-bold text-amber-900">Claim Pending</h3>
                 </div>
                 <p className="text-amber-700 text-sm">
-                  Waiting for the finder to verify and return the item.
+                  {requiresMeeting 
+                    ? 'Contact the finder to arrange collection. Waiting for finder to confirm handover.'
+                    : `The item is at ${report.destination}. Collect it and wait for finder confirmation.`}
                 </p>
               </div>
 
@@ -206,7 +218,9 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
             <div className="space-y-3">
               <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 text-center">
                 <p className="text-sm text-green-700 font-medium">
-                  Someone has claimed this item. Verify their identity and return the item.
+                  {requiresMeeting
+                    ? 'Someone claimed this item. Verify their identity and hand over the item.'
+                    : `Someone claimed this item. Confirm that you have left it at ${report.destination}.`}
                 </p>
               </div>
 
@@ -216,7 +230,7 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
                   className="btn-primary flex-1 flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 active:scale-[0.98] transition-all shadow-lg"
                 >
                   <CheckCircle size={20} />
-                  Mark as Solved
+                  {requiresMeeting ? 'Item Handed Over' : 'Item at Location'}
                 </button>
                 
                 <button

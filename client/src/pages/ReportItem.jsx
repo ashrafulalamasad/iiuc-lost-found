@@ -8,7 +8,7 @@ import Button from '../components/Button';
 
 export default function ReportItem() {
   const navigate = useNavigate();
-  const { userId, currentUser } = useAuth();
+  const { userId, currentUser, backendUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
@@ -17,11 +17,25 @@ export default function ReportItem() {
     title: '',
     description: '',
     location: '',
+    locationOther: '',
     contactInfo: '',
   });
 
   // Categories from backend enum (CATEGORIES already excludes ALL)
   const categories = CATEGORIES;
+  
+  // Predefined locations
+  const predefinedLocations = [
+    { value: 'With Me (Self)', label: 'With Me (Self)' },
+    { value: 'C Building Office', label: 'C Building Office' },
+    { value: 'CX Building Office', label: 'CX Building Office' },
+    { value: 'Library Desk', label: 'Library Desk' },
+    { value: 'Transport Office', label: 'Transport Office' },
+    { value: 'Other', label: 'Other (Specify)' },
+  ];
+  
+  // Check if phone is required
+  const isPhoneRequired = formData.location === 'With Me (Self)';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,8 +53,24 @@ export default function ReportItem() {
       return;
     }
     
+    // Validate phone number if required
+    if (isPhoneRequired && !formData.contactInfo) {
+      setError('Phone number is required when keeping the item with you.');
+      return;
+    }
+    
     if (images.length > 4) {
       setError('Maximum 4 images allowed.');
+      return;
+    }
+    
+    // Determine final location value
+    const finalLocation = formData.location === 'Other' 
+      ? formData.locationOther 
+      : formData.location;
+    
+    if (formData.location === 'Other' && !formData.locationOther) {
+      setError('Please specify the location.');
       return;
     }
 
@@ -63,7 +93,7 @@ export default function ReportItem() {
         category: formData.category,
         title: formData.title || `${formData.category} Item`,
         description: formData.description,
-        location: formData.location,
+        location: finalLocation,
         contactInfo: formData.contactInfo || null,
         images: uploadedUrls,
       });
@@ -187,33 +217,84 @@ export default function ReportItem() {
             {/* Location */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Where did you leave it? <span className="text-red-500">*</span>
+                Where did you leave the item? <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                required
-                minLength={2}
-                placeholder="e.g. Library Desk, C building office, or 'With Me'"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              />
+              
+              {/* Warning for opposite gender */}
+              {backendUser?.gender && (
+                <div className="mb-4 bg-amber-50 border-2 border-amber-400 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">⚠️</span>
+                    <div>
+                      <h4 className="text-sm font-semibold text-amber-900 mb-1">
+                        Important Notice
+                      </h4>
+                      <p className="text-xs text-amber-800 leading-relaxed">
+                        If you found an item belonging to the <strong>opposite gender</strong>, please choose a <strong>designated location</strong> (C Building Office, Library Desk, etc.) instead of keeping it with you. Any violation of university policy will result in <strong>strict disciplinary action</strong>.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Radio button group */}
+              <div className="space-y-2">
+                {predefinedLocations.map((loc) => (
+                  <label
+                    key={loc.value}
+                    className={`flex items-center p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                      formData.location === loc.value
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-slate-200 bg-white hover:border-slate-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="location"
+                      value={loc.value}
+                      checked={formData.location === loc.value}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value, locationOther: '' })}
+                      className="mr-3 w-4 h-4 text-blue-600"
+                      required
+                    />
+                    <span className="text-sm font-medium text-slate-700">{loc.label}</span>
+                  </label>
+                ))}
+              </div>
+              
+              {/* Other location text input */}
+              {formData.location === 'Other' && (
+                <input
+                  type="text"
+                  required
+                  minLength={2}
+                  placeholder="Please specify the location"
+                  className="mt-3 w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  value={formData.locationOther}
+                  onChange={(e) => setFormData({ ...formData, locationOther: e.target.value })}
+                />
+              )}
             </div>
 
             {/* Contact Info */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Contact Information
+                Contact Information {isPhoneRequired && <span className="text-red-500">*</span>}
               </label>
               <input
                 type="text"
+                required={isPhoneRequired}
                 minLength={11}
-                placeholder="A valid phone number"
+                placeholder="Enter your phone number"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
                 value={formData.contactInfo}
                 onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
               />
-              <p className="text-xs md:text-sm text-slate-500 mt-2">This will be visible to users who want to claim the item. Leave it blank if item is not with you.</p>
+              <p className="text-xs md:text-sm text-slate-500 mt-2">
+                {isPhoneRequired 
+                  ? 'Phone number is required when keeping the item with you. It will be hidden from opposite gender users.' 
+                  : 'Phone number is optional for designated locations. It will be hidden from opposite gender users if provided.'}
+              </p>
             </div>
 
             {/* <button

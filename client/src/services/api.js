@@ -54,6 +54,14 @@ export const authAPI = {
     });
   },
 
+  // Update user gender
+  updateGender: async (userId, gender) => {
+    return apiRequest('/users/gender', {
+      method: 'PUT',
+      body: JSON.stringify({ userId, gender }),
+    });
+  },
+
   // Get total user count
   getUserCount: async () => {
     return apiRequest('/users/count');
@@ -177,6 +185,7 @@ export const transformReport = (backendReport) => {
         ? backendReport.contactInfo 
         : null,
       profilePic: backendReport.finder.profilePic,
+      gender: backendReport.finder.gender,
     } : null,
     finderId: backendReport.finderId,
     contactInfo: backendReport.contactInfo,
@@ -185,6 +194,10 @@ export const transformReport = (backendReport) => {
       id: backendReport.claim.id,
       status: backendReport.claim.status,
       claimerId: backendReport.claim.claimerId,
+      claimer: backendReport.claim.claimer ? {
+        name: backendReport.claim.claimer.fullName,
+        gender: backendReport.claim.claimer.gender,
+      } : null,
       finderConfirmed: backendReport.claim.finderConfirmed,
       ownerConfirmed: backendReport.claim.ownerConfirmed,
       claimedAt: backendReport.claim.claimedAt,

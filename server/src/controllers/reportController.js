@@ -9,6 +9,15 @@ export const reportSchema = z.object({
   location: z.string().min(2),
   contactInfo: z.string().regex(/^(\+88)?01[3-9]\d{8}$/, "Invalid Bangladeshi phone number").or(z.literal("")).transform(val => val || null).nullable().optional(),
   images: z.array(z.string()).max(4).default([]),
+}).refine((data) => {
+  // If location is "With Me (Self)", contactInfo is required
+  if (data.location === "With Me (Self)" && !data.contactInfo) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Contact info is required when keeping the item with you",
+  path: ["contactInfo"],
 });
 
 export const getCategories = async (req, res) => {
@@ -79,12 +88,12 @@ export const getAllReports = async (req, res) => {
       orderBy: { createdAt: "desc" },
       include: {
         finder: {
-          select: { id: true, fullName: true, email: true, profilePic: true }
+          select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
         },
         claim: {
           include: {
             claimer: {
-              select: { id: true, fullName: true, email: true, profilePic: true }
+              select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
             }
           }
         }
@@ -111,12 +120,12 @@ export const getReportsByUser = async (req, res) => {
       orderBy: { createdAt: 'desc' },
       include: {
         finder: {
-          select: { id: true, fullName: true, email: true, profilePic: true }
+          select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
         },
         claim: {
           include: {
             claimer: {
-              select: { id: true, fullName: true, email: true, profilePic: true }
+              select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
             }
           }
         }
@@ -138,12 +147,12 @@ export const getReportById = async (req, res) => {
       where: { id: req.params.id },
       include: {
         finder: {
-          select: { id: true, fullName: true, email: true, profilePic: true }
+          select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
         },
         claim: {
           include: {
             claimer: {
-              select: { id: true, fullName: true, email: true, profilePic: true }
+              select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
             }
           }
         }

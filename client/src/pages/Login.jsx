@@ -1,18 +1,28 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Button from "../components/Button";
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const handleLogin = async () => {
+    if (isLoggingIn) return;
+    setIsLoggingIn(true);
+
     try {
       await login();
-      navigate("/");
+      // Redirect to the page they were trying to access, or home
+      const from = location.state?.from || "/";
+      navigate(from);
     } catch (error) {
       console.error("Failed to login", error);
       alert(error.message);
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -25,6 +35,7 @@ export default function Login() {
         </p>
         <Button
           onClick={handleLogin}
+          disabled={isLoggingIn}
           bgColor="bg-blue-800"
           hoverBgColor="bg-white"
           textColor="text-white"
@@ -34,7 +45,7 @@ export default function Login() {
           <span className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 w-full">
             <img src="/google.png" alt="Google" className="w-6 h-6" />
             <span className="text-base sm:text-lg md:text-xl">
-              Continue with Google
+              {isLoggingIn ? "Signing in..." : "Continue with Google"}
             </span>
             <span className="text-xl md:text-2xl">→</span>
           </span>
@@ -46,14 +57,9 @@ export default function Login() {
         </div>
         <div className="mt-8 border-t border-gray-800 pt-4 text-sm sm:text-base text-gray-400">
           By continuing, you agree to our
-          <span className="text-green-400 mx-1">
-            Terms of Service
-          </span>
+          <span className="text-green-400 mx-1">Terms of Service</span>
           and
-          <span className="text-green-400 mx-1">
-            Privacy Policy
-          </span>
-          .
+          <span className="text-green-400 mx-1">Privacy Policy</span>.
         </div>
       </section>
     </main>

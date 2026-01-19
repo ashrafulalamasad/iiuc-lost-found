@@ -7,7 +7,7 @@ import Card from "../components/Card";
 import BackButton from '../components/BackButton';
 
 export default function Profile() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, backendUser, logout } = useAuth();
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
   const [activeTab, setActiveTab] = useState('reports');
@@ -136,13 +136,15 @@ export default function Profile() {
 
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 sm:p-5 md:p-6 bg-linear-to-r from-emerald-50 to-green-50/50 rounded-4xl border border-emerald-200 hover:shadow-md transition-all duration-200">
                 <div className="p-1.5 sm:p-2 md:p-2.5 bg-white rounded-xl shadow-sm">
-                  <Shield className="text-emerald-600 w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+                  <User className="text-emerald-600 w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
                 </div>
                 <div className="text-left flex-1">
                   <p className="text-xs sm:text-sm md:text-base text-emerald-700 font-semibold uppercase tracking-wider mb-0.5">
-                    Account Status
+                    Gender
                   </p>
-                  <p className="text-emerald-900 font-semibold text-sm sm:text-base md:text-lg">Verified Student</p>
+                  <p className="text-emerald-900 font-semibold text-sm sm:text-base md:text-lg">
+                    {backendUser?.gender ? (backendUser.gender === 'MALE' ? '♂ Male' : '♀ Female') : 'Not Set'}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 sm:p-5 md:p-6 bg-linear-to-r from-blue-50 to-indigo-50/50 rounded-4xl border border-blue-200 hover:shadow-md transition-all duration-200">

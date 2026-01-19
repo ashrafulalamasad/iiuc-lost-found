@@ -45,12 +45,13 @@ export const AuthProvider = ({ children }) => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
 
-    if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
+    if (!user.email.endsWith("@gmail.com")) {
       await signOut(auth);
       throw new Error("Only @ugrad.iiuc.ac.bd emails are allowed.");
     }
 
-    await syncWithBackend(user);
+    const backendUserData = await syncWithBackend(user);
+    console.log('Login completed, backend user:', backendUserData);
 
     return user;
   };
@@ -60,16 +61,23 @@ export const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  const refetchUser = async () => {
+    if (currentUser) {
+      await syncWithBackend(currentUser);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
+        if (!user.email.endsWith("@gmail.com")) {
           signOut(auth);
           setCurrentUser(null);
           setBackendUser(null);
         } else {
           setCurrentUser(user);
-          await syncWithBackend(user);
+          const backendUserData = await syncWithBackend(user);
+          console.log('Auth state changed, backend user loaded:', backendUserData);
         }
       } else {
         setCurrentUser(null);
@@ -87,6 +95,7 @@ export const AuthProvider = ({ children }) => {
     userId: backendUser?.id, // Convenience: direct access to backend user ID
     login,
     logout,
+    refetchUser,
     loading,
   };
 

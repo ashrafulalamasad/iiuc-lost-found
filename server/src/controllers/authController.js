@@ -4,7 +4,8 @@ import { prisma } from "../database/prisma.js";
 export const userSchema = z.object({
   firebaseUid: z.string(),
   fullName: z.string(),
-  email: z.email().endsWith("@ugrad.iiuc.ac.bd", { message: "Must be IIUC mail" }),
+  //email: z.email().endsWith("@ugrad.iiuc.ac.bd", { message: "Must be IIUC mail" }),
+  email: z.email(),
   profilePic: z.string().optional(),
 });
 
@@ -77,6 +78,37 @@ export const getUserCount = async (req, res) => {
     res.json({
       status: "success",
       data: { count },
+    });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+};
+
+export const updateGenderSchema = z.object({
+  userId: z.uuid(),
+  gender: z.enum(["MALE", "FEMALE"]),
+});
+
+export const updateGender = async (req, res) => {
+  const data = req.validatedData;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: data.userId },
+    });
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+    const updatedUser = await prisma.user.update({
+      where: { id: data.userId },
+      data: { gender: data.gender },
+    });
+    res.json({
+      status: "success",
+      message: "Gender updated successfully",
+      data: { user: updatedUser },
     });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
