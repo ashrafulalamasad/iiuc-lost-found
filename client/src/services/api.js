@@ -166,6 +166,40 @@ export const claimsAPI = {
   },
 };
 
+// ==================== MESSAGES API ====================
+export const messagesAPI = {
+  // Get user's inbox (all conversations with messages)
+  getInbox: async (odId) => {
+    return apiRequest(`/messages/inbox/${odId}`);
+  },
+
+  // Get unread message count
+  getUnreadCount: async (odId) => {
+    return apiRequest(`/messages/unread/${odId}`);
+  },
+
+  // Get all messages for a specific claim
+  getMessages: async (claimId, odId) => {
+    return apiRequest(`/messages/${claimId}?odId=${odId}`);
+  },
+
+  // Send a new message (REST fallback)
+  sendMessage: async (claimId, senderId, content) => {
+    return apiRequest('/messages', {
+      method: 'POST',
+      body: JSON.stringify({ claimId, senderId, content }),
+    });
+  },
+
+  // Mark messages as read
+  markAsRead: async (claimId, userId) => {
+    return apiRequest('/messages/read', {
+      method: 'PUT',
+      body: JSON.stringify({ claimId, userId }),
+    });
+  },
+};
+
 // ==================== DATA TRANSFORMERS ====================
 // Transform backend report to frontend format
 export const transformReport = (backendReport) => {
