@@ -4,8 +4,8 @@ import { prisma } from "../database/prisma.js";
 export const userSchema = z.object({
   firebaseUid: z.string(),
   fullName: z.string(),
-  //email: z.email().endsWith("@ugrad.iiuc.ac.bd", { message: "Must be IIUC mail" }),
-  email: z.email(),
+  email: z.email().endsWith("@ugrad.iiuc.ac.bd", { message: "Must be IIUC mail" }),
+  //email: z.email(),
   profilePic: z.string().optional(),
 });
 
@@ -32,8 +32,6 @@ export const signIn = async (req, res) => {
       });
     }
     if (userByEmail) {
-      // Email exists but with different Firebase UID - update the Firebase UID
-      // This handles the case where user re-authenticates with same email
       const updatedUser = await prisma.user.update({
         where: { email: data.email },
         data: { 

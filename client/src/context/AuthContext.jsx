@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [backendUser, setBackendUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Sync user with backend
   const syncWithBackend = async (firebaseUser) => {
     try {
       console.log("Syncing user with backend:", firebaseUser.email);
@@ -25,7 +24,6 @@ export const AuthProvider = ({ children }) => {
 
       console.log("Backend sync response:", response);
 
-      // Handle the response - backend returns { status, data: { user } }
       const user = response?.data?.user || response?.user;
       if (user) {
         console.log("Backend user set:", user);
@@ -36,7 +34,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Failed to sync with backend:", error);
-      // Don't throw - allow app to work even if backend sync fails
     }
     return null;
   };
@@ -45,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
 
-    if (!user.email.endsWith("@gmail.com")) {
+    if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
       await signOut(auth);
       throw new Error("Only @ugrad.iiuc.ac.bd emails are allowed.");
     }
@@ -70,7 +67,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        if (!user.email.endsWith("@gmail.com")) {
+        if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
           signOut(auth);
           setCurrentUser(null);
           setBackendUser(null);
@@ -91,8 +88,8 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
-    backendUser, // Backend user with database ID
-    userId: backendUser?.id, // Convenience: direct access to backend user ID
+    backendUser,
+    userId: backendUser?.id,
     login,
     logout,
     refetchUser,
