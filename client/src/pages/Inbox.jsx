@@ -136,11 +136,11 @@ const Inbox = () => {
 
     if (diffHours < 1) {
       const diffMinutes = Math.floor(diffTime / (1000 * 60));
-      return diffMinutes <= 1 ? "Just now" : `${diffMinutes}m`;
+      return diffMinutes < 1 ? "Now" : diffMinutes < 2 ? `1m ago` : `${diffMinutes}m ago`;
     }
-    if (diffHours < 24) return `${diffHours}h`;
+    if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays === 1) return "Yesterday";
-    if (diffDays < 7) return `${diffDays}d`;
+    if (diffDays < 7) return `${diffDays}d ago`;
     return date.toLocaleDateString();
   };
 
@@ -164,32 +164,32 @@ const Inbox = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-28 pb-10">
-      <div className="max-w-2xl mx-auto px-4">
+    <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-50 pt-28 pb-10">
+      <div className="max-w-3xl mx-auto px-4 h-[calc(100vh-8rem)] flex flex-col">
         {/* Header */}
-        <div className="mb-6" >
+        <div className="mb-2 shrink-0">
             <BackButton />
         </div>
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-6 shrink-0">
           {/* <Link
             to="/profile"
             className="p-2 rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors"
           >
             <ArrowLeft size={20} className="text-gray-600" />
           </Link> */}
-          <h1 className="text-2xl font-bold text-neutral-800">Messages</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-800">Messages</h1>
         </div>
 
         {error && (
-          <div className="bg-rose-50 border border-neutral-300 text-rose-700 px-4 py-3 rounded-xl mb-4">
+          <div className="bg-rose-50 border border-neutral-300 text-rose-700 px-4 py-3 rounded-xl mb-4 shrink-0">
             {error}
           </div>
         )}
 
-        {/* Inbox List */}
-        <div className="bg-white rounded-2xl shadow-md border border-neutral-300 overflow-hidden">
+        {/* Inbox List - Scrollable Container */}
+        <div className="bg-white rounded-2xl shadow-lg border-2 border-neutral-900 overflow-hidden flex-1 flex flex-col min-h-0">
           {inbox.length === 0 ? (
-            <div className="p-8 text-center">
+            <div className="p-8 text-center flex-1 flex flex-col items-center justify-center">
               <MessageCircle size={48} className="mx-auto text-neutral-300 mb-4" />
               <h3 className="text-lg font-medium text-neutral-600">No messages yet</h3>
               <p className="text-neutral-400 mt-2">
@@ -197,16 +197,34 @@ const Inbox = () => {
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-neutral-200">
+            <div className="overflow-y-auto flex-1 p-1 space-y-2 bg-neutral-50">
               {inbox.map((conversation) => (
                 <Link
                   key={conversation.claimId}
                   to={`/chat/${conversation.claimId}`}
-                  className="flex items-center gap-4 p-4 hover:bg-neutral-50 transition-colors"
+                  className="relative flex items-center gap-2 sm:gap-4 p-3 sm:p-4 bg-white rounded-xl border-2 border-neutral-800 hover:border-green-600 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
                 >
+                  {/* Status indicator and Time - Top Right */}
+                  <div className="absolute top-3 right-3 flex flex-col items-end gap-6">
+                    <span
+                      className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border-2 font-semibold ${
+                        conversation.claimStatus === "SOLVED"
+                          ? "bg-emerald-50 text-emerald-700 border-emerald-600"
+                          : conversation.claimStatus === "PENDING"
+                          ? "bg-amber-50 text-amber-700 border-amber-600"
+                          : "bg-neutral-100 text-neutral-700 border-neutral-600"
+                      }`}
+                    >
+                      {conversation.claimStatus}
+                    </span>
+                    <span className="absolute top-12 sm:top-14 right-1 text-sm sm:md text-black font-medium">
+                      {formatTime(conversation.updatedAt)}
+                    </span>
+                  </div>
+
                   {/* Profile Picture */}
                   <div className="relative shrink-0">
-                    <div className="w-14 h-14 rounded-full bg-neutral-100 border border-neutral-300 overflow-hidden flex items-center justify-center">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-neutral-100 border-2 border-neutral-700 overflow-hidden flex items-center justify-center shadow-sm">
                       {conversation.otherUser.profilePic ? (
                         <img
                           src={conversation.otherUser.profilePic}
@@ -215,69 +233,50 @@ const Inbox = () => {
                           referrerPolicy="no-referrer"
                         />
                       ) : (
-                        <User size={24} className="text-neutral-500" />
+                        <User size={20} className="text-neutral-500 sm:w-6 sm:h-6" />
                       )}
                     </div>
                     {/* Unread badge */}
                     {conversation.unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-neutral-800 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 sm:w-5 sm:h-5 bg-green-600 text-white text-[10px] sm:text-xs font-bold rounded-full flex items-center justify-center shadow-md border border-white">
                         {conversation.unreadCount > 9 ? "9+" : conversation.unreadCount}
                       </span>
                     )}
                   </div>
 
                   {/* Conversation Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3
-                        className={`font-semibold truncate ${
-                          conversation.unreadCount > 0 ? "text-neutral-900" : "text-neutral-700"
-                        }`}
-                      >
-                        {conversation.otherUser.name}
-                      </h3>
-                      <span className="text-xs text-neutral-500 shrink-0">
-                        {formatTime(conversation.updatedAt)}
-                      </span>
-                    </div>
+                  <div className="flex-1 min-w-0 pr-16">
+                    {/* Name - Always visible */}
+                    <h3
+                      className={`font-semibold truncate text-base sm:text-lg mb-1 ${
+                        conversation.unreadCount > 0 ? "text-neutral-900" : "text-neutral-700"
+                      }`}
+                    >
+                      {conversation.otherUser.name}
+                    </h3>
 
                     {/* Report Title */}
-                    <p className="text-xs text-neutral-500 truncate mb-1">
+                    <p className="text-xs sm:text-sm text-neutral-500 truncate mb-1.5">
                       Re: {conversation.reportTitle}
                     </p>
 
                     {/* Message Preview */}
                     {conversation.unreadCount > 0 ? (
                       // Unread state - bright text
-                      <p className="text-sm font-medium text-neutral-800">
+                      <p className="text-xs sm:text-sm font-medium text-neutral-800 truncate">
                         {conversation.unreadCount === 1
                           ? "1 new message"
                           : `${conversation.unreadCount} new messages`}
                       </p>
                     ) : (
                       // Read state - gray/dimmed text with message preview
-                      <p className="text-sm text-neutral-400 truncate">
+                      <p className="text-xs sm:text-sm text-neutral-400 truncate">
                         {conversation.latestMessage?.isFromMe && (
                           <span className="text-neutral-500">You: </span>
                         )}
                         {truncateMessage(conversation.latestMessage?.content || "No messages")}
                       </p>
                     )}
-                  </div>
-
-                  {/* Status indicator */}
-                  <div className="shrink-0">
-                    <span
-                      className={`text-xs px-2 py-1 rounded-full border ${
-                        conversation.claimStatus === "SOLVED"
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                          : conversation.claimStatus === "PENDING"
-                          ? "bg-amber-50 text-amber-700 border-amber-200"
-                          : "bg-neutral-100 text-neutral-600 border-neutral-300"
-                      }`}
-                    >
-                      {conversation.claimStatus}
-                    </span>
                   </div>
                 </Link>
               ))}
