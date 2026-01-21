@@ -9,6 +9,8 @@ import ReportItem from "./pages/ReportItem";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import ItemDetails from "./pages/ItemDetails";
+import Inbox from "./pages/Inbox";
+import Chat from "./pages/Chat";
 import GenderModal from "./components/GenderModal";
 import { useAuth } from "./context/AuthContext";
 import { authAPI } from "./services/api";
@@ -98,6 +100,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inbox"
+            element={
+              <ProtectedRoute>
+                <Inbox />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat/:claimId"
+            element={
+              <ProtectedRoute>
+                <Chat />
               </ProtectedRoute>
             }
           />

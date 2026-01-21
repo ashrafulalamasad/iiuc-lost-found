@@ -42,10 +42,23 @@ export const AuthProvider = ({ children }) => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
 
+    // ============ EMAIL RESTRICTION TOGGLE ============
+    // Choose ONE block below - comment the other
+
+    // -------- PRODUCTION MODE (IIUC emails only) --------
+
     if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
       await signOut(auth);
       throw new Error("Only @ugrad.iiuc.ac.bd emails are allowed.");
     }
+
+    // ----------------------------------------------------
+
+    // -------- DEVELOPMENT MODE (all emails allowed) --------
+    // No email restriction - all emails are allowed
+    // -------------------------------------------------------
+
+    // ==================================================
 
     const backendUserData = await syncWithBackend(user);
     console.log('Login completed, backend user:', backendUserData);
@@ -67,6 +80,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        // ============ EMAIL RESTRICTION TOGGLE ============
+        // Choose ONE block below - comment the other
+
+        // -------- PRODUCTION MODE (IIUC emails only) --------
+
         if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
           signOut(auth);
           setCurrentUser(null);
@@ -76,6 +94,16 @@ export const AuthProvider = ({ children }) => {
           const backendUserData = await syncWithBackend(user);
           console.log('Auth state changed, backend user loaded:', backendUserData);
         }
+
+        // ----------------------------------------------------
+
+        // -------- DEVELOPMENT MODE (all emails allowed) --------
+        setCurrentUser(user);
+        const backendUserData = await syncWithBackend(user);
+        console.log('Auth state changed, backend user loaded:', backendUserData);
+        // -------------------------------------------------------
+
+        // ==================================================
       } else {
         setCurrentUser(null);
         setBackendUser(null);

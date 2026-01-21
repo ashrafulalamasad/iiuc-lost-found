@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Tag, CheckCircle, X, AlertCircle, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Tag, CheckCircle, X, AlertCircle, Clock, MessageCircle } from 'lucide-react';
 
 // Claim status constants
 export const CLAIM_STATUS = {
@@ -11,6 +12,7 @@ export const CLAIM_STATUS = {
 };
 
 export default function ClaimActions({ report, claim, currentUserId, onClaimItem, onCancelClaim, onMarkSolved, onRejectClaim, onOwnerConfirm }) {
+  const navigate = useNavigate();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
 
@@ -53,13 +55,23 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
     }
 
     return (
-      <button
-        onClick={onClaimItem}
-        className="btn-primary w-full flex items-center justify-center gap-2 py-4 bg-blue-600 text-white rounded-full text-lg font-bold cursor-pointer hover:bg-blue-700 active:scale-[0.98] transition-all shadow-lg hover:shadow-xl"
-      >
-        <Tag size={22} />
-        Claim This Item
-      </button>
+      <div className="flex gap-3">
+        <button
+          onClick={onClaimItem}
+          className="btn-primary flex-1 flex items-center justify-center gap-2 py-4 bg-blue-600 text-white rounded-full text-lg font-bold cursor-pointer hover:bg-blue-700 active:scale-[0.98] transition-all shadow-lg hover:shadow-xl"
+        >
+          <Tag size={22} />
+          Claim This Item
+        </button>
+        <button
+          disabled
+          className="btn-secondary flex-1 flex items-center justify-center gap-2 py-4 bg-gray-300 text-gray-500 rounded-full text-lg font-bold cursor-not-allowed"
+          title="Claim the item first to send a message"
+        >
+          <MessageCircle size={22} />
+          Send Message
+        </button>
+      </div>
     );
   }
 
@@ -85,7 +97,7 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
 
   // Finder has confirmed, waiting for owner
   if (finderConfirmed && !ownerConfirmed) {
-    // Owner/Claimer view - Show Confirm Received button
+    // Owner/Claimer view - Show Confirm Received button and Message option
     if (isClaimer) {
       return (
         <div className="space-y-3">
@@ -110,23 +122,41 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
             <CheckCircle size={22} />
             {requiresMeeting ? 'Confirm Received from Finder' : 'Confirm Collected from Location'}
           </button>
+
+          <button
+            onClick={() => navigate(`/chat/${claim.id}`)}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 active:scale-[0.98] transition-all"
+          >
+            <MessageCircle size={20} />
+            Message Finder
+          </button>
         </div>
       );
     }
 
-    // Finder view - Show waiting for owner confirmation
+    // Finder view - Show waiting for owner confirmation with message option
     if (isFinder) {
       return (
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Clock size={20} className="text-blue-600" />
-            <h3 className="text-lg font-bold text-blue-900">Waiting for Owner</h3>
+        <div className="space-y-3">
+          <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Clock size={20} className="text-blue-600" />
+              <h3 className="text-lg font-bold text-blue-900">Waiting for Owner</h3>
+            </div>
+            <p className="text-blue-700 text-sm">
+              {requiresMeeting
+                ? "You've confirmed the handover. Waiting for the owner to confirm they received it."
+                : `You've confirmed the item is at ${report.destination}. Waiting for owner to collect and confirm.`}
+            </p>
           </div>
-          <p className="text-blue-700 text-sm">
-            {requiresMeeting
-              ? "You've confirmed the handover. Waiting for the owner to confirm they received it."
-              : `You've confirmed the item is at ${report.destination}. Waiting for owner to collect and confirm.`}
-          </p>
+
+          <button
+            onClick={() => navigate(`/chat/${claim.id}`)}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 active:scale-[0.98] transition-all"
+          >
+            <MessageCircle size={20} />
+            Message Claimer
+          </button>
         </div>
       );
     }
@@ -148,7 +178,7 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
   // Regular PENDING status (no confirmations yet)
   switch (claim.status) {
     case CLAIM_STATUS.PENDING:
-      // Claimer view - Show Cancel Claim
+      // Claimer view - Show Cancel Claim and Send Message
       if (isClaimer) {
         return (
           <>
@@ -165,13 +195,23 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
                 </p>
               </div>
 
-              <button
-                onClick={handleCancelClaim}
-                className="btn-outline w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-300 text-red-600 rounded-xl font-semibold hover:bg-red-50 active:scale-[0.98] transition-all"
-              >
-                <X size={20} />
-                Cancel Claim
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => navigate(`/chat/${claim.id}`)}
+                  className="btn-primary flex-1 flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 active:scale-[0.98] transition-all shadow-lg"
+                >
+                  <MessageCircle size={20} />
+                  Send Message
+                </button>
+                
+                <button
+                  onClick={handleCancelClaim}
+                  className="btn-outline flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-300 text-red-600 rounded-xl font-semibold hover:bg-red-50 active:scale-[0.98] transition-all"
+                >
+                  <X size={20} />
+                  Cancel Claim
+                </button>
+              </div>
             </div>
 
             {/* Cancel Confirmation Dialog */}
@@ -211,7 +251,7 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
         );
       }
 
-      // Finder view - Show Mark Solved + Reject buttons
+      // Finder view - Show Mark Solved + Reject + Message buttons
       if (isFinder) {
         return (
           <>
@@ -241,6 +281,14 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
                   Reject Claim
                 </button>
               </div>
+
+              <button
+                onClick={() => navigate(`/chat/${claim.id}`)}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 active:scale-[0.98] transition-all shadow-lg"
+              >
+                <MessageCircle size={20} />
+                Message Claimer
+              </button>
             </div>
 
             {/* Reject Confirmation Dialog */}

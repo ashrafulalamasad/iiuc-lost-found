@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Hamburger from "hamburger-react";
 import { useAuth } from "../context/AuthContext";
-import { User, LogIn } from "lucide-react";
+import { useSocket } from "../context/SocketContext";
+import { User, LogIn, MessageCircle } from "lucide-react";
 import Button from "./Button";
 
 const handleNavClick = () => {
@@ -11,6 +12,7 @@ const handleNavClick = () => {
 
 const Navbar = () => {
   const { currentUser } = useAuth();
+  const { unreadCount } = useSocket();
   const [isOpen, setOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
 
@@ -127,6 +129,34 @@ const Navbar = () => {
           >
             About Us
           </NavLink>
+
+          {/* Messages link - only show when logged in */}
+          {currentUser && (
+            <NavLink
+              to="/inbox"
+              className={({ isActive }) =>
+                `relative px-2 py-2 transition-colors duration-300 ${
+                  isActive ? "text-black after:w-full" : "text-black"
+                } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 after:w-0 hover:after:w-full`
+              }
+              onClick={() => {
+                setOpen(false);
+                handleNavClick();
+              }}
+            >
+              <span className="flex items-center gap-1">
+                <span className="relative">
+                  <MessageCircle size={18} />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  )}
+                </span>
+                <span className="lg:hidden ml-1">Messages</span>
+              </span>
+            </NavLink>
+          )}
 
           {/* Auth Button */}
           {currentUser ? (
