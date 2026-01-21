@@ -12,148 +12,79 @@ const GenderModal = ({ onGenderSelect, userName, isUpdating = false }) => {
   };
 
   return (
-    <div className="modal-overlay" style={{ 
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.75)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '1rem',
-      paddingTop: '6rem',
-      zIndex: 99999,
-      overflowY: 'auto'
-    }}>
-      <div className="modal-container" style={{ 
-        maxWidth: '500px',
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
-      }}>
-        <div className="modal-header" style={{ 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          padding: '1.5rem',
-          borderRadius: '12px 12px 0 0'
-        }}>
-          <h2 style={{ 
-            color: 'white', 
-            fontSize: '1.5rem', 
-            fontWeight: '600',
-            margin: 0 
-          }}>
+    <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 pt-24 z-99999 overflow-y-auto">
+      <div className="max-w-lg w-full bg-white rounded-xl shadow-2xl">
+        {/* Header */}
+        <div className="bg-sky-600 p-6 rounded-t-xl">
+          <h2 className="text-white text-2xl font-semibold">
             Complete Your Profile
           </h2>
         </div>
         
-        <div className="modal-body" style={{ padding: '2rem' }}>
-          <p style={{ 
-            fontSize: '1rem', 
-            color: '#4a5568', 
-            marginBottom: '1.5rem',
-            lineHeight: '1.6'
-          }}>
-            Welcome, <strong>{userName || 'Student'}</strong>! Please select your gender to continue using the IIUC Lost & Found system.
+        {/* Body */}
+        <div className="p-4 sm:p-6 md:p-8">
+          <p className="text-slate-800 text-base mb-6 leading-relaxed">
+            Welcome, <strong className="text-slate-900">{userName || 'Student'}</strong>! Please select your gender to continue using the IIUC Lost & Found system.
           </p>
           
           {/* Gender Selection */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ 
-              display: 'block', 
-              fontSize: '0.95rem', 
-              fontWeight: '600',
-              color: '#2d3748',
-              marginBottom: '0.75rem'
-            }}>
-              Select Gender *
+          <div className="mb-6">
+            <label className="block text-md font-semibold text-slate-800 mb-3">
+              Select Gender
             </label>
             
-            <div style={{ display: 'flex', gap: '1rem' }}>
+            <div className="flex gap-4">
               <label 
-                style={{ 
-                  flex: 1,
-                  padding: '1rem',
-                  border: selectedGender === 'MALE' ? '2px solid #667eea' : '2px solid #e2e8f0',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  background: selectedGender === 'MALE' ? '#f7fafc' : 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1rem',
-                  fontWeight: '500'
-                }}
+                className={`flex-1 p-4 border-2 rounded-full cursor-pointer transition-all ${
+                  selectedGender === 'MALE' 
+                    ? 'border-sky-600 bg-sky-50' 
+                    : 'border-slate-400 bg-white hover:border-slate-300'
+                }`}
               >
-                <input 
-                  type="radio" 
-                  name="gender" 
-                  value="MALE"
-                  checked={selectedGender === 'MALE'}
-                  onChange={(e) => setSelectedGender(e.target.value)}
-                  style={{ marginRight: '0.5rem' }}
-                />
-                <span>♂ Male</span>
+                <div className="flex items-center justify-center">
+                  <input 
+                    type="radio" 
+                    name="gender" 
+                    value="MALE"
+                    checked={selectedGender === 'MALE'}
+                    onChange={(e) => setSelectedGender(e.target.value)}
+                    className="w-4 h-4 text-sky-600 mr-2"
+                  />
+                  <span className="text-base font-medium">♂ Male</span>
+                </div>
               </label>
               
               <label 
-                style={{ 
-                  flex: 1,
-                  padding: '1rem',
-                  border: selectedGender === 'FEMALE' ? '2px solid #667eea' : '2px solid #e2e8f0',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  background: selectedGender === 'FEMALE' ? '#f7fafc' : 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1rem',
-                  fontWeight: '500'
-                }}
+                className={`flex-1 p-4 border-2 rounded-full cursor-pointer transition-all ${
+                  selectedGender === 'FEMALE' 
+                    ? 'border-sky-600 bg-sky-50' 
+                    : 'border-slate-400 bg-white hover:border-slate-300'
+                }`}
               >
-                <input 
-                  type="radio" 
-                  name="gender" 
-                  value="FEMALE"
-                  checked={selectedGender === 'FEMALE'}
-                  onChange={(e) => setSelectedGender(e.target.value)}
-                  style={{ marginRight: '0.5rem' }}
-                />
-                <span>♀ Female</span>
+                <div className="flex items-center justify-center">
+                  <input 
+                    type="radio" 
+                    name="gender" 
+                    value="FEMALE"
+                    checked={selectedGender === 'FEMALE'}
+                    onChange={(e) => setSelectedGender(e.target.value)}
+                    className="w-4 h-4 text-sky-600 mr-2"
+                  />
+                  <span className="text-base font-medium">♀ Female</span>
+                </div>
               </label>
             </div>
           </div>
           
           {/* Warning Box */}
-          <div style={{ 
-            background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-            border: '2px solid #f59e0b',
-            borderRadius: '8px',
-            padding: '1rem',
-            marginBottom: '1.5rem'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-              <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>⚠️</span>
+          <div className="bg-amber-50 border-2 border-amber-700 rounded-xl p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl shrink-0">⚠️</span>
               <div>
-                <h4 style={{ 
-                  fontSize: '0.95rem', 
-                  fontWeight: '600', 
-                  color: '#92400e',
-                  marginBottom: '0.5rem'
-                }}>
+                <h4 className="text-sm font-semibold text-amber-900 mb-2">
                   Important Notice
                 </h4>
-                <p style={{ 
-                  fontSize: '0.875rem', 
-                  color: '#78350f', 
-                  lineHeight: '1.5',
-                  margin: 0
-                }}>
+                <p className="text-sm text-amber-800 leading-relaxed">
                   As this is an Islamic university, gender information is required to ensure compliance with university policies. Any misconduct, misrepresentation, or violation of university rules will result in <strong>strict disciplinary action</strong>.
                 </p>
               </div>
@@ -164,32 +95,16 @@ const GenderModal = ({ onGenderSelect, userName, isUpdating = false }) => {
           <button
             onClick={handleSubmit}
             disabled={!selectedGender || isUpdating}
-            style={{
-              width: '100%',
-              padding: '0.875rem',
-              background: selectedGender && !isUpdating
-                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                : '#cbd5e0',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '1rem',
-              fontWeight: '600',
-              cursor: selectedGender && !isUpdating ? 'pointer' : 'not-allowed',
-              transition: 'all 0.2s',
-              opacity: isUpdating ? 0.7 : 1
-            }}
+            className={`w-full py-3.5 rounded-full text-md md:text-lg font-semibold transition-all ${
+              selectedGender && !isUpdating
+                ? 'bg-sky-600 hover:bg-amber-700 text-white hover:text-black cursor-pointer active:scale-[0.98]'
+                : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+            } ${isUpdating ? 'opacity-70' : ''}`}
           >
             {isUpdating ? 'Saving...' : 'Continue'}
           </button>
           
-          <p style={{ 
-            fontSize: '0.75rem', 
-            color: '#718096', 
-            textAlign: 'center',
-            marginTop: '1rem',
-            marginBottom: 0
-          }}>
+          <p className="text-sm text-slate-800 text-center mt-4">
             By continuing, you acknowledge that you have read and understood the university policies.
           </p>
         </div>

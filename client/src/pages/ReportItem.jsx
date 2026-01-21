@@ -5,6 +5,7 @@ import ImageUpload from '../components/ImageUpload';
 import { reportsAPI, CATEGORIES } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/Button';
+import BackButton from '../components/BackButton';
 
 export default function ReportItem() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ export default function ReportItem() {
     { value: 'With Me (Self)', label: 'With Me (Self)' },
     { value: 'C Building Office', label: 'C Building Office' },
     { value: 'CX Building Office', label: 'CX Building Office' },
+    { value: 'Male Campus Security Box', label: 'Male Campus Security Box' },
     { value: 'Library Desk', label: 'Library Desk' },
     { value: 'Transport Office', label: 'Transport Office' },
     { value: 'Other', label: 'Other (Specify)' },
@@ -131,14 +133,7 @@ export default function ReportItem() {
   return (
     <div className="pt-30 pb-12 min-h-screen bg-slate-50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-2xl font-bold text-black hover:text-blue-700 mb-6 transition-colors group"
-        >
-          <ArrowLeft size={28} className="group-hover:-translate-x-1 transition-transform" />
-          Back
-        </button>
-
+        <BackButton />
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-slate-900">Report Found Item</h1>
@@ -226,10 +221,10 @@ export default function ReportItem() {
                   <div className="flex items-start gap-3">
                     <span className="text-2xl">⚠️</span>
                     <div>
-                      <h4 className="text-sm font-semibold text-amber-900 mb-1">
+                      <h4 className="text-md font-semibold text-amber-900 mb-1">
                         Important Notice
                       </h4>
-                      <p className="text-xs text-amber-800 leading-relaxed">
+                      <p className="text-sm max-[400px]:text-xs text-amber-800 leading-relaxed">
                         If you found an item belonging to the <strong>opposite gender</strong>, please choose a <strong>designated location</strong> (C Building Office, Library Desk, etc.) instead of keeping it with you. Any violation of university policy will result in <strong>strict disciplinary action</strong>.
                       </p>
                     </div>

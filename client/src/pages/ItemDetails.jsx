@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, Phone, Tag, Calendar, User, Mail, ChevronLeft, Chevr
 import { reportsAPI, claimsAPI, transformReport, getCategoryLabel } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ClaimActions from '../components/ClaimActions';
+import BackButton from '../components/BackButton';
 
 export default function ItemDetails() {
   const { id } = useParams();
@@ -16,9 +17,25 @@ export default function ItemDetails() {
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
   
-  // Check if current user and finder are opposite genders
-  const isOppositeGender = backendUser?.gender && item?.finder?.gender && 
-    backendUser.gender !== item.finder.gender;
+  // Determine who the "other person" is in the conversation
+  const isFinder = userId === item?.finderId;
+  const isClaimer = item?.claim && userId === item.claim?.claimerId;
+  
+  // Get the other person's gender based on role
+  let otherPersonGender = null;
+  if (item?.claim) {
+    if (isFinder) {
+      // If I'm the finder, the other person is the claimer
+      otherPersonGender = item.claim.claimer?.gender;
+    } else if (isClaimer) {
+      // If I'm the claimer, the other person is the finder
+      otherPersonGender = item.finder?.gender;
+    }
+  }
+  
+  // Check if current user and the other person are opposite genders
+  const isOppositeGender = backendUser?.gender && otherPersonGender && 
+    backendUser.gender !== otherPersonGender;
   
   // Check if location requires meeting with finder
   const requiresMeeting = item?.destination === 'With Me (Self)';
@@ -201,13 +218,14 @@ export default function ItemDetails() {
     <div className="pt-24 min-h-screen bg-slate-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
-        <button
+        {/* <button
           onClick={() => navigate(-1)}
           className="inline-flex items-center gap-2 text-2xl font-bold text-black hover:text-blue-700 mb-6 transition-colors group"
         >
           <ArrowLeft size={28} className="group-hover:-translate-x-1 transition-transform" />
           Back
-        </button>
+        </button> */}
+        <BackButton />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Images */}
@@ -411,11 +429,18 @@ export default function ItemDetails() {
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">⚠️</span>
                   <div>
-                    <h4 className="text-sm font-semibold text-amber-900 mb-1">
+                    {/* <h4 className="text-sm font-semibold text-amber-900 mb-1">
                       Opposite Gender Meeting Required
                     </h4>
                     <p className="text-xs text-amber-800 leading-relaxed">
                       This item requires meeting the finder of opposite gender. Please bring a <strong>same-gender friend or staff member</strong> when collecting the item, as per university policy. Any violation will result in disciplinary action.
+                    </p> */}
+                    <h4 className="text-sm md:text-lg font-semibold text-amber-900 mb-1">
+                      Important Notice
+                    </h4>
+                    <p className="text-xs lg:text-sm text-amber-800 leading-relaxed">
+                      Please follow university guidelines regarding male–female interaction. 
+                      Any violation of the policy may result in disciplinary action.
                     </p>
                   </div>
                 </div>
@@ -432,8 +457,7 @@ export default function ItemDetails() {
               onMarkSolved={handleMarkSolved}
               onRejectClaim={handleRejectClaim}
               onOwnerConfirm={handleOwnerConfirm}
-              loading={actionLoading}
-            />
+              loading={actionLoading}              isOppositeGender={isOppositeGender}            />
 
             {/* Login prompt if not logged in */}
             {!currentUser && (
