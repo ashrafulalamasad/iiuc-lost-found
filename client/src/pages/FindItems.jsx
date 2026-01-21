@@ -76,8 +76,8 @@ export default function FindItems() {
           <div className="flex-1">
             <div className="mb-6 flex items-start justify-between relative">
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">Lost Items</h1>
-                <p className="text-slate-500">Browse items found by others.</p>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-3">Lost Items</h1>
+                <p className="text-slate-500 text-xl">Browse items found by others.</p>
               </div>
               
               <div className="relative md:hidden">

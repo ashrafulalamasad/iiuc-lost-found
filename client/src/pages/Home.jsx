@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, PlusCircle, ArrowRight, ShieldCheck, Users, CheckCircle, TrendingUp, Package, AlertCircle, Loader2, Hand } from 'lucide-react';
+import { Search, PlusCircle, ArrowRight, ShieldCheck, Users, CheckCircle, TrendingUp, Package, AlertCircle, Loader2, Hand, MessageCircleMore } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import Card from '../components/Card';
@@ -62,26 +62,24 @@ export default function Home() {
       <section className="relative overflow-hidden bg-slate-900 min-h-[70vh] sm:min-h-[90vh] flex items-center justify-center">
         {/* Background Image & Overlay */}
         <div className="absolute inset-0 z-0">
-          <img src="/iiuc-drone-bg.png" alt="IIUC Campus" className="w-full h-full object-cover" />
-          {/* Subtle gradient only at the very bottom for smooth transition to next section, otherwise clear */}
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-slate-50 to-transparent" />
+          <img src="/iiuc-drone-bg.png" alt="IIUC Campus" className="w-full h-full object-cover saturate-150" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-          <h1 className="text-5xl sm:text-7xl font-extrabold text-white mb-24 tracking-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
-            Find what's lost, <br />
-            <span className="text-blue-200 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">Return what's found.</span>
+          <h1 className="text-5xl sm:text-7xl font-extrabold font-[play] italic text-outline-black text-yellow-700 mb-24 tracking-tight">
+            Find What's Lost,<br />
+            Return What's Found.
           </h1>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex max-[450px]:flex-col items-center justify-center gap-3 sm:gap-6">
             <Button 
               to="/find" 
               icon={Search}
-              bgColor="bg-blue-600"
+              bgColor="bg-yellow-800"
               textColor="text-white"
               hoverBgColor="bg-white"
               hoverTextColor="group-hover/btn:text-black"
-              className="w-xs sm:w-auto"
+              className="w-auto"
             >
               Find Lost Items
             </Button>
@@ -90,9 +88,9 @@ export default function Home() {
               icon={PlusCircle}
               bgColor="bg-green-600"
               textColor="text-black"
-              hoverBgColor="bg-red-600"
+              hoverBgColor="bg-stone-700"
               hoverTextColor="group-hover/btn:text-white"
-              className="w-xs sm:w-auto"
+              className="w-auto"
             >
               Report Found Item
             </Button>
@@ -103,9 +101,9 @@ export default function Home() {
       {/* Infinite Slideshow */}
       <section className="py-20 bg-slate-50 overflow-hidden">
         <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-10 mb-10 flex items-center justify-between">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">Recently Reported</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-slate-900">Recently Reported</h2>
           <div className="w-sm ml-12 flex items-center justify-end gap-2">
-            <Button to="/find" icon={ArrowRight} bgColor="bg-blue-600" textColor="text-white" hoverBgColor="bg-green-600" hoverTextColor="group-hover/btn:text-black">
+            <Button to="/find" icon={ArrowRight} bgColor="bg-green-600" textColor="text-black" hoverBgColor="bg-black" hoverTextColor="group-hover/btn:text-white">
               View All
             </Button>
           </div>
@@ -206,24 +204,25 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">How It Works</h2>
-            <p className="text-slate-500 text-sm sm:text-base lg:text-lg">Simple steps to help the community.</p>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">How It Works</h2>
+            <p className="text-slate-500 text-md sm:text-base lg:text-lg">Simple steps to help the community.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
             {[
               { icon: Users, title: 'Login', desc: 'Sign in with your university email.' },
               { icon: PlusCircle, title: 'Report', desc: 'Post details about the item you found.' },
               { icon: Hand, title: 'Claim', desc: 'Claim an item you believe is yours.' },
+              { icon: MessageCircleMore, title: 'Communicate', desc: 'Chat securely within the platform.' },
               { icon: ShieldCheck, title: 'Connect', desc: 'Owner verifies and contacts you.' },
               { icon: CheckCircle, title: 'Solve', desc: 'Return the item and mark as solved.' },
             ].map((step, idx) => (
               <div key={idx} className="relative flex flex-col items-center text-center group">
-                <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <step.icon size={32} />
+                <div className="w-16 h-16 bg-blue-50 text-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <step.icon size={36} />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
-                <p className="text-sm text-slate-500">{step.desc}</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">{step.title}</h3>
+                <p className="text-md md:text-lg text-slate-600">{step.desc}</p>
                 
                 {idx < 3 && (
                   <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-slate-100 -z-10">

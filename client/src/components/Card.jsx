@@ -86,9 +86,9 @@ export default function Card({ post }) {
                 to={currentUser ? `/item/${post.id}` : '/login'}
                 icon={Eye}
                 bgColor="bg-green-600"
-                textColor="text-white"
-                hoverBgColor="bg-red-600"
-                hoverTextColor="group-hover/btn:text-black"
+                textColor="text-black"
+                hoverBgColor="bg-black"
+                hoverTextColor="group-hover/btn:text-white"
                 className="shadow-md"
               >
                 {currentUser ? 'View Details' : 'Login to View'}

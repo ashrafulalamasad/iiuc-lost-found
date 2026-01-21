@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
 body {
-  font-family: 'Expletus Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
+}
+
+.text-outline-black {
+  -webkit-text-stroke: 2px black;
 }

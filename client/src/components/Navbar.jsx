@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import Hamburger from "hamburger-react";
 import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
-import { User, LogIn, MessageCircle } from "lucide-react";
+import { User, LogIn } from "lucide-react";
 import Button from "./Button";
 
 const handleNavClick = () => {
@@ -31,25 +31,25 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav
-      className={`max-w-7xl mx-auto bg-blue-200 text-red-600 shadow-md fixed left-4 right-4 md:left-6 md:right-6 top-4 rounded-full z-50 transition-all duration-500 ease-in-out ${
+    <div
+      className={`fixed left-2 right-3 md:left-6 md:right-6 top-4 z-50 transition-all duration-500 ease-in-out ${
         showNavbar ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
       }`}
     >
-      <div className="mx-auto px-4 sm:px-8 md:px-10 py-4 flex justify-between items-center">
+      <div className="flex items-center justify-between lg:justify-center gap-2">
+        <nav className="max-w-7xl flex-1 bg-blue-200 text-red-600 shadow-md rounded-full">
+          <div className="mx-auto px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 flex justify-between items-center">
         {/* Logo */}
         <NavLink
           to="/"
-          className="text-2xl max-[360px]:text-xl md:text-3xl lg:text-4xl font-bold flex items-center gap-2 md:gap-5"
+          className="text-2xl max-[450px]:text-[18px] md:text-3xl [@media(min-width:1100px)]:text-4xl font-semibold flex items-center gap-2 max-[360px]:gap-1 sm:gap-3 md:gap-3"
           onClick={() => {
             setOpen(false);
             handleNavClick();
           }}
         >
-          <img src="/search.png" alt="Search Icon" className="w-8 h-8" />
-          <span className="bg-linear-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-            IIUC Lost & Found
-          </span>
+          <img src="/search.png" alt="Search Icon" className="w-6 max-[360px]:w-5 sm:w-8" />
+          <span className="font-[orbitron] text-black">IIUC Lost & Found</span>
         </NavLink>
 
         {/* Mobile Hamburger */}
@@ -58,7 +58,7 @@ const Navbar = () => {
             toggled={isOpen}
             toggle={setOpen}
             direction="right"
-            size={28}
+            size={26}
             color="#000000"
             label="Show menu"
             rounded
@@ -70,7 +70,7 @@ const Navbar = () => {
           className={`font-medium absolute lg:static top-20 left-0 w-full lg:w-auto lg:bg-transparent lg:p-0 transition-all duration-300 z-50 ${
             isOpen
               ? "flex flex-col w-full items-center bg-blue-200 rounded-4xl shadow-lg top-24 px-0 py-6 gap-6 animate-slideDown"
-              : "hidden lg:flex lg:flex-row gap-x-3 xl:gap-x-6 items-center"
+              : "hidden lg:flex lg:flex-row gap-x-2 xl:gap-x-6 items-center"
           }`}
         >
           <NavLink
@@ -130,34 +130,6 @@ const Navbar = () => {
             About Us
           </NavLink>
 
-          {/* Messages link - only show when logged in */}
-          {currentUser && (
-            <NavLink
-              to="/inbox"
-              className={({ isActive }) =>
-                `relative px-2 py-2 transition-colors duration-300 ${
-                  isActive ? "text-black after:w-full" : "text-black"
-                } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 after:w-0 hover:after:w-full`
-              }
-              onClick={() => {
-                setOpen(false);
-                handleNavClick();
-              }}
-            >
-              <span className="flex items-center gap-1">
-                <span className="relative">
-                  <MessageCircle size={18} />
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                      {unreadCount > 9 ? "9+" : unreadCount}
-                    </span>
-                  )}
-                </span>
-                <span className="lg:hidden ml-1">Messages</span>
-              </span>
-            </NavLink>
-          )}
-
           {/* Auth Button */}
           {currentUser ? (
             <Link
@@ -169,30 +141,36 @@ const Navbar = () => {
               }}
             >
               <div className="w-10 h-10 rounded-full bg-white border-2 border-blue-600 overflow-hidden flex items-center justify-center">
-                {(currentUser.photoURL || currentUser.providerData?.[0]?.photoURL) ? (
-                  <img 
-                    src={currentUser.photoURL || currentUser.providerData[0].photoURL} 
-                    alt="Profile" 
+                {currentUser.photoURL ||
+                currentUser.providerData?.[0]?.photoURL ? (
+                  <img
+                    src={
+                      currentUser.photoURL ||
+                      currentUser.providerData[0].photoURL
+                    }
+                    alt="Profile"
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
-                    onError={(e) => e.target.style.display = 'none'}
+                    onError={(e) => (e.target.style.display = "none")}
                   />
                 ) : (
                   <User size={20} className="text-blue-600" />
                 )}
               </div>
-              <span className="lg:hidden font-medium text-black">My Profile</span>
+              <span className="lg:hidden font-medium text-black">
+                My Profile
+              </span>
             </Link>
           ) : (
             <Button
               to="/login"
               size="md"
               icon={LogIn}
-              bgColor="bg-blue-600"
-              textColor="text-white"
-              hoverBgColor="bg-green-600"
-              hoverTextColor="group-hover/btn:text-black"
-              className="w-xs sm:w-auto"
+              bgColor="bg-green-600"
+              textColor="text-black"
+              hoverBgColor="bg-yellow-800"
+              hoverTextColor="group-hover/btn:text-white"
+              className="w-32 h-10 sm:w-auto"
               onClick={() => {
                 setOpen(false);
                 handleNavClick();
@@ -203,7 +181,25 @@ const Navbar = () => {
           )}
         </div>
       </div>
-    </nav>
+        </nav>
+
+        {/* Message Icon - outside navbar for all screens */}
+        <NavLink
+          to={currentUser ? "/inbox" : "/login"}
+          className="flex items-center justify-center cursor-pointer"
+          onClick={handleNavClick}
+        >
+          <span className="relative">
+            <img src="/message.png" alt="Messages" className="w-10 max-[360px]:w-8 md:w-12" />
+            {currentUser && unreadCount > 0 && (
+              <span className="absolute -top-1 -right-2 w-6 h-6 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </span>
+        </NavLink>
+      </div>
+    </div>
   );
 };
 

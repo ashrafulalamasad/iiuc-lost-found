@@ -18,7 +18,7 @@ const Footer = () => {
         <div className="md:w-1/3 flex flex-col items-center gap-2">
           <NavLink to="/" className="flex items-center gap-2 mb-2" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <img src="/search.png" alt="IIUC Lost & Found Logo" className="w-8 h-8" />
-            <span className="text-2xl font-extrabold text-red-600 font-logo tracking-wider">IIUC Lost & Found</span>
+            <span className="text-2xl sm:text-3xl font-extrabold font-[orbitron] text-black">IIUC Lost & Found</span>
           </NavLink>
           <p className="text-black text-md max-w-xs text-center">
             Helping IIUC students finding lost items and reporting found items easily.

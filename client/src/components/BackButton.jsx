@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 const BackButton = () => {
   const navigate = useNavigate();
   return (
-    <div>
+    <div style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
       <button
         onClick={() => navigate(-1)}
-        className="inline-flex items-center gap-2 text-2xl font-bold text-slate-800 hover:text-indigo-600 mb-8 transition-colors group"
+        className="inline-flex items-center gap-2 text-3xl font-bold text-black hover:text-green-700 mb-8 transition-colors group"
       >
         <ArrowLeft
-          size={28}
+          size={32}
           className="group-hover:-translate-x-1 transition-transform"
         />
         Back
