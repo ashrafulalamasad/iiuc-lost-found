@@ -4,14 +4,16 @@ import { MessageCircle, User, ArrowLeft } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
 import { messagesAPI } from "../services/api";
+import BackButton from '../components/BackButton';
 
 const Inbox = () => {
-  const { currentUser } = useAuth();
-  const { refreshUnreadCount } = useSocket();
+  const { currentUser, backendUser } = useAuth();
+  const { socket, refreshUnreadCount } = useSocket();
   const [inbox, setInbox] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch inbox on mount
   useEffect(() => {
     const fetchInbox = async () => {
       if (!currentUser?.uid) return;
@@ -32,6 +34,97 @@ const Inbox = () => {
 
     fetchInbox();
   }, [currentUser]);
+
+  // Listen for real-time updates via socket
+  useEffect(() => {
+    if (!socket || !backendUser?.id) return;
+
+    // Listen for inbox updates - this fires when someone sends you a message
+    // and you're NOT in that specific chat room
+    const handleInboxUpdate = ({ claimId: msgClaimId, message }) => {
+      setInbox((prevInbox) => {
+        const existingIndex = prevInbox.findIndex(
+          (conv) => conv.claimId === msgClaimId
+        );
+
+        if (existingIndex !== -1) {
+          // Update existing conversation
+          const updated = [...prevInbox];
+          const conv = { ...updated[existingIndex] };
+          
+          // Increment unread count (message is always from someone else via inboxUpdate)
+          conv.unreadCount = (conv.unreadCount || 0) + 1;
+          
+          conv.latestMessage = {
+            content: message.content,
+            isFromMe: false,
+          };
+          conv.updatedAt = message.createdAt;
+          
+          // Move to top
+          updated.splice(existingIndex, 1);
+          return [conv, ...updated];
+        }
+        
+        // New conversation - refetch to get full data
+        messagesAPI.getInbox(currentUser.uid).then((response) => {
+          if (response.status === "success") {
+            setInbox(response.data.inbox);
+          }
+        });
+        
+        return prevInbox;
+      });
+    };
+
+    // Listen for newMessage - only fires if you're in a claim room (e.g., just left chat)
+    const handleNewMessage = (message) => {
+      // This handles the case where you might still be in a claim room briefly
+      setInbox((prevInbox) => {
+        const existingIndex = prevInbox.findIndex(
+          (conv) => conv.claimId === message.claimId
+        );
+
+        if (existingIndex !== -1) {
+          const updated = [...prevInbox];
+          const conv = { ...updated[existingIndex] };
+          
+          // Only increment unread if message is from someone else
+          if (message.senderId !== backendUser.id) {
+            conv.unreadCount = (conv.unreadCount || 0) + 1;
+          }
+          
+          conv.latestMessage = {
+            content: message.content,
+            isFromMe: message.senderId === backendUser.id,
+          };
+          conv.updatedAt = message.createdAt;
+          
+          updated.splice(existingIndex, 1);
+          return [conv, ...updated];
+        }
+        
+        return prevInbox;
+      });
+    };
+
+    const handleMessagesRead = ({ claimId, readBy }) => {
+      if (readBy !== backendUser.id) {
+        refreshUnreadCount();
+      }
+    };
+
+    // Listen to user-specific inbox updates (primary way to get updates when on Inbox page)
+    socket.on(`inboxUpdate:${backendUser.id}`, handleInboxUpdate);
+    socket.on("newMessage", handleNewMessage);
+    socket.on("messagesRead", handleMessagesRead);
+
+    return () => {
+      socket.off(`inboxUpdate:${backendUser.id}`, handleInboxUpdate);
+      socket.off("newMessage", handleNewMessage);
+      socket.off("messagesRead", handleMessagesRead);
+    };
+  }, [socket, backendUser, currentUser, refreshUnreadCount]);
 
   // Format time for display
   const formatTime = (dateString) => {
@@ -60,10 +153,10 @@ const Inbox = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100 pt-28 pb-10">
+      <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-28 pb-10">
         <div className="max-w-2xl mx-auto px-4">
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-800"></div>
           </div>
         </div>
       </div>
@@ -71,46 +164,49 @@ const Inbox = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100 pt-28 pb-10">
+    <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-28 pb-10">
       <div className="max-w-2xl mx-auto px-4">
         {/* Header */}
+        <div className="mb-6" >
+            <BackButton />
+        </div>
         <div className="flex items-center gap-4 mb-6">
-          <Link
+          {/* <Link
             to="/profile"
             className="p-2 rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors"
           >
             <ArrowLeft size={20} className="text-gray-600" />
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-800">Messages</h1>
+          </Link> */}
+          <h1 className="text-2xl font-bold text-neutral-800">Messages</h1>
         </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+          <div className="bg-rose-50 border border-neutral-300 text-rose-700 px-4 py-3 rounded-xl mb-4">
             {error}
           </div>
         )}
 
         {/* Inbox List */}
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-md border border-neutral-300 overflow-hidden">
           {inbox.length === 0 ? (
             <div className="p-8 text-center">
-              <MessageCircle size={48} className="mx-auto text-gray-300 mb-4" />
-              <h3 className="text-lg font-medium text-gray-600">No messages yet</h3>
-              <p className="text-gray-400 mt-2">
+              <MessageCircle size={48} className="mx-auto text-neutral-300 mb-4" />
+              <h3 className="text-lg font-medium text-neutral-600">No messages yet</h3>
+              <p className="text-neutral-400 mt-2">
                 When you start a conversation with someone about a claim, it will appear here.
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-neutral-200">
               {inbox.map((conversation) => (
                 <Link
                   key={conversation.claimId}
                   to={`/chat/${conversation.claimId}`}
-                  className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-4 p-4 hover:bg-neutral-50 transition-colors"
                 >
                   {/* Profile Picture */}
                   <div className="relative shrink-0">
-                    <div className="w-14 h-14 rounded-full bg-blue-100 border-2 border-blue-200 overflow-hidden flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full bg-neutral-100 border border-neutral-300 overflow-hidden flex items-center justify-center">
                       {conversation.otherUser.profilePic ? (
                         <img
                           src={conversation.otherUser.profilePic}
@@ -119,12 +215,12 @@ const Inbox = () => {
                           referrerPolicy="no-referrer"
                         />
                       ) : (
-                        <User size={24} className="text-blue-400" />
+                        <User size={24} className="text-neutral-500" />
                       )}
                     </div>
                     {/* Unread badge */}
                     {conversation.unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-neutral-800 text-white text-xs font-bold rounded-full flex items-center justify-center">
                         {conversation.unreadCount > 9 ? "9+" : conversation.unreadCount}
                       </span>
                     )}
@@ -135,34 +231,34 @@ const Inbox = () => {
                     <div className="flex items-center justify-between gap-2">
                       <h3
                         className={`font-semibold truncate ${
-                          conversation.unreadCount > 0 ? "text-gray-900" : "text-gray-700"
+                          conversation.unreadCount > 0 ? "text-neutral-900" : "text-neutral-700"
                         }`}
                       >
                         {conversation.otherUser.name}
                       </h3>
-                      <span className="text-xs text-gray-400 shrink-0">
+                      <span className="text-xs text-neutral-500 shrink-0">
                         {formatTime(conversation.updatedAt)}
                       </span>
                     </div>
 
                     {/* Report Title */}
-                    <p className="text-xs text-blue-600 truncate mb-1">
+                    <p className="text-xs text-neutral-500 truncate mb-1">
                       Re: {conversation.reportTitle}
                     </p>
 
                     {/* Message Preview */}
                     {conversation.unreadCount > 0 ? (
                       // Unread state - bright text
-                      <p className="text-sm font-medium text-blue-600">
+                      <p className="text-sm font-medium text-neutral-800">
                         {conversation.unreadCount === 1
                           ? "1 new message"
                           : `${conversation.unreadCount} new messages`}
                       </p>
                     ) : (
                       // Read state - gray/dimmed text with message preview
-                      <p className="text-sm text-gray-400 truncate">
+                      <p className="text-sm text-neutral-400 truncate">
                         {conversation.latestMessage?.isFromMe && (
-                          <span className="text-gray-500">You: </span>
+                          <span className="text-neutral-500">You: </span>
                         )}
                         {truncateMessage(conversation.latestMessage?.content || "No messages")}
                       </p>
@@ -172,12 +268,12 @@ const Inbox = () => {
                   {/* Status indicator */}
                   <div className="shrink-0">
                     <span
-                      className={`text-xs px-2 py-1 rounded-full ${
+                      className={`text-xs px-2 py-1 rounded-full border ${
                         conversation.claimStatus === "SOLVED"
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                           : conversation.claimStatus === "PENDING"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-gray-100 text-gray-600"
+                          ? "bg-amber-50 text-amber-700 border-amber-200"
+                          : "bg-neutral-100 text-neutral-600 border-neutral-300"
                       }`}
                     >
                       {conversation.claimStatus}

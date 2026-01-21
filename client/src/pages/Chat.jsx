@@ -18,11 +18,15 @@ const Chat = () => {
   const [error, setError] = useState(null);
   
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const inputRef = useRef(null);
+  const isInitialLoad = useRef(true);
 
-  // Scroll to bottom of messages
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Scroll to bottom of messages container (not the whole page)
+  const scrollToBottom = (instant = false) => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   };
 
   // Fetch messages and join socket room
@@ -47,6 +51,11 @@ const Chat = () => {
             markRead(claimId, backendUser.id);
             refreshUnreadCount();
           }
+          
+          // Scroll to bottom after loading messages
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
         }
       } catch (err) {
         console.error("Failed to fetch messages:", err);
@@ -75,12 +84,22 @@ const Chat = () => {
     if (!socket) return;
 
     const handleNewMessage = (message) => {
-      setMessages((prev) => [...prev, message]);
-      
-      // Mark as read if it's from the other person
-      if (message.senderId !== backendUser?.id && backendUser?.id) {
-        messagesAPI.markAsRead(claimId, backendUser.id);
-        markRead(claimId, backendUser.id);
+      // Only add message if it belongs to this claim
+      if (message.claimId === claimId) {
+        setMessages((prev) => [...prev, message]);
+        
+        // Auto-scroll to bottom when new message arrives
+        setTimeout(() => {
+          scrollToBottom();
+        }, 100);
+        
+        // Mark as read if it's from the other person and refresh global count
+        if (message.senderId !== backendUser?.id && backendUser?.id) {
+          messagesAPI.markAsRead(claimId, backendUser.id).then(() => {
+            refreshUnreadCount(); // Refresh the navbar counter
+          });
+          markRead(claimId, backendUser.id);
+        }
       }
     };
 
@@ -100,10 +119,8 @@ const Chat = () => {
     };
   }, [socket, claimId, backendUser]);
 
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  // Scroll to bottom when new messages arrive (not on initial load)
+  // Removed auto-scroll - users can scroll manually
 
   // Send message
   const handleSend = async (e) => {
@@ -169,10 +186,10 @@ const Chat = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100 pt-28 pb-10">
+      <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-28 pb-10">
         <div className="max-w-2xl mx-auto px-4">
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-800"></div>
           </div>
         </div>
       </div>
@@ -181,12 +198,12 @@ const Chat = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100 pt-28 pb-10">
+      <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-28 pb-10">
         <div className="max-w-2xl mx-auto px-4">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+          <div className="bg-rose-50 border border-neutral-300 text-rose-700 px-4 py-3 rounded-xl">
             {error}
           </div>
-          <Link to="/inbox" className="mt-4 inline-block text-blue-600 hover:underline">
+          <Link to="/inbox" className="mt-4 inline-block text-neutral-700 hover:text-neutral-900 hover:underline">
             ← Back to Inbox
           </Link>
         </div>
@@ -197,18 +214,18 @@ const Chat = () => {
   const groupedMessages = groupMessagesByDate(messages);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100 pt-24 pb-4 flex flex-col">
+    <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-24 pb-4 flex flex-col">
       <div className="max-w-2xl mx-auto px-4 flex flex-col flex-1 w-full">
         {/* Chat Header */}
-        <div className="bg-white rounded-t-2xl shadow-lg p-4 flex items-center gap-4">
+        <div className="bg-white rounded-t-2xl shadow-md border border-neutral-300 p-4 flex items-center gap-4">
           <Link
             to="/inbox"
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full hover:bg-neutral-100 transition-colors"
           >
-            <ArrowLeft size={20} className="text-gray-600" />
+            <ArrowLeft size={20} className="text-neutral-600" />
           </Link>
 
-          <div className="w-10 h-10 rounded-full bg-blue-100 border-2 border-blue-200 overflow-hidden flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-neutral-100 border border-neutral-300 overflow-hidden flex items-center justify-center">
             {chatInfo?.otherUser?.profilePic ? (
               <img
                 src={chatInfo.otherUser.profilePic}
@@ -217,26 +234,26 @@ const Chat = () => {
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <User size={20} className="text-blue-400" />
+              <User size={20} className="text-neutral-500" />
             )}
           </div>
 
           <div className="flex-1 min-w-0">
-            <h2 className="font-semibold text-gray-800 truncate">
+            <h2 className="font-semibold text-neutral-800 truncate">
               {chatInfo?.otherUser?.fullName}
             </h2>
-            <p className="text-xs text-blue-600 truncate">
+            <p className="text-xs text-neutral-500 truncate">
               Re: {chatInfo?.claim?.reportTitle}
             </p>
           </div>
 
           <span
-            className={`text-xs px-2 py-1 rounded-full ${
+            className={`text-xs px-2 py-1 rounded-full border ${
               chatInfo?.claim?.status === "SOLVED"
-                ? "bg-green-100 text-green-700"
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                 : chatInfo?.claim?.status === "PENDING"
-                ? "bg-yellow-100 text-yellow-700"
-                : "bg-gray-100 text-gray-600"
+                ? "bg-amber-50 text-amber-700 border-amber-200"
+                : "bg-neutral-100 text-neutral-600 border-neutral-300"
             }`}
           >
             {chatInfo?.claim?.status}
@@ -244,10 +261,13 @@ const Chat = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 bg-white shadow-lg overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[calc(100vh-280px)]">
+        <div 
+          ref={messagesContainerRef}
+          className="flex-1 bg-white shadow-md border-x border-neutral-300 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[calc(100vh-280px)]"
+        >
           {messages.length === 0 ? (
             <div className="h-full flex items-center justify-center">
-              <p className="text-gray-400 text-center">
+              <p className="text-neutral-400 text-center">
                 No messages yet. Start the conversation!
               </p>
             </div>
@@ -256,7 +276,7 @@ const Chat = () => {
               <div key={date}>
                 {/* Date Header */}
                 <div className="flex items-center justify-center my-4">
-                  <span className="text-xs text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
+                  <span className="text-xs text-neutral-500 bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">
                     {formatDateHeader(date)}
                   </span>
                 </div>
@@ -270,16 +290,16 @@ const Chat = () => {
                       className={`flex mb-3 ${isMe ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`max-w-[75%] px-4 py-2 rounded-2xl ${
+                        className={`max-w-[75%] px-4 py-2 rounded-2xl border ${
                           isMe
-                            ? "bg-blue-600 text-white rounded-br-md"
-                            : "bg-gray-100 text-gray-800 rounded-bl-md"
+                            ? "bg-neutral-800 text-white border-neutral-700 rounded-br-md"
+                            : "bg-neutral-50 text-neutral-800 border-neutral-300 rounded-bl-md"
                         }`}
                       >
                         <p className="wrap-break-word">{message.content}</p>
                         <p
                           className={`text-xs mt-1 ${
-                            isMe ? "text-blue-200" : "text-gray-400"
+                            isMe ? "text-neutral-400" : "text-neutral-500"
                           }`}
                         >
                           {formatMessageTime(message.createdAt)}
@@ -297,7 +317,7 @@ const Chat = () => {
         {/* Message Input */}
         <form
           onSubmit={handleSend}
-          className="bg-white rounded-b-2xl shadow-lg p-4 flex items-center gap-3"
+          className="bg-white rounded-b-2xl shadow-md border border-neutral-300 p-4 flex items-center gap-3"
         >
           <input
             ref={inputRef}
@@ -305,7 +325,7 @@ const Chat = () => {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 bg-gray-100 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-4 py-2 bg-neutral-50 rounded-full border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:border-transparent"
             disabled={sending}
           />
           <button
@@ -313,8 +333,8 @@ const Chat = () => {
             disabled={!newMessage.trim() || sending}
             className={`p-3 rounded-full transition-colors ${
               newMessage.trim() && !sending
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                ? "bg-neutral-800 text-white hover:bg-neutral-700 shadow-md"
+                : "bg-neutral-200 text-neutral-400 cursor-not-allowed"
             }`}
           >
             <Send size={20} />

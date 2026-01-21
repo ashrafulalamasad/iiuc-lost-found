@@ -31,10 +31,18 @@ export const SocketProvider = ({ children }) => {
         setIsConnected(false);
       });
 
-      // Listen for inbox updates to this user
+      // Listen for inbox updates - this fires when someone sends you a message
+      // and you're NOT in that chat room
       newSocket.on(`inboxUpdate:${backendUser.id}`, (data) => {
         console.log("Inbox update received:", data);
         setUnreadCount((prev) => prev + 1);
+      });
+
+      // Also listen globally for newMessage when you're IN a chat room
+      // The counter won't increase because Chat.jsx marks them as read immediately
+      newSocket.on("newMessage", (message) => {
+        // This is handled by individual chat pages when in a room
+        // No action needed here - Chat.jsx handles it
       });
 
       setSocket(newSocket);
