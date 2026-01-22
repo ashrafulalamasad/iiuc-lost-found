@@ -66,7 +66,7 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-          <h1 className="text-4xl max-[400px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold italic text-outline-black text-green-600 mb-24 tracking-tight">
+          <h1 className="text-4xl max-[400px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold italic text-outline-black text-amber-700 mb-24 tracking-tight">
             Find What's Lost,<br />
             Return What's Found.
           </h1>
@@ -88,7 +88,7 @@ export default function Home() {
               icon={PlusCircle}
               bgColor="bg-black"
               textColor="text-white"
-              hoverBgColor="bg-green-600"
+              hoverBgColor="bg-amber-600"
               hoverTextColor="group-hover/btn:text-black"
               className="w-auto"
             >
@@ -149,7 +149,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 min-[500px]:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
             {/* Total Items */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-blue-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+            <div className="bg-white hover:bg-blue-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-blue-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-blue-100 border-2 border-blue-600 rounded-xl flex items-center justify-center mb-3">
                 <Package className="text-blue-600 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
@@ -158,7 +158,7 @@ export default function Home() {
             </div>
 
             {/* Items Solved */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+            <div className="bg-white hover:bg-green-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-green-100 border-2 border-green-600 rounded-xl flex items-center justify-center mb-3">
                 <CheckCircle className="text-green-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
@@ -167,7 +167,7 @@ export default function Home() {
             </div>
 
             {/* Pending Items */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-amber-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+            <div className="bg-white hover:bg-amber-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-amber-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-amber-100 border-2 border-amber-600 rounded-xl flex items-center justify-center mb-3">
                 <AlertCircle className="text-amber-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
@@ -176,7 +176,7 @@ export default function Home() {
             </div>
 
             {/* Success Rate */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-purple-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+            <div className="bg-white hover:bg-purple-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-purple-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-purple-100 border-2 border-purple-600 rounded-xl flex items-center justify-center mb-3">
                 <TrendingUp className="text-purple-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
@@ -187,7 +187,7 @@ export default function Home() {
             </div>
 
             {/* Active Users */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-rose-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+            <div className="bg-white hover:bg-rose-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-rose-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-rose-100 border-2 border-rose-600 rounded-xl flex items-center justify-center mb-3">
                 <Users className="text-rose-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
@@ -202,13 +202,13 @@ export default function Home() {
 
       {/* How It Works */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 max-[400px]:px-2 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">How It Works</h2>
             <p className="text-gray-600 text-md sm:text-base lg:text-lg font-medium">Simple steps to help the community.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
             {[
               { icon: Users, title: 'Login', desc: 'Sign in with your university email.' },
               { icon: PlusCircle, title: 'Report', desc: 'Post details about the item you found.' },
@@ -217,20 +217,15 @@ export default function Home() {
               { icon: ShieldCheck, title: 'Connect', desc: 'Owner verifies and contacts you.' },
               { icon: CheckCircle, title: 'Solve', desc: 'Return the item and mark as solved.' },
             ].map((step, idx) => (
-              <div key={idx} className="relative flex flex-col items-center text-center group">
-                <div className="w-16 h-16 bg-gray-100 text-black border-2 border-gray-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-green-600 group-hover:bg-green-600 group-hover:text-black transition-all duration-300 shadow-lg">
+              <div
+                key={idx}
+                className="relative flex flex-col items-center text-center group border-2 border-gray-400 rounded-xl transition-all duration-300 shadow-lg group-hover:border-green-600 hover:border-green-600 hover:scale-105 hover:-translate-y-2 group-hover:scale-105 group-hover:-translate-y-2 p-2"
+              >
+                <div className="w-16 h-16 bg-gray-100 text-black border-2 border-gray-400 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 shadow-lg group-hover:bg-green-600 group-hover:border-green-600 group-hover:text-black">
                   <step.icon size={36} strokeWidth={2.5} />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-black mb-2">{step.title}</h3>
-                <p className="text-md md:text-lg text-gray-700 font-medium">{step.desc}</p>
-                
-                {idx < 3 && (
-                  <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-slate-100 -z-10">
-                    <div className="absolute right-0 -top-1.5 text-slate-200">
-                      <ArrowRight size={16} />
-                    </div>
-                  </div>
-                )}
+                <p className="text-md max-[400px]:text-sm md:text-lg text-gray-700 font-medium">{step.desc}</p>
               </div>
             ))}
           </div>

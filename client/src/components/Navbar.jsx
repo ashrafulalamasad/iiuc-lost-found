@@ -37,7 +37,7 @@ const Navbar = () => {
       }`}
     >
       <div className="flex items-center justify-between lg:justify-center gap-2">
-        <nav className="max-w-7xl flex-1 bg-blue-200 rounded-full">
+        <nav className="max-w-7xl flex-1 bg-blue-200 border border-slate-300 shadow-lg rounded-full">
           <div className="mx-auto px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 flex justify-between items-center">
         {/* Logo */}
         <NavLink
@@ -134,7 +134,7 @@ const Navbar = () => {
           {currentUser ? (
             <Link
               to="/profile"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2"
               onClick={() => {
                 setOpen(false);
                 handleNavClick();

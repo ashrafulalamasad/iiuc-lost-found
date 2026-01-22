@@ -299,6 +299,7 @@ export default function ReportItem() {
                 textColor="text-black"
                 hoverBgColor="bg-black"
                 hoverTextColor="group-hover/btn:text-white"
+                className="cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

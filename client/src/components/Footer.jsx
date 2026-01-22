@@ -13,7 +13,7 @@ const quickLinks = [
 const Footer = () => {
   const [openModal, setOpenModal] = useState(null);
   return (
-    <footer className="bg-stone-200 pt-4">
+    <footer className="bg-slate-200 border-t border-slate-300 pt-4">
       <div className="mx-auto pb-4 flex flex-col md:flex-row items-center md:items-start md:justify-start gap-6">
         {/* Logo and site name */}
         <div className="md:w-1/3 flex flex-col items-center gap-2">
@@ -71,7 +71,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="border-t border-gray-400 py-2 text-center text-black text-md">
+      <div className="border-t border-slate-400 py-2 text-center text-black text-md">
         &copy; {new Date().getFullYear()} IIUC Lost & Found. All rights reserved. <br />
         Made by <a href="https://ashraful.tech" target="_blank" rel="noopener noreferrer" className="text-green-700 hover:underline font-semibold">Ashraful Alam</a>
       </div>
