@@ -21,21 +21,10 @@ export default function ItemDetails() {
   const isFinder = userId === item?.finderId;
   const isClaimer = item?.claim && userId === item.claim?.claimerId;
   
-  // Get the other person's gender based on role
-  let otherPersonGender = null;
-  if (item?.claim) {
-    if (isFinder) {
-      // If I'm the finder, the other person is the claimer
-      otherPersonGender = item.claim.claimer?.gender;
-    } else if (isClaimer) {
-      // If I'm the claimer, the other person is the finder
-      otherPersonGender = item.finder?.gender;
-    }
-  }
-  
-  // Check if current user and the other person are opposite genders
-  const isOppositeGender = backendUser?.gender && otherPersonGender && 
-    backendUser.gender !== otherPersonGender;
+  // Check if current user is opposite gender from the finder
+  // Hide phone number from anyone of opposite gender (except the finder themselves)
+  const isOppositeGender = !isFinder && backendUser?.gender && item?.finder?.gender && 
+    backendUser.gender !== item.finder.gender;
   
   // Check if location requires meeting with finder
   const requiresMeeting = item?.destination === 'With Me (Self)';
