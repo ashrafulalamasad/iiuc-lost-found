@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import Modal from "./Modal";
+import YoutubePlayer from "./YoutubePlayer";
 
 const quickLinks = [
   { name: "Home", href: "/" },
@@ -56,6 +57,14 @@ const Footer = () => {
                   className="text-black hover:text-red-600 font-medium text-sm md:text-base cursor-pointer"
                 >
                   Privacy Policy
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => setOpenModal('userguides')} 
+                  className="text-black hover:text-red-600 font-medium text-sm md:text-base cursor-pointer"
+                >
+                  User Guides
                 </button>
               </li>
             </ul>
@@ -142,6 +151,32 @@ const Footer = () => {
               <strong>Google Auth:</strong> Since we use Google Login (Edu Mail), your password is never stored on our servers; authentication is handled securely by Google.
             </li>
           </ul>
+        </div>
+      </Modal>
+
+      {/* User Guides Modal */}
+      <Modal 
+        isOpen={openModal === 'userguides'} 
+        onClose={() => setOpenModal(null)}
+        title="User Guides"
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="mb-4 text-gray-700 leading-relaxed">
+            Welcome to the IIUC Lost & Found platform! This comprehensive guide will walk you through all the features and help you make the most of this service.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">What You'll Learn:</h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
+            <li>How to sign up and log in with your Ugrad Mail</li>
+            <li>How to search for your lost items</li>
+            <li>How to report found items</li>
+            <li>How to claim items and communicate with finders</li>
+            <li>Understanding the gender policy for safe meetups</li>
+            <li>Best practices for quick reunions</li>
+          </ul>
+          <p className="mb-4 text-gray-700 font-medium">
+            Watch this complete walkthrough video to get started:
+          </p>
+          <YoutubePlayer videoId="xQc6o_q46e4" title="IIUC Lost & Found Platform Walkthrough"/>
         </div>
       </Modal>
     </footer>

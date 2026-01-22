@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Tag, Calendar, User, Mail, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Tag, Calendar, User, Mail, ChevronLeft, ChevronRight, Loader2, Mars, Venus } from 'lucide-react';
 import { reportsAPI, claimsAPI, transformReport, getCategoryLabel } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ClaimActions from '../components/ClaimActions';
@@ -67,10 +67,10 @@ export default function ItemDetails() {
   // Loading state
   if (loading) {
     return (
-      <div className="pt-24 min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
         <div className="flex items-center gap-3">
-          <Loader2 size={32} className="animate-spin text-blue-600" />
-          <span className="text-slate-600">Loading item details...</span>
+          <Loader2 size={40} className="animate-spin text-green-600" strokeWidth={3} />
+          <span className="text-xl font-semibold text-black">Loading item details...</span>
         </div>
       </div>
     );
@@ -79,13 +79,13 @@ export default function ItemDetails() {
   // Error state
   if (error || !item) {
     return (
-      <div className="pt-24 min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Item Not Found</h1>
-          <p className="text-slate-600 mb-8">{error || "The item you're looking for doesn't exist."}</p>
+          <h1 className="text-4xl font-bold text-black mb-4">Item Not Found</h1>
+          <p className="text-gray-700 mb-8 text-lg font-medium">{error || "The item you're looking for doesn't exist."}</p>
           <Link 
             to="/find"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-green-600 hover:text-black transition-all border-2 border-gray-300 shadow-lg hover:scale-105"
           >
             <ArrowLeft size={20} />
             Back to Browse
@@ -204,23 +204,14 @@ export default function ItemDetails() {
   };
 
   return (
-    <div className="pt-24 min-h-screen bg-slate-50">
+    <div className="pt-24 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
-        {/* <button
-          onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-2xl font-bold text-black hover:text-blue-700 mb-6 transition-colors group"
-        >
-          <ArrowLeft size={28} className="group-hover:-translate-x-1 transition-transform" />
-          Back
-        </button> */}
         <BackButton />
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Images */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div className="relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 h-96 lg:h-[500px] flex items-center">
+            <div className="relative bg-white rounded-xl overflow-hidden shadow-lg border-2 border-gray-400 h-96 lg:h-[500px] flex items-center">
               {item.images && item.images.length > 0 ? (
                 <>
                   <img
@@ -234,39 +225,39 @@ export default function ItemDetails() {
                     <div className="absolute inset-0 flex items-center justify-between px-4">
                       <button
                         onClick={prevImage}
-                        className="p-2.5 bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:bg-white text-slate-700 transition-all hover:scale-110"
+                        className="p-3 bg-white border-2 border-gray-400 rounded-full shadow-lg hover:bg-gray-100 hover:border-green-600 text-black transition-all hover:scale-110"
                       >
-                        <ChevronLeft size={24} />
+                        <ChevronLeft size={24} strokeWidth={2.5} />
                       </button>
                       <button
                         onClick={nextImage}
-                        className="p-2.5 bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:bg-white text-slate-700 transition-all hover:scale-110"
+                        className="p-3 bg-white border-2 border-gray-400 rounded-full shadow-lg hover:bg-gray-100 hover:border-green-600 text-black transition-all hover:scale-110"
                       >
-                        <ChevronRight size={24} />
+                        <ChevronRight size={24} strokeWidth={2.5} />
                       </button>
                     </div>
                   )}
 
                   {/* Image Counter */}
                   {item.images.length > 1 && (
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-black/60 backdrop-blur-sm rounded-full text-white text-sm font-medium">
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black border-2 border-green-600 rounded-full text-white text-sm font-bold shadow-lg">
                       {currentImageIndex + 1} / {item.images.length}
                     </div>
                   )}
                 </>
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-50">
-                  <Tag size={48} className="mb-3 opacity-50" />
-                  <span className="text-lg">No Image Available</span>
+                <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 bg-gray-100">
+                  <Tag size={48} className="mb-3" strokeWidth={2.5} />
+                  <span className="text-xl font-semibold">No Image Available</span>
                 </div>
               )}
 
               {/* Status Badge */}
               <div className="absolute top-4 right-4">
-                <div className={`px-4 py-2 rounded-full text-sm font-bold backdrop-blur-md shadow-lg ${
+                <div className={`px-2 py-0.5 rounded-full text-sm font-bold border-2 shadow-lg ${
                   item.status === 'solved' 
-                    ? 'bg-green-500/95 text-white' 
-                    : 'bg-amber-500/95 text-white'
+                    ? 'bg-green-500 text-black border-black' 
+                    : 'bg-amber-500 text-black border-black'
                 }`}>
                   {item.status === 'solved' ? 'Solved' : 'Unsolved'}
                 </div>
@@ -282,8 +273,8 @@ export default function ItemDetails() {
                     onClick={() => setCurrentImageIndex(idx)}
                     className={`relative shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
                       idx === currentImageIndex 
-                        ? 'border-blue-600 ring-2 ring-blue-200' 
-                        : 'border-slate-200 hover:border-slate-300'
+                        ? 'border-green-600 ring-2 ring-green-200' 
+                        : 'border-gray-300 hover:border-green-600'
                     }`}
                   >
                     <img
@@ -300,39 +291,39 @@ export default function ItemDetails() {
           {/* Right Column - Details */}
           <div className="space-y-6">
             {/* Item Info Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
+            <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-400">
               <div className="mb-4">
-                <span className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg mb-3">
-                  <Tag size={14} />
+                <span className="inline-flex items-center gap-2 text-sm font-bold text-white bg-black px-2.5 py-1 rounded-full mb-3 w-fit">
+                  <Tag size={14} strokeWidth={2.5} />
                   {getCategoryLabel(item.category)}
                 </span>
-                <h1 className="text-3xl font-bold text-slate-900 mb-2">{item.name}</h1>
-                <div className="flex items-center gap-2 text-slate-500 text-sm">
-                  <Calendar size={16} />
+                <h1 className="text-3xl font-bold text-black mb-2">{item.name}</h1>
+                <div className="flex items-center gap-2 text-gray-800 text-md font-medium">
+                  <Calendar size={16} strokeWidth={2.5} />
                   <span>Found {item.date}</span>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Description</h3>
-                  <p className="text-slate-700 leading-relaxed">{item.description}</p>
+                  <h3 className="text-md font-bold text-amber-600 uppercase tracking-wider mb-2">Description</h3>
+                  <p className="text-gray-800 leading-relaxed font-medium">{item.description}</p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 space-y-3">
+                <div className="pt-4 border-t-2 border-gray-400 space-y-3">
                   <div className="flex items-start gap-3">
-                    <div className="p-2 bg-blue-50 rounded-lg text-blue-600 mt-0.5">
-                      <MapPin size={18} />
+                    <div className="p-2 bg-green-600 rounded-lg text-black border-2 border-black mt-0.5">
+                      <MapPin size={18} strokeWidth={2.5} />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Current Location</div>
-                      <div className="text-slate-900 font-semibold">{item.destination}</div>
+                      <div className="text-md font-bold text-amber-600 uppercase tracking-wider mb-1">Current Location</div>
+                      <div className="text-black font-semibold">{item.destination}</div>
                     </div>
                   </div>
 
                   {item.additionalInfo && (
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
-                      <p className="text-sm text-blue-900">{item.additionalInfo}</p>
+                    <div className="bg-green-50 border-2 border-green-600 rounded-xl p-4">
+                      <p className="text-sm text-black font-medium">{item.additionalInfo}</p>
                     </div>
                   )}
                 </div>
@@ -340,46 +331,48 @@ export default function ItemDetails() {
             </div>
 
             {/* Finder Contact Card */}
-            <div className="bg-linear-to-br from-blue-600 to-blue-700 rounded-2xl p-6 shadow-lg text-white">
+            <div className="bg-green-600 rounded-xl p-6 shadow-lg text-black border-2 border-black">
+              {/* Gender Badge */}
+              {item.finder.gender && (
+                <div className="flex justify-end mb-2">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-black border-2 border-white rounded-full text-sm text-white font-bold">
+                    {item.finder.gender === 'MALE' ? <><Mars size={14} strokeWidth={2.5} /> Male</> : <><Venus size={14} strokeWidth={2.5} /> Female</>}
+                  </div>
+                </div>
+              )}
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-full">
-                  <User size={20} />
+                <div className="p-2.5 bg-white backdrop-blur-sm rounded-full">
+                  <User size={20} strokeWidth={2.5} />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-lg font-bold">Finder Contact Information</h2>
-                  <p className="text-blue-100 text-sm">Reach out to claim this item</p>
+                  <h2 className="text-xl font-bold">Finder Information</h2>
+                  <p className="text-sm font-medium">Reach out to claim this item</p>
                 </div>
-                {/* Gender Badge */}
-                {item.finder.gender && (
-                  <div className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
-                    {item.finder.gender === 'MALE' ? '♂ Male' : '♀ Female'}
-                  </div>
-                )}
               </div>
 
               <div className="space-y-3">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="bg backdrop-blur-sm rounded-xl p-4 border-2 border-black">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/20 rounded-lg">
-                      <User size={18} />
+                    <div className="p-2 bg-white border-2 border-black rounded-lg">
+                      <User size={18} strokeWidth={2.5} />
                     </div>
                     <div>
-                      <div className="text-xs text-blue-100 mb-0.5">Name</div>
-                      <div className="font-semibold">{item.finder.name}</div>
+                      <div className="text-md mb-0.5 font-medium">Name</div>
+                      <div className="font-bold text-lg">{item.finder.name}</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="bg backdrop-blur-sm rounded-xl p-4 border-2 border-black">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/20 rounded-lg">
-                      <Mail size={18} />
+                    <div className="p-2 bg-white border-2 border-black rounded-lg">
+                      <Mail size={18} strokeWidth={2.5} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs text-blue-100 mb-0.5">Email</div>
+                      <div className="text-md mb-0.5 font-medium">Email</div>
                       <a 
                         href={`mailto:${item.finder.email}`}
-                        className="font-semibold hover:underline block truncate"
+                        className="font-bold hover:underline block truncate text-lg"
                       >
                         {item.finder.email}
                       </a>
@@ -387,21 +380,21 @@ export default function ItemDetails() {
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="bg backdrop-blur-sm rounded-xl p-4 border-2 border-black">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/20 rounded-lg">
-                      <Phone size={18} />
+                    <div className="p-2 bg-white border-2 border-black rounded-lg">
+                      <Phone size={18} strokeWidth={2.5} />
                     </div>
                     <div>
-                      <div className="text-xs text-blue-100 mb-0.5">Phone</div>
+                      <div className="text-md mb-0.5 font-medium">Phone</div>
                       {isOppositeGender ? (
-                        <div className="font-semibold text-blue-100">
+                        <div className="font-bold text-black text-lg">
                           🔒 Hidden (Opposite Gender)
                         </div>
                       ) : (
                         <a 
                           href={item.finder.phone ? `tel:${item.finder.phone}` : undefined}
-                          className={item.finder.phone ? "font-semibold hover:underline" : "font-semibold"}
+                          className={item.finder.phone ? "font-bold hover:underline text-lg" : "font-bold text-lg"}
                         >
                           {item.finder.phone || 'Not Provided'}
                         </a>
@@ -450,11 +443,11 @@ export default function ItemDetails() {
 
             {/* Login prompt if not logged in */}
             {!currentUser && (
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
-                <p className="text-blue-800 mb-3">Login to claim this item or report found items.</p>
+              <div className="bg-green-50 border-2 border-green-600 rounded-xl p-4 text-center">
+                <p className="text-black font-semibold mb-3">Login to claim this item or report found items.</p>
                 <Link 
                   to="/login"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg font-semibold hover:bg-green-600 hover:text-black transition-all border-2 border-gray-300 shadow-lg hover:scale-105"
                 >
                   Login with University Email
                 </Link>

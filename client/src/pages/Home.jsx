@@ -101,7 +101,7 @@ export default function Home() {
       {/* Infinite Slideshow */}
       <section className="py-20 bg-slate-50 overflow-hidden">
         <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-10 mb-10 flex items-center justify-between">
-          <h2 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-slate-900">Recently Reported</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 font-[play]">Recently Reported</h2>
           <div className="w-sm ml-12 flex items-center justify-end gap-2">
             <Button to="/find" icon={ArrowRight} bgColor="bg-green-600" textColor="text-black" hoverBgColor="bg-black" hoverTextColor="group-hover/btn:text-white">
               View All
@@ -143,7 +143,7 @@ export default function Home() {
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Community Impact</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 font-[play]">Community Impact</h2>
             <p className="text-slate-500 text-sm sm:text-base lg:text-lg">See how our platform is making a difference</p>
           </div>
 
@@ -204,7 +204,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">How It Works</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 font-[play]">How It Works</h2>
             <p className="text-slate-500 text-md sm:text-base lg:text-lg">Simple steps to help the community.</p>
           </div>
 

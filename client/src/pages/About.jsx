@@ -1,5 +1,6 @@
 import { Github, Linkedin, Mail, Code2, Rocket, Users, Sparkles, Award, BookOpen } from 'lucide-react';
 import BackButton from '../components/BackButton';
+import YoutubePlayer from '../components/YoutubePlayer';
 
 export default function About() {
   
@@ -173,6 +174,15 @@ export default function About() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Video Tutorial Section */}
+        <div className="mb-6">
+          <h2 className="text-4xl font-bold text-black mb-4 text-center">Platform Walkthrough</h2>
+          <p className="mb-4 text-gray-700 font-medium text-center">
+            Watch this complete walkthrough video to get started:
+          </p>
+          <YoutubePlayer videoId="xQc6o_q46e4" title="IIUC Lost & Found Platform Walkthrough"/>
         </div>
 
         {/* Contact Section */}
