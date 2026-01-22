@@ -90,7 +90,7 @@ export const getAllReports = async (req, res) => {
         finder: {
           select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
         },
-        claim: {
+        claims: {
           include: {
             claimer: {
               select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
@@ -122,7 +122,7 @@ export const getReportsByUser = async (req, res) => {
         finder: {
           select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
         },
-        claim: {
+        claims: {
           include: {
             claimer: {
               select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
@@ -149,7 +149,7 @@ export const getReportById = async (req, res) => {
         finder: {
           select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
         },
-        claim: {
+        claims: {
           include: {
             claimer: {
               select: { id: true, fullName: true, email: true, profilePic: true, gender: true }

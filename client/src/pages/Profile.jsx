@@ -1,5 +1,5 @@
 import { useAuth } from "../context/AuthContext";
-import { LogOut, User, Mail, Shield, Package, ClipboardList, Loader2, Calendar } from "lucide-react";
+import { LogOut, User, Mail, Shield, Package, ClipboardList, Loader2, Calendar, Mars, Venus, VenusAndMars } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { reportsAPI, claimsAPI, transformReports, transformReport } from "../services/api";
@@ -85,16 +85,16 @@ export default function Profile() {
   }, [currentUser]);
 
   return (
-    <div className="pt-28 pb-12 min-h-screen bg-linear-to-br from-slate-50 via-blue-50/30 to-slate-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="pt-28 pb-12 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="max-w-6xl mx-auto px-4 max-[400px]:px-2 sm:px-6 lg:px-8">
         <BackButton />
-        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+        <div className="bg-white rounded-xl shadow-xl border-2 border-gray-400 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
           {/* Header */}
-          <div className="bg-linear-to-r from-sky-400 to-sky-700 h-36 relative">
+          <div className="bg-linear-to-r from-green-600 to-emerald-700 h-36 relative">
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="absolute -bottom-30 left-1/2 -translate-x-1/2">
               <div className="relative">
-                <div className="w-60 h-60 rounded-full border-4 border-white bg-white shadow-2xl overflow-hidden ring-6 ring-green-600">
+                <div className="w-60 h-60 rounded-full border-4 border-white bg-white shadow-2xl overflow-hidden ring-4 ring-black">
                   {photoURL && !imageError ? (
                     <img
                       src={photoURL}
@@ -104,8 +104,8 @@ export default function Profile() {
                       referrerPolicy="no-referrer"
                     />
                   ) : (
-                    <div className="w-full h-full bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-600">
-                      <User size={56} strokeWidth={1.5} />
+                    <div className="w-full h-full bg-linear-to-br from-gray-100 to-gray-200 flex items-center justify-center text-black">
+                      <User size={56} strokeWidth={2.5} />
                     </div>
                   )}
                 </div>
@@ -114,48 +114,54 @@ export default function Profile() {
           </div>
 
           {/* Content */}
-          <div className="pt-40 pb-8 px-8 text-center">
-            <h1 className="text-3xl font-bold text-slate-900 mb-6">
+          <div className="pt-40 pb-8 px-4 max-[400px]:px-2 sm:px-8 text-center">
+            <h1 className="text-3xl font-bold text-black mb-6">
               {currentUser?.displayName || "Student"}
             </h1>
 
             <div className="flex flex-col gap-3 max-w-lg mx-auto mb-8">
-              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 sm:p-5 md:p-6 bg-linear-to-r from-amber-50 to-amber-50/50 rounded-4xl border border-slate-200 hover:shadow-md transition-all duration-200">
-                <div className="p-1.5 sm:p-2 md:p-2.5 bg-white rounded-xl shadow-sm">
-                  <Mail className="text-amber-600 w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 max-[400px]:p-3 sm:p-5 md:p-6 bg-white rounded-xl border-2 border-gray-400 hover:shadow-lg hover:border-green-600 transition-all duration-200">
+                <div className="p-1.5 sm:p-2 md:p-2.5 bg-green-500 border-2 border-black rounded-full shadow-sm">
+                  <Mail className="text-black w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" strokeWidth={2.5} />
                 </div>
                 <div className="text-left flex-1">
-                  <p className="text-xs sm:text-sm md:text-base text-amber-500 font-semibold uppercase tracking-wider mb-0.5">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 font-bold uppercase tracking-wider mb-0.5">
                     Email Address
                   </p>
-                  <p className="text-slate-800 font-semibold text-sm sm:text-base md:text-lg truncate">
+                  <p className="text-black font-bold text-sm sm:text-base md:text-lg truncate">
                     {currentUser?.email}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 sm:p-5 md:p-6 bg-linear-to-r from-emerald-50 to-green-50/50 rounded-4xl border border-emerald-200 hover:shadow-md transition-all duration-200">
-                <div className="p-1.5 sm:p-2 md:p-2.5 bg-white rounded-xl shadow-sm">
-                  <User className="text-emerald-600 w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 max-[400px]:p-3 sm:p-5 md:p-6 bg-white rounded-xl border-2 border-gray-400 hover:shadow-lg hover:border-green-600 transition-all duration-200">
+                <div className="p-1.5 sm:p-2 md:p-2.5 bg-green-500 border-2 border-black rounded-full shadow-sm">
+                  <VenusAndMars className="text-black w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" strokeWidth={2.5} />
                 </div>
                 <div className="text-left flex-1">
-                  <p className="text-xs sm:text-sm md:text-base text-emerald-700 font-semibold uppercase tracking-wider mb-0.5">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 font-bold uppercase tracking-wider mb-0.5">
                     Gender
                   </p>
-                  <p className="text-emerald-900 font-semibold text-sm sm:text-base md:text-lg">
-                    {backendUser?.gender ? (backendUser.gender === 'MALE' ? '♂ Male' : '♀ Female') : 'Not Set'}
+                  <p className="text-black font-bold text-sm sm:text-base md:text-lg flex items-center gap-2">
+                    {backendUser?.gender ? (
+                      backendUser.gender === 'MALE' ? (
+                        <><Mars size={18} strokeWidth={2.5} className="inline" /> Male</>
+                      ) : (
+                        <><Venus size={18} strokeWidth={2.5} className="inline" /> Female</>
+                      )
+                    ) : 'Not Set'}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 sm:p-5 md:p-6 bg-linear-to-r from-blue-50 to-indigo-50/50 rounded-4xl border border-blue-200 hover:shadow-md transition-all duration-200">
-                <div className="p-1.5 sm:p-2 md:p-2.5 bg-white rounded-xl shadow-sm">
-                  <Calendar className="text-blue-600 w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 p-4 max-[400px]:p-3 sm:p-5 md:p-6 bg-white rounded-xl border-2 border-gray-400 hover:shadow-lg hover:border-green-600 transition-all duration-200">
+                <div className="p-1.5 sm:p-2 md:p-2.5 bg-green-500 border-2 border-black rounded-full shadow-sm">
+                  <Calendar className="text-black w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" strokeWidth={2.5} />
                 </div>
                 <div className="text-left flex-1">
-                  <p className="text-xs sm:text-sm md:text-base text-blue-700 font-semibold uppercase tracking-wider mb-0.5">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 font-bold uppercase tracking-wider mb-0.5">
                     Member Since
                   </p>
-                  <p className="text-blue-900 font-semibold text-sm sm:text-base md:text-lg">{getJoinedDate()}</p>
+                  <p className="text-black font-bold text-sm sm:text-base md:text-lg">{getJoinedDate()}</p>
                 </div>
               </div>
             </div>
@@ -165,9 +171,9 @@ export default function Profile() {
                 navigate('/');
                 logout();
               }}
-              className="inline-flex items-center gap-2 sm:gap-2.5 md:gap-3 px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 bg-linear-to-r from-red-50 to-red-100 text-red-600 rounded-full font-semibold hover:from-red-100 hover:to-red-200 transition-transform duration-200 shadow-sm hover:shadow-md border border-red-200 hover:scale-105 cursor-pointer text-sm sm:text-base md:text-lg"
+              className="inline-flex items-center gap-2 sm:gap-2.5 md:gap-3 px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 bg-white text-red-600 rounded-full font-bold hover:bg-red-600 hover:text-white transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-red-500 hover:scale-105 cursor-pointer text-sm sm:text-base md:text-lg"
             >
-              <LogOut className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
+              <LogOut className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               Sign Out
             </button>
           </div>
@@ -180,72 +186,72 @@ export default function Profile() {
           <div className="flex flex-wrap items-start gap-x-3 gap-y-2 mb-8 w-full">
             <button
               onClick={() => setActiveTab('reports')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-full font-bold transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer ${
+              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'reports'
-                  ? 'bg-linear-to-r from-blue-600 to-blue-700 text-white scale-105'
-                  : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-green-600 text-black border-black scale-105'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
               }`}
             >
               <Package size={20} strokeWidth={2.5} />
               <span className="text-base">My Reports</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'reports' 
-                  ? 'bg-white/20 text-white' 
-                  : 'bg-slate-100 text-slate-600'
+                  ? 'bg-black text-white' 
+                  : 'bg-gray-200 text-black'
               }`}>
                 {userReports.length}
               </span>
             </button>
             <button
               onClick={() => setActiveTab('claims')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-full font-bold transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer ${
+              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'claims'
-                  ? 'bg-linear-to-r from-blue-600 to-blue-700 text-white scale-105'
-                  : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-green-600 text-black border-black scale-105'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
               }`}
             >
               <ClipboardList size={20} strokeWidth={2.5} />
               <span className="text-base">My Claims</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'claims' 
-                  ? 'bg-white/20 text-white' 
-                  : 'bg-slate-100 text-slate-600'
+                  ? 'bg-black text-white' 
+                  : 'bg-gray-200 text-black'
               }`}>
                 {userClaims.length}
               </span>
             </button>
             <button
               onClick={() => setActiveTab('pendingReports')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-full font-bold transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer ${
+              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'pendingReports'
-                  ? 'bg-linear-to-r from-amber-500 to-amber-600 text-white scale-105'
-                  : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-amber-500 text-black border-black scale-105'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
               }`}
             >
               <Package size={20} strokeWidth={2.5} />
               <span className="text-base">Pending Reports</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'pendingReports'
-                  ? 'bg-white/20 text-white'
-                  : 'bg-slate-100 text-slate-600'
+                  ? 'bg-black text-white'
+                  : 'bg-gray-200 text-black'
               }`}>
                 {pendingReports.length}
               </span>
             </button>
             <button
               onClick={() => setActiveTab('unsolvedClaims')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-full font-bold transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer ${
+              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'unsolvedClaims'
-                  ? 'bg-linear-to-r from-purple-500 to-purple-600 text-white scale-105'
-                  : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-black text-white border-gray-400 scale-105'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
               }`}
             >
               <ClipboardList size={20} strokeWidth={2.5} />
               <span className="text-base">Unsolved Claims</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'unsolvedClaims'
-                  ? 'bg-white/20 text-white'
-                  : 'bg-slate-100 text-slate-600'
+                  ? 'bg-white text-black'
+                  : 'bg-gray-200 text-black'
               }`}>
                 {unsolvedClaims.length}
               </span>
@@ -256,9 +262,9 @@ export default function Profile() {
           {activeTab === 'reports' && (
             <div>
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200">
-                  <Loader2 size={40} className="animate-spin text-blue-600 mb-4" strokeWidth={2.5} />
-                  <span className="text-slate-600 font-medium text-lg">Loading your reports...</span>
+                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border-2 border-gray-300 shadow-lg">
+                  <Loader2 size={40} className="animate-spin text-green-600 mb-4" strokeWidth={2.5} />
+                  <span className="text-black font-bold text-lg">Loading your reports...</span>
                 </div>
               ) : userReports.length > 0 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -267,12 +273,12 @@ export default function Profile() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-20 bg-linear-to-br from-white to-slate-50 rounded-2xl border-2 border-dashed border-slate-200 hover:border-slate-300 transition-colors">
-                  <div className="p-4 bg-blue-50 rounded-full w-fit mx-auto mb-5">
-                    <Package size={56} className="text-blue-400" strokeWidth={1.5} />
+                <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
+                  <div className="p-4 bg-gray-100 border-2 border-gray-400 rounded-full w-fit mx-auto mb-5">
+                    <Package size={56} className="text-gray-600" strokeWidth={2.5} />
                   </div>
-                  <p className="text-slate-600 text-lg font-medium">You haven't reported any items yet.</p>
-                  <p className="text-slate-400 text-sm mt-2">Start by reporting a lost item you found!</p>
+                  <p className="text-black text-lg font-bold">You haven't reported any items yet.</p>
+                  <p className="text-gray-600 text-sm mt-2 font-medium">Start by reporting a lost item you found!</p>
                 </div>
               )}
             </div>
@@ -282,9 +288,9 @@ export default function Profile() {
           {activeTab === 'claims' && (
             <div>
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200">
-                  <Loader2 size={40} className="animate-spin text-blue-600 mb-4" strokeWidth={2.5} />
-                  <span className="text-slate-600 font-medium text-lg">Loading your claims...</span>
+                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border-2 border-gray-300 shadow-lg">
+                  <Loader2 size={40} className="animate-spin text-green-600 mb-4" strokeWidth={2.5} />
+                  <span className="text-black font-bold text-lg">Loading your claims...</span>
                 </div>
               ) : userClaims.length > 0 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -293,12 +299,12 @@ export default function Profile() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-20 bg-linear-to-br from-white to-slate-50 rounded-2xl border-2 border-dashed border-slate-200 hover:border-slate-300 transition-colors">
-                  <div className="p-4 bg-purple-50 rounded-full w-fit mx-auto mb-5">
-                    <ClipboardList size={56} className="text-purple-400" strokeWidth={1.5} />
+                <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
+                  <div className="p-4 bg-gray-100 border-2 border-gray-400 rounded-full w-fit mx-auto mb-5">
+                    <ClipboardList size={56} className="text-gray-600" strokeWidth={2.5} />
                   </div>
-                  <p className="text-slate-600 text-lg font-medium">You haven't made any claims yet.</p>
-                  <p className="text-slate-400 text-sm mt-2">Browse items and claim what's yours!</p>
+                  <p className="text-black text-lg font-bold">You haven't made any claims yet.</p>
+                  <p className="text-gray-600 text-sm mt-2 font-medium">Browse items and claim what's yours!</p>
                 </div>
               )}
             </div>
@@ -308,9 +314,9 @@ export default function Profile() {
           {activeTab === 'pendingReports' && (
             <div>
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200">
+                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border-2 border-gray-300 shadow-lg">
                   <Loader2 size={40} className="animate-spin text-amber-600 mb-4" strokeWidth={2.5} />
-                  <span className="text-slate-600 font-medium text-lg">Loading pending reports...</span>
+                  <span className="text-black font-bold text-lg">Loading pending reports...</span>
                 </div>
               ) : pendingReports.length > 0 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -319,12 +325,12 @@ export default function Profile() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-20 bg-linear-to-br from-white to-slate-50 rounded-2xl border-2 border-dashed border-slate-200 hover:border-slate-300 transition-colors">
-                  <div className="p-4 bg-amber-50 rounded-full w-fit mx-auto mb-5">
-                    <Package size={56} className="text-amber-400" strokeWidth={1.5} />
+                <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
+                  <div className="p-4 bg-amber-100 border-2 border-amber-500 rounded-full w-fit mx-auto mb-5">
+                    <Package size={56} className="text-amber-600" strokeWidth={2.5} />
                   </div>
-                  <p className="text-slate-600 text-lg font-medium">No pending reports.</p>
-                  <p className="text-slate-400 text-sm mt-2">All your reports have been resolved!</p>
+                  <p className="text-black text-lg font-bold">No pending reports.</p>
+                  <p className="text-gray-600 text-sm mt-2 font-medium">All your reports have been resolved!</p>
                 </div>
               )}
             </div>
@@ -334,9 +340,9 @@ export default function Profile() {
           {activeTab === 'unsolvedClaims' && (
             <div>
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200">
-                  <Loader2 size={40} className="animate-spin text-purple-600 mb-4" strokeWidth={2.5} />
-                  <span className="text-slate-600 font-medium text-lg">Loading unsolved claims...</span>
+                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border-2 border-gray-300 shadow-lg">
+                  <Loader2 size={40} className="animate-spin text-black mb-4" strokeWidth={2.5} />
+                  <span className="text-black font-bold text-lg">Loading unsolved claims...</span>
                 </div>
               ) : unsolvedClaims.length > 0 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -345,12 +351,12 @@ export default function Profile() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-20 bg-linear-to-br from-white to-slate-50 rounded-2xl border-2 border-dashed border-slate-200 hover:border-slate-300 transition-colors">
-                  <div className="p-4 bg-purple-50 rounded-full w-fit mx-auto mb-5">
-                    <ClipboardList size={56} className="text-purple-400" strokeWidth={1.5} />
+                <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
+                  <div className="p-4 bg-gray-100 border-2 border-gray-400 rounded-full w-fit mx-auto mb-5">
+                    <ClipboardList size={56} className="text-gray-600" strokeWidth={2.5} />
                   </div>
-                  <p className="text-slate-600 text-lg font-medium">No unsolved claims.</p>
-                  <p className="text-slate-400 text-sm mt-2">All your claims have been resolved!</p>
+                  <p className="text-black text-lg font-bold">No unsolved claims.</p>
+                  <p className="text-gray-600 text-sm mt-2 font-medium">All your claims have been resolved!</p>
                 </div>
               )}
             </div>

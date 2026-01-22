@@ -113,14 +113,14 @@ export default function ReportItem() {
   // Redirect to login if not authenticated
   if (!currentUser) {
     return (
-      <div className="pt-30 pb-12 min-h-screen bg-slate-50">
+      <div className="pt-30 pb-12 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 text-center">
-            <h1 className="text-2xl font-bold text-slate-900 mb-4">Login Required</h1>
-            <p className="text-slate-600 mb-6">You need to login with your university email to report a found item.</p>
+          <div className="bg-white rounded-xl shadow-lg border-2 border-gray-400 p-8 text-center">
+            <h1 className="text-2xl font-bold text-black mb-4">Login Required</h1>
+            <p className="text-gray-600 mb-6 font-medium">You need to login with your university email to report a found item.</p>
             <button
               onClick={() => navigate('/login')}
-              className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+              className="px-6 py-3 bg-green-600 text-black rounded-xl font-bold hover:bg-black hover:text-white transition-all border-2 border-gray-400 shadow-lg hover:shadow-xl"
             >
               Go to Login
             </button>
@@ -131,45 +131,45 @@ export default function ReportItem() {
   }
 
   return (
-    <div className="pt-30 pb-12 min-h-screen bg-slate-50">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="pt-30 pb-12 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="max-w-3xl mx-auto px-4 max-[400px]:px-2 sm:px-6 lg:px-8">
         <BackButton />
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+        <div className="bg-white rounded-xl shadow-lg border-2 border-gray-400 p-6 max-[400px]:p-4 sm:p-8">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-slate-900">Report Found Item</h1>
-            <p className="text-slate-500">Help return a lost item to its owner.</p>
+            <h1 className="text-2xl font-bold text-black">Report Found Item</h1>
+            <p className="text-gray-700 font-medium">Help return a lost item to its owner.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700">
+              <div className="bg-red-50 border-2 border-red-500 rounded-xl p-4 text-red-700 font-bold shadow-lg">
                 {error}
               </div>
             )}
 
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-md font-bold text-black mb-2">
                 Item Images
               </label>
               <ImageUpload images={images} setImages={setImages} />
-              <p className="text-xs text-slate-500 mt-1">Upload clear photos of the found item</p>
+              <p className="text-sm text-gray-700 mt-1 font-medium">Upload clear photos of the found item</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Category */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-md font-bold text-black mb-2">
                   Category <span className="text-red-500">*</span>
                 </label>
                 <select
                   required
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100 outline-none transition-all font-medium bg-white shadow-sm hover:border-green-600 text-black"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 >
-                  <option value="">Select Category</option>
+                  <option value="" disabled hidden>Select Category</option>
                   {categories.map(cat => (
                     <option key={cat.value} value={cat.value}>{cat.label}</option>
                   ))}
@@ -178,7 +178,7 @@ export default function ReportItem() {
 
               {/* Item Title/Name */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-md font-bold text-black mb-2">
                   Item Title <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -186,7 +186,7 @@ export default function ReportItem() {
                   required
                   minLength={3}
                   placeholder="e.g. Blue Casio Calculator"
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100 outline-none transition-all font-medium shadow-sm hover:border-green-600"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
@@ -195,7 +195,7 @@ export default function ReportItem() {
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-md font-bold text-black mb-2">
                 Description <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -203,7 +203,7 @@ export default function ReportItem() {
                 minLength={5}
                 rows={4}
                 placeholder="Describe the item (color, condition, unique marks, where you found it)..."
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100 outline-none transition-all resize-none font-medium shadow-sm hover:border-green-600"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               />
@@ -211,24 +211,22 @@ export default function ReportItem() {
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-md font-bold text-black mb-2">
                 Where did you leave the item? <span className="text-red-500">*</span>
               </label>
               
               {/* Warning for opposite gender */}
               {backendUser?.gender && (
                 <div className="mb-4 bg-amber-50 border-2 border-amber-400 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">⚠️</span>
-                    <div>
-                      <h4 className="text-md font-semibold text-amber-900 mb-1">
-                        Important Notice
-                      </h4>
-                      <p className="text-sm max-[400px]:text-xs text-amber-800 leading-relaxed">
-                        If you found an item belonging to the <strong>opposite gender</strong>, please choose a <strong>designated location</strong> (C Building Office, Library Desk, etc.) instead of keeping it with you. Any violation of university policy will result in <strong>strict disciplinary action</strong>.
-                      </p>
-                    </div>
+                    <h4 className="text-md font-semibold text-amber-900">
+                      Important Notice
+                    </h4>
                   </div>
+                  <p className="text-sm max-[400px]:text-xs text-amber-800 leading-relaxed">
+                    If you found an item belonging to the <strong>opposite gender</strong>, please choose a <strong>designated location</strong> instead of keeping it with you. Any violation of university policy will result in <strong>strict disciplinary action</strong>.
+                  </p>
                 </div>
               )}
               
@@ -237,10 +235,10 @@ export default function ReportItem() {
                 {predefinedLocations.map((loc) => (
                   <label
                     key={loc.value}
-                    className={`flex items-center p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                    className={`flex items-center p-3 rounded-xl border-2 cursor-pointer transition-all shadow-sm ${
                       formData.location === loc.value
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-slate-200 bg-white hover:border-slate-300'
+                        ? 'border-green-600 bg-green-50 shadow-lg'
+                        : 'border-gray-400 bg-white hover:border-green-600'
                     }`}
                   >
                     <input
@@ -249,10 +247,10 @@ export default function ReportItem() {
                       value={loc.value}
                       checked={formData.location === loc.value}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value, locationOther: '' })}
-                      className="mr-3 w-4 h-4 text-blue-600"
+                      className="mr-3 w-4 h-4 accent-green-600"
                       required
                     />
-                    <span className="text-sm font-medium text-slate-700">{loc.label}</span>
+                    <span className="text-sm font-bold text-black">{loc.label}</span>
                   </label>
                 ))}
               </div>
@@ -264,7 +262,7 @@ export default function ReportItem() {
                   required
                   minLength={2}
                   placeholder="Please specify the location"
-                  className="mt-3 w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  className="mt-3 w-full px-4 py-2.5 rounded-xl border-2 border-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100 outline-none transition-all font-medium shadow-sm hover:border-green-600"
                   value={formData.locationOther}
                   onChange={(e) => setFormData({ ...formData, locationOther: e.target.value })}
                 />
@@ -273,7 +271,7 @@ export default function ReportItem() {
 
             {/* Contact Info */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-md font-bold text-black mb-2">
                 Contact Information {isPhoneRequired && <span className="text-red-500">*</span>}
               </label>
               <input
@@ -281,40 +279,26 @@ export default function ReportItem() {
                 required={isPhoneRequired}
                 minLength={11}
                 placeholder="Enter your phone number"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100 outline-none transition-all font-medium shadow-sm hover:border-green-600"
                 value={formData.contactInfo}
                 onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
               />
-              <p className="text-xs md:text-sm text-slate-500 mt-2">
+              <p className="text-xs md:text-sm text-gray-700 mt-2 font-medium">
                 {isPhoneRequired 
                   ? 'Phone number is required when keeping the item with you. It will be hidden from opposite gender users.' 
                   : 'Phone number is optional for designated locations. It will be hidden from opposite gender users if provided.'}
               </p>
             </div>
 
-            {/* <button
-              type="submit"
-              disabled={loading}
-              className="px-10 py-4 mx-auto flex items-center justify-center bg-blue-600 text-white rounded-full font-semibold hover:bg-green-600 hover:text-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <>
-                  <Loader2 size={20} className="animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                'Submit Report'
-              )}
-            </button> */}
             <div className="text-center">
               <Button
                 icon={PlusCircle}
                 type="submit"
                 disabled={loading}
-                bgColor="bg-blue-600"
-                textColor="text-white"
-                hoverBgColor="bg-green-600"
-                hoverTextColor="group-hover/btn:text-black"
+                bgColor="bg-green-600"
+                textColor="text-black"
+                hoverBgColor="bg-black"
+                hoverTextColor="group-hover/btn:text-white"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

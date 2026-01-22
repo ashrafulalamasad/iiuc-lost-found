@@ -291,7 +291,7 @@ export default function ItemDetails() {
           {/* Right Column - Details */}
           <div className="space-y-6">
             {/* Item Info Card */}
-            <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-400">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border-2 border-gray-400">
               <div className="mb-4">
                 <span className="inline-flex items-center gap-2 text-sm font-bold text-white bg-black px-2.5 py-1 rounded-full mb-3 w-fit">
                   <Tag size={14} strokeWidth={2.5} />
@@ -331,48 +331,46 @@ export default function ItemDetails() {
             </div>
 
             {/* Finder Contact Card */}
-            <div className="bg-green-600 rounded-xl p-6 shadow-lg text-black border-2 border-black">
+            <div className="bg-white rounded-xl p-4 max-[400px]:p-2 sm:p-6 shadow-lg border-2 border-gray-400">
               {/* Gender Badge */}
               {item.finder.gender && (
                 <div className="flex justify-end mb-2">
-                  <div className="flex items-center gap-2 px-3 py-1 bg-black border-2 border-white rounded-full text-sm text-white font-bold">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-black rounded-full text-sm text-white font-bold">
                     {item.finder.gender === 'MALE' ? <><Mars size={14} strokeWidth={2.5} /> Male</> : <><Venus size={14} strokeWidth={2.5} /> Female</>}
                   </div>
                 </div>
               )}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 bg-white backdrop-blur-sm rounded-full">
-                  <User size={20} strokeWidth={2.5} />
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b-2 border-gray-400">
+                <div className="p-2.5 bg-green-600 border-2 border-black rounded-lg">
+                  <User size={20} strokeWidth={2.5} className="text-black" />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-xl font-bold">Finder Information</h2>
-                  <p className="text-sm font-medium">Reach out to claim this item</p>
+                  <h2 className="text-xl font-bold text-black">Finder Information</h2>
+                  <p className="text-sm font-medium text-gray-700">Reach out to claim this item</p>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <div className="bg backdrop-blur-sm rounded-xl p-4 border-2 border-black">
+                <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-300">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white border-2 border-black rounded-lg">
-                      <User size={18} strokeWidth={2.5} />
+                    <div className="p-2 bg-amber-600 border-2 border-black rounded-lg">
+                      <User size={18} strokeWidth={2.5} className="text-black" />
                     </div>
                     <div>
-                      <div className="text-md mb-0.5 font-medium">Name</div>
-                      <div className="font-bold text-lg">{item.finder.name}</div>
+                      <div className="font-bold text-lg text-black">{item.finder.name}</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg backdrop-blur-sm rounded-xl p-4 border-2 border-black">
+                <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-300">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white border-2 border-black rounded-lg">
-                      <Mail size={18} strokeWidth={2.5} />
+                    <div className="p-2 bg-amber-600 border-2 border-black rounded-lg">
+                      <Mail size={18} strokeWidth={2.5} className="text-black" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-md mb-0.5 font-medium">Email</div>
                       <a 
                         href={`mailto:${item.finder.email}`}
-                        className="font-bold hover:underline block truncate text-lg"
+                        className="font-bold hover:underline block truncate text-md text-black hover:text-green-600"
                       >
                         {item.finder.email}
                       </a>
@@ -380,21 +378,20 @@ export default function ItemDetails() {
                   </div>
                 </div>
 
-                <div className="bg backdrop-blur-sm rounded-xl p-4 border-2 border-black">
+                <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-300">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white border-2 border-black rounded-lg">
-                      <Phone size={18} strokeWidth={2.5} />
+                    <div className="p-2 bg-amber-600 border-2 border-black rounded-lg">
+                      <Phone size={18} strokeWidth={2.5} className="text-black" />
                     </div>
                     <div>
-                      <div className="text-md mb-0.5 font-medium">Phone</div>
                       {isOppositeGender ? (
-                        <div className="font-bold text-black text-lg">
+                        <div className="font-bold text-black text-md">
                           🔒 Hidden (Opposite Gender)
                         </div>
                       ) : (
                         <a 
                           href={item.finder.phone ? `tel:${item.finder.phone}` : undefined}
-                          className={item.finder.phone ? "font-bold hover:underline text-lg" : "font-bold text-lg"}
+                          className={item.finder.phone ? "font-bold hover:underline text-md text-black hover:text-green-600" : "font-bold text-md text-black"}
                         >
                           {item.finder.phone || 'Not Provided'}
                         </a>
@@ -407,20 +404,16 @@ export default function ItemDetails() {
             
             {/* Warning for opposite gender + meeting required */}
             {isOppositeGender && requiresMeeting && currentUser && (
-              <div className="bg-amber-50 border-2 border-amber-400 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">⚠️</span>
-                  <div>
-                    {/* <h4 className="text-sm font-semibold text-amber-900 mb-1">
-                      Opposite Gender Meeting Required
-                    </h4>
-                    <p className="text-xs text-amber-800 leading-relaxed">
-                      This item requires meeting the finder of opposite gender. Please bring a <strong>same-gender friend or staff member</strong> when collecting the item, as per university policy. Any violation will result in disciplinary action.
-                    </p> */}
-                    <h4 className="text-sm md:text-lg font-semibold text-amber-900 mb-1">
+              <div className="bg-white border-2 border-amber-500 rounded-xl p-5 shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-amber-100 rounded-full border-2 border-amber-500">
+                    <span className="text-2xl">⚠️</span>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-black mb-2">
                       Important Notice
                     </h4>
-                    <p className="text-xs lg:text-sm text-amber-800 leading-relaxed">
+                    <p className="text-md text-gray-800 leading-relaxed font-medium">
                       Please follow university guidelines regarding male–female interaction. 
                       Any violation of the policy may result in disciplinary action.
                     </p>

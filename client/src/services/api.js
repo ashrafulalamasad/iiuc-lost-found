@@ -224,18 +224,28 @@ export const transformReport = (backendReport) => {
     finderId: backendReport.finderId,
     contactInfo: backendReport.contactInfo,
     createdAt: backendReport.createdAt,
-    claim: backendReport.claim ? {
-      id: backendReport.claim.id,
-      status: backendReport.claim.status,
-      claimerId: backendReport.claim.claimerId,
-      claimer: backendReport.claim.claimer ? {
-        name: backendReport.claim.claimer.fullName,
-        gender: backendReport.claim.claimer.gender,
-      } : null,
-      finderConfirmed: backendReport.claim.finderConfirmed,
-      ownerConfirmed: backendReport.claim.ownerConfirmed,
-      claimedAt: backendReport.claim.claimedAt,
-    } : null,
+    claim: (() => {
+      // Backend returns "claims" (plural array) from Prisma relation
+      const claims = backendReport.claims || [];
+      // Pick the most relevant claim: PENDING > SOLVED > first available (skip CANCELLED/REJECTED)
+      const activeClaim = claims.find(c => c.status === 'PENDING') 
+        || claims.find(c => c.status === 'SOLVED')
+        || claims.find(c => c.status !== 'CANCELLED' && c.status !== 'REJECTED')
+        || claims[0] || null;
+      if (!activeClaim) return null;
+      return {
+        id: activeClaim.id,
+        status: activeClaim.status,
+        claimerId: activeClaim.claimerId,
+        claimer: activeClaim.claimer ? {
+          name: activeClaim.claimer.fullName,
+          gender: activeClaim.claimer.gender,
+        } : null,
+        finderConfirmed: activeClaim.finderConfirmed,
+        ownerConfirmed: activeClaim.ownerConfirmed,
+        claimedAt: activeClaim.claimedAt,
+      };
+    })(),
   };
 };
 

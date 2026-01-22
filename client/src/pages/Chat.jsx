@@ -186,10 +186,10 @@ const Chat = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-28 pb-10">
+      <div className="min-h-screen bg-gray-50 pt-28 pb-10" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
         <div className="max-w-2xl mx-auto px-4">
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-800"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
           </div>
         </div>
       </div>
@@ -198,12 +198,12 @@ const Chat = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-28 pb-10">
+      <div className="min-h-screen bg-gray-50 pt-28 pb-10" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
         <div className="max-w-2xl mx-auto px-4">
-          <div className="bg-rose-50 border border-neutral-300 text-rose-700 px-4 py-3 rounded-xl">
+          <div className="bg-red-50 border-2 border-red-500 text-red-700 px-4 py-3 rounded-xl font-bold shadow-lg">
             {error}
           </div>
-          <Link to="/inbox" className="mt-4 inline-block text-neutral-700 hover:text-neutral-900 hover:underline">
+          <Link to="/inbox" className="mt-4 inline-block text-black hover:text-green-600 hover:underline font-bold">
             ← Back to Inbox
           </Link>
         </div>
@@ -214,18 +214,18 @@ const Chat = () => {
   const groupedMessages = groupMessagesByDate(messages);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-neutral-50 via-stone-50 to-zinc-100 pt-24 pb-4 flex flex-col">
+    <div className="min-h-screen bg-gray-50 pt-24 pb-4 flex flex-col" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
       <div className="max-w-2xl mx-auto px-4 flex flex-col flex-1 w-full">
         {/* Chat Header */}
-        <div className="bg-white rounded-t-2xl shadow-md border border-neutral-300 p-4 flex items-center gap-4">
+        <div className="bg-white rounded-t-xl shadow-lg border-2 border-gray-400 p-4 flex items-center gap-4">
           <Link
             to="/inbox"
-            className="p-2 rounded-full hover:bg-neutral-100 transition-colors"
+            className="p-2 rounded-xl hover:bg-gray-100 transition-colors border-2 border-gray-400 hover:border-green-600"
           >
-            <ArrowLeft size={20} className="text-neutral-600" />
+            <ArrowLeft size={20} className="text-black" strokeWidth={2.5} />
           </Link>
 
-          <div className="w-10 h-10 rounded-full bg-neutral-100 border border-neutral-300 overflow-hidden flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-gray-100 border-2 border-gray-400 overflow-hidden flex items-center justify-center">
             {chatInfo?.otherUser?.profilePic ? (
               <img
                 src={chatInfo.otherUser.profilePic}
@@ -234,26 +234,26 @@ const Chat = () => {
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <User size={20} className="text-neutral-500" />
+              <User size={20} className="text-gray-600" strokeWidth={2.5} />
             )}
           </div>
 
           <div className="flex-1 min-w-0">
-            <h2 className="font-semibold text-neutral-800 truncate">
+            <h2 className="font-bold text-black truncate">
               {chatInfo?.otherUser?.fullName}
             </h2>
-            <p className="text-xs text-neutral-500 truncate">
+            <p className="text-xs text-gray-600 truncate font-medium">
               Re: {chatInfo?.claim?.reportTitle}
             </p>
           </div>
 
           <span
-            className={`text-xs px-2 py-1 rounded-full border ${
+            className={`text-xs px-2 py-1 rounded-full border-2 font-bold ${
               chatInfo?.claim?.status === "SOLVED"
-                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                ? "bg-emerald-50 text-emerald-700 border-emerald-600"
                 : chatInfo?.claim?.status === "PENDING"
-                ? "bg-amber-50 text-amber-700 border-amber-200"
-                : "bg-neutral-100 text-neutral-600 border-neutral-300"
+                ? "bg-amber-50 text-amber-700 border-amber-500"
+                : "bg-gray-100 text-black border-gray-400"
             }`}
           >
             {chatInfo?.claim?.status}
@@ -263,11 +263,11 @@ const Chat = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          className="flex-1 bg-white shadow-md border-x border-neutral-300 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[calc(100vh-280px)]"
+          className="flex-1 bg-white shadow-lg border-x-2 border-gray-400 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[calc(100vh-280px)]"
         >
           {messages.length === 0 ? (
             <div className="h-full flex items-center justify-center">
-              <p className="text-neutral-400 text-center">
+              <p className="text-gray-500 text-center font-medium">
                 No messages yet. Start the conversation!
               </p>
             </div>
@@ -276,7 +276,7 @@ const Chat = () => {
               <div key={date}>
                 {/* Date Header */}
                 <div className="flex items-center justify-center my-4">
-                  <span className="text-xs text-neutral-500 bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">
+                  <span className="text-xs text-gray-600 bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full font-bold">
                     {formatDateHeader(date)}
                   </span>
                 </div>
@@ -290,16 +290,16 @@ const Chat = () => {
                       className={`flex mb-3 ${isMe ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`max-w-[75%] px-4 py-2 rounded-2xl border ${
+                        className={`max-w-[75%] px-4 py-2 rounded-xl border-2 ${
                           isMe
-                            ? "bg-neutral-800 text-white border-neutral-700 rounded-br-md"
-                            : "bg-neutral-50 text-neutral-800 border-neutral-300 rounded-bl-md"
+                            ? "bg-black text-white border-gray-400 rounded-br-md shadow-md"
+                            : "bg-gray-50 text-black border-gray-400 rounded-bl-md shadow-sm"
                         }`}
                       >
-                        <p className="wrap-break-word">{message.content}</p>
+                        <p className="wrap-break-word font-medium">{message.content}</p>
                         <p
-                          className={`text-xs mt-1 ${
-                            isMe ? "text-neutral-400" : "text-neutral-500"
+                          className={`text-xs mt-1 font-medium ${
+                            isMe ? "text-gray-400" : "text-gray-600"
                           }`}
                         >
                           {formatMessageTime(message.createdAt)}
@@ -317,7 +317,7 @@ const Chat = () => {
         {/* Message Input */}
         <form
           onSubmit={handleSend}
-          className="bg-white rounded-b-2xl shadow-md border border-neutral-300 p-4 flex items-center gap-3"
+          className="bg-white rounded-b-xl shadow-lg border-2 border-gray-400 p-4 flex items-center gap-3"
         >
           <input
             ref={inputRef}
@@ -325,19 +325,19 @@ const Chat = () => {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 bg-neutral-50 rounded-full border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:border-transparent"
+            className="flex-1 px-4 py-2 bg-gray-50 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent font-medium hover:border-green-600 transition-all"
             disabled={sending}
           />
           <button
             type="submit"
             disabled={!newMessage.trim() || sending}
-            className={`p-3 rounded-full transition-colors ${
+            className={`p-3 rounded-xl transition-all border-2 shadow-lg ${
               newMessage.trim() && !sending
-                ? "bg-neutral-800 text-white hover:bg-neutral-700 shadow-md"
-                : "bg-neutral-200 text-neutral-400 cursor-not-allowed"
+                ? "bg-green-600 text-black hover:bg-black hover:text-white border-gray-400 hover:shadow-xl"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed border-gray-300"
             }`}
           >
-            <Send size={20} />
+            <Send size={20} strokeWidth={2.5} />
           </button>
         </form>
       </div>

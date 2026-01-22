@@ -78,8 +78,8 @@ export default function ImageUpload({ images, setImages, maxImages = 4 }) {
         className={`
           border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all
           ${isDragging 
-            ? 'border-blue-500 bg-blue-50' 
-            : 'border-slate-200 hover:border-blue-400 hover:bg-slate-50'
+            ? 'border-green-600 bg-green-50' 
+            : 'border-gray-400 hover:border-green-600 hover:bg-green-50'
           }
         `}
       >
@@ -92,12 +92,12 @@ export default function ImageUpload({ images, setImages, maxImages = 4 }) {
           className="hidden"
         />
         <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-green-600 text-black rounded-full flex items-center justify-center">
             <Upload size={24} />
           </div>
           <div>
-            <p className="font-medium text-slate-900">Click to upload or drag and drop</p>
-            <p className="text-sm text-slate-500">SVG, PNG, JPG or GIF (max {maxImages} images)</p>
+            <p className="font-medium text-black">Click to upload or drag and drop</p>
+            <p className="text-sm text-slate-700">SVG, PNG, JPG or GIF (max {maxImages} images)</p>
           </div>
         </div>
       </div>

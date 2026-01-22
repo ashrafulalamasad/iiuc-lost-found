@@ -51,39 +51,48 @@ export const createClaim = async (req, res) => {
     if (report.finderId === data.claimerId) {
       return res.status(400).json({ status: "error", message: "You cannot claim your own report" });
     }
-    const existingClaim = await prisma.claim.findFirst({
+    
+    // Check if there's ANY pending claim (by anyone)
+    const existingPendingClaim = await prisma.claim.findFirst({
       where: { 
         reportId: data.reportId,
         status: "PENDING"
       }
     });
-    if (existingClaim) {
+    if (existingPendingClaim) {
       return res.status(400).json({ status: "error", message: "Item already has an active claim" });
     }
     
-    // Try to update cancelled/rejected claim or create new one
-    const existingInactiveClaim = await prisma.claim.findUnique({
-      where: { reportId: data.reportId }
+    // Check if THIS USER has an existing claim for this report
+    const userExistingClaim = await prisma.claim.findFirst({
+      where: {
+        reportId: data.reportId,
+        claimerId: data.claimerId
+      }
     });
     
     let claim;
-    if (existingInactiveClaim && (existingInactiveClaim.status === "CANCELLED" || existingInactiveClaim.status === "REJECTED")) {
+    if (userExistingClaim && (userExistingClaim.status === "CANCELLED" || userExistingClaim.status === "REJECTED")) {
+      // User is re-claiming - update THEIR existing claim record
       claim = await prisma.claim.update({
-        where: { id: existingInactiveClaim.id },
+        where: { id: userExistingClaim.id },
         data: {
-          claimerId: data.claimerId,
           status: "PENDING",
           finderConfirmed: false,
           ownerConfirmed: false
         }
       });
-    } else {
+    } else if (!userExistingClaim) {
+      // New claim - create fresh record
       claim = await prisma.claim.create({
         data: {
           reportId: data.reportId,
           claimerId: data.claimerId,
         },
       });
+    } else {
+      // User already has an active claim
+      return res.status(400).json({ status: "error", message: "You already have an active claim for this item" });
     }
     
     res.json({

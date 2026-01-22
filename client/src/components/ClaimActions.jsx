@@ -365,16 +365,16 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
               </div>
             </div>
             
-            <div className="flex gap-3">
+            <div className="flex gap-3 max-[400px]:gap-2">
               <button
                 onClick={() => setShowCancelDialog(false)}
-                className="flex-1 px-4 py-3 bg-gray-100 text-black rounded-xl font-bold hover:bg-gray-200 transition-colors border-2 border-gray-400"
+                className="flex-1 px-4 max-[400px]:px-2 py-3 bg-gray-100 text-black rounded-xl font-bold hover:bg-gray-200 transition-colors border-2 border-gray-400"
               >
                 Keep Claim
               </button>
               <button
                 onClick={confirmCancelClaim}
-                className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors border-2 border-red-700"
+                className="flex-1 px-4 max-[400px]:px-2 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors border-2 border-red-700"
               >
                 Cancel Claim
               </button>
