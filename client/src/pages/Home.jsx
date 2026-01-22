@@ -66,7 +66,7 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-          <h1 className="text-5xl sm:text-7xl font-extrabold italic text-outline-black text-green-600 mb-24 tracking-tight">
+          <h1 className="text-4xl max-[400px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold italic text-outline-black text-green-600 mb-24 tracking-tight">
             Find What's Lost,<br />
             Return What's Found.
           </h1>
@@ -149,16 +149,16 @@ export default function Home() {
 
           <div className="grid grid-cols-2 min-[500px]:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
             {/* Total Items */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-400 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gray-100 border-2 border-gray-400 rounded-xl flex items-center justify-center mb-3">
-                <Package className="text-black w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-blue-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-blue-100 border-2 border-blue-600 rounded-xl flex items-center justify-center mb-3">
+                <Package className="text-blue-600 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
               <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Total Reported</p>
               <h3 className="text-3xl lg:text-4xl font-bold text-black">{stats.total}</h3>
             </div>
 
             {/* Items Solved */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-400 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-green-100 border-2 border-green-600 rounded-xl flex items-center justify-center mb-3">
                 <CheckCircle className="text-green-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
@@ -167,8 +167,8 @@ export default function Home() {
             </div>
 
             {/* Pending Items */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-400 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-amber-100 border-2 border-amber-500 rounded-xl flex items-center justify-center mb-3">
+            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-amber-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-amber-100 border-2 border-amber-600 rounded-xl flex items-center justify-center mb-3">
                 <AlertCircle className="text-amber-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
               <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Pending Items</p>
@@ -176,9 +176,9 @@ export default function Home() {
             </div>
 
             {/* Success Rate */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-400 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gray-100 border-2 border-gray-400 rounded-xl flex items-center justify-center mb-3">
-                <TrendingUp className="text-black w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-purple-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-purple-100 border-2 border-purple-600 rounded-xl flex items-center justify-center mb-3">
+                <TrendingUp className="text-purple-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
               <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Success Rate</p>
               <h3 className="text-3xl lg:text-4xl font-bold text-black">
@@ -187,9 +187,9 @@ export default function Home() {
             </div>
 
             {/* Active Users */}
-            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-400 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gray-100 border-2 border-gray-400 rounded-xl flex items-center justify-center mb-3">
-                <Users className="text-black w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+            <div className="bg-white rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-rose-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
+              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-rose-100 border-2 border-rose-600 rounded-xl flex items-center justify-center mb-3">
+                <Users className="text-rose-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
               </div>
               <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Active Users</p>
               <h3 className="text-3xl lg:text-4xl font-bold text-black">

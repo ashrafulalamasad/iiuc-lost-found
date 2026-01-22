@@ -37,7 +37,7 @@ const Navbar = () => {
       }`}
     >
       <div className="flex items-center justify-between lg:justify-center gap-2">
-        <nav className="max-w-7xl flex-1 bg-blue-200 text-red-600 shadow-md rounded-full">
+        <nav className="max-w-7xl flex-1 bg-blue-200 rounded-full">
           <div className="mx-auto px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 flex justify-between items-center">
         {/* Logo */}
         <NavLink
@@ -140,7 +140,7 @@ const Navbar = () => {
                 handleNavClick();
               }}
             >
-              <div className="w-10 h-10 rounded-full bg-white border-2 border-blue-600 overflow-hidden flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-white border-2 border-black overflow-hidden flex items-center justify-center">
                 {currentUser.photoURL ||
                 currentUser.providerData?.[0]?.photoURL ? (
                   <img
@@ -170,7 +170,7 @@ const Navbar = () => {
               textColor="text-black"
               hoverBgColor="bg-yellow-800"
               hoverTextColor="group-hover/btn:text-white"
-              className="w-32 h-10 sm:w-auto"
+              className="w-32 h-10 sm:w-auto border-2 border-black shadow-md"
               onClick={() => {
                 setOpen(false);
                 handleNavClick();
