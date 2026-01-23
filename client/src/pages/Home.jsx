@@ -19,7 +19,8 @@ export default function Home() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await reportsAPI.getReports();
+        // Fetch all reports for stats calculation (use large limit)
+        const response = await reportsAPI.getReports(null, 1, 1000);
         // Backend returns { data: { reports: [...] } }
         if (response.data?.reports) {
           const transformedPosts = transformReports(response.data.reports);

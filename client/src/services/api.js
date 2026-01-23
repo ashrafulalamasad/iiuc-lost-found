@@ -80,8 +80,14 @@ export const reportsAPI = {
   },
 
   // Get all reports with optional category filter
-  getReports: async (category = null) => {
-    const query = category && category !== 'ALL' ? `?category=${category}` : '';
+  getReports: async (category = null, page = 1, limit = 10, status = null) => {
+    let query = `?page=${page}&limit=${limit}`;
+    if (category && category !== 'ALL') {
+      query += `&category=${category}`;
+    }
+    if (status && status !== 'ALL') {
+      query += `&status=${status}`;
+    }
     return apiRequest(`/reports${query}`);
   },
 

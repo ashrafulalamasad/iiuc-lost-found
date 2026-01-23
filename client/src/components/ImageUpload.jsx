@@ -18,6 +18,8 @@ export default function ImageUpload({ images, setImages, maxImages = 4 }) {
   const handleFileSelect = async (e) => {
     const files = Array.from(e.target.files);
     await processFiles(files);
+    // Reset file input so same file can be selected again
+    e.target.value = "";
   };
 
   const processFiles = async (files) => {
@@ -105,7 +107,7 @@ export default function ImageUpload({ images, setImages, maxImages = 4 }) {
       {images.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {images.map((img, idx) => (
-            <div key={idx} className="relative rounded-xl overflow-hidden border border-slate-200 group bg-slate-100">
+            <div key={idx} className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
               <img
                 src={img.preview}
                 alt={`Preview ${idx + 1}`}
@@ -113,7 +115,8 @@ export default function ImageUpload({ images, setImages, maxImages = 4 }) {
               />
               <button
                 onClick={() => removeImage(idx)}
-                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full transition-opacity hover:bg-red-600 cursor-pointer"
+                style={{ opacity: 1 }}
               >
                 <X size={14} />
               </button>

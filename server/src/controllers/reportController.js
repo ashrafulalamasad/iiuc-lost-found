@@ -71,21 +71,64 @@ export const createReport = async (req, res) => {
 
 export const getAllReports = async (req, res) => {
   try {
-    const { category } = req.query;
+    const { category, status, page = 1, limit = 10 } = req.query;
     const validCategories = ["DOCUMENTS", "ELECTRONICS", "BOOKS_AND_NOTES", "ACCESSORIES", "STATIONERY", "OTHERS", "ALL"];
+    const validStatuses = ["SOLVED", "UNSOLVED", "ALL"];
+    
     if (category && !validCategories.includes(category)) {
       return res.status(400).json({
         status: "error",
         message: "Invalid category."
       });
     }
+    
+    if (status && !validStatuses.includes(status)) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid status."
+      });
+    }
+    
+    // Parse pagination parameters
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    
+    // Validate pagination parameters
+    if (isNaN(pageNum) || pageNum < 1) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid page number."
+      });
+    }
+    if (isNaN(limitNum) || limitNum < 1 || limitNum > 1000) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid limit. Must be between 1 and 1000."
+      });
+    }
+    
     const whereClause = {};
     if (category && category !== "ALL") {
       whereClause.category = category;
     }
+    if (status && status !== "ALL") {
+      whereClause.status = status;
+    }
+    
+    // Calculate skip value for pagination
+    const skip = (pageNum - 1) * limitNum;
+    
+    // Get total count for pagination metadata
+    const totalCount = await prisma.report.count({
+      where: whereClause
+    });
+    
+    // Fetch paginated reports
     const reports = await prisma.report.findMany({
       where: whereClause,
       orderBy: { createdAt: "desc" },
+      skip: skip,
+      take: limitNum,
       include: {
         finder: {
           select: { id: true, fullName: true, email: true, profilePic: true, gender: true }
@@ -99,10 +142,26 @@ export const getAllReports = async (req, res) => {
         }
       }
     });
+    
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limitNum);
+    const hasNextPage = pageNum < totalPages;
+    const hasPrevPage = pageNum > 1;
+    
     res.json({
       status: "success",
       message: "Reports fetched successfully",
-      data: { reports },
+      data: { 
+        reports,
+        pagination: {
+          currentPage: pageNum,
+          totalPages: totalPages,
+          totalCount: totalCount,
+          limit: limitNum,
+          hasNextPage: hasNextPage,
+          hasPrevPage: hasPrevPage
+        }
+      },
     });
   } catch (err) {
     res.status(500).json({
