@@ -263,7 +263,7 @@ const Chat = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          className="flex-1 bg-white shadow-lg border-x-2 border-gray-400 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[calc(100vh-280px)]"
+          className="flex-1 bg-white shadow-lg border-x-2 border-gray-400 overflow-y-auto p-4 space-y-4 min-h-100 max-h-[calc(100vh-280px)]"
         >
           {messages.length === 0 ? (
             <div className="h-full flex items-center justify-center">

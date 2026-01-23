@@ -162,22 +162,29 @@ const Navbar = () => {
               </span>
             </Link>
           ) : (
-            <Button
-              to="/login"
-              size="md"
-              icon={LogIn}
-              bgColor="bg-green-600"
-              textColor="text-black"
-              hoverBgColor="bg-yellow-800"
-              hoverTextColor="group-hover/btn:text-white"
-              className="w-32 h-10 sm:w-auto border-2 border-black shadow-md"
+            <div
               onClick={() => {
                 setOpen(false);
                 handleNavClick();
               }}
             >
-              Sign In
-            </Button>
+              <Button
+                to="/login"
+                size="md"
+                icon={LogIn}
+                bgColor="bg-green-600"
+                textColor="text-black"
+                hoverBgColor="bg-yellow-800"
+                hoverTextColor="group-hover/btn:text-white"
+                className="w-32 h-10 sm:w-auto border-2 border-black shadow-md"
+                onClick={() => {
+                  setOpen(false);
+                  handleNavClick();
+                }}
+              >
+                Sign In
+              </Button>
+            </div>
           )}
         </div>
       </div>

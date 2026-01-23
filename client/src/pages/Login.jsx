@@ -1,21 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Button from "../components/Button";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, currentUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // If user is already authenticated (e.g. after mobile redirect sign-in),
+  // navigate away from the login page
+  useEffect(() => {
+    if (currentUser) {
+      const from = location.state?.from || "/";
+      navigate(from, { replace: true });
+    }
+  }, [currentUser, navigate, location.state]);
 
   const handleLogin = async () => {
     if (isLoggingIn) return;
     setIsLoggingIn(true);
 
     try {
-      await login();
-      // Redirect to the page they were trying to access, or home
+      const result = await login();
+      // On production mobile, login() may return null (redirect flow).
+      // The page will reload and onAuthStateChanged + useEffect handles navigation.
+      if (!result) return;
       const from = location.state?.from || "/";
       navigate(from);
     } catch (error) {

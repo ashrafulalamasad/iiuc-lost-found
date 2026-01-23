@@ -86,7 +86,7 @@ export default function Profile() {
 
   return (
     <div className="pt-28 pb-12 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-      <div className="max-w-6xl mx-auto px-4 max-[400px]:px-2 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-3 max-[400px]:px-2 sm:px-6 lg:px-8">
         <BackButton />
         <div className="bg-white rounded-xl shadow-xl border-2 border-gray-400 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
           {/* Header */}
@@ -128,7 +128,7 @@ export default function Profile() {
                   <p className="text-xs sm:text-sm md:text-base text-gray-600 font-bold uppercase tracking-wider mb-0.5">
                     Email Address
                   </p>
-                  <p className="text-black font-bold text-sm sm:text-base md:text-lg truncate">
+                  <p className="text-black font-bold text-md sm:text-lg md:text-xl truncate">
                     {currentUser?.email}
                   </p>
                 </div>
@@ -142,7 +142,7 @@ export default function Profile() {
                   <p className="text-xs sm:text-sm md:text-base text-gray-600 font-bold uppercase tracking-wider mb-0.5">
                     Gender
                   </p>
-                  <p className="text-black font-bold text-sm sm:text-base md:text-lg flex items-center gap-2">
+                  <p className="text-black font-bold text-md sm:text-lg md:text-xl flex items-center gap-2">
                     {backendUser?.gender ? (
                       backendUser.gender === 'MALE' ? (
                         <><Mars size={18} strokeWidth={2.5} className="inline" /> Male</>
@@ -161,7 +161,7 @@ export default function Profile() {
                   <p className="text-xs sm:text-sm md:text-base text-gray-600 font-bold uppercase tracking-wider mb-0.5">
                     Member Since
                   </p>
-                  <p className="text-black font-bold text-sm sm:text-base md:text-lg">{getJoinedDate()}</p>
+                  <p className="text-black font-bold text-md sm:text-lg md:text-xl">{getJoinedDate()}</p>
                 </div>
               </div>
             </div>
@@ -183,17 +183,17 @@ export default function Profile() {
 
         {/* flex flex-row max-[360px]:flex-col items-start gap-3 mb-8 */}
         <div className="mt-10">
-          <div className="flex flex-wrap items-start gap-x-3 gap-y-2 mb-8 w-full">
+          <div className="flex flex-wrap items-start gap-x-2 sm:gap-x-4 gap-y-2 sm:gap-y-4 mb-8 w-full">
             <button
               onClick={() => setActiveTab('reports')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
+              className={`flex items-center gap-2 max-[400px]:gap-1 md:gap-3 px-2 sm:px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'reports'
                   ? 'bg-green-600 text-black border-black scale-105'
-                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-500 hover:border-green-600'
               }`}
             >
               <Package size={20} strokeWidth={2.5} />
-              <span className="text-base">My Reports</span>
+              <span className="text-sm sm:text-md md:text-lg">My Reports</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'reports' 
                   ? 'bg-black text-white' 
@@ -204,14 +204,14 @@ export default function Profile() {
             </button>
             <button
               onClick={() => setActiveTab('claims')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
+              className={`flex items-center gap-2 max-[400px]:gap-1 md:gap-3 px-2 sm:px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'claims'
                   ? 'bg-green-600 text-black border-black scale-105'
-                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-500 hover:border-green-600'
               }`}
             >
               <ClipboardList size={20} strokeWidth={2.5} />
-              <span className="text-base">My Claims</span>
+              <span className="text-sm sm:text-md md:text-lg">My Claims</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'claims' 
                   ? 'bg-black text-white' 
@@ -222,14 +222,14 @@ export default function Profile() {
             </button>
             <button
               onClick={() => setActiveTab('pendingReports')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
+              className={`flex items-center gap-2 max-[400px]:gap-1 md:gap-3 px-2 sm:px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'pendingReports'
                   ? 'bg-amber-500 text-black border-black scale-105'
-                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-500 hover:border-green-600'
               }`}
             >
               <Package size={20} strokeWidth={2.5} />
-              <span className="text-base">Pending Reports</span>
+              <span className="text-sm sm:text-md md:text-lg">Pending Reports</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'pendingReports'
                   ? 'bg-black text-white'
@@ -240,14 +240,14 @@ export default function Profile() {
             </button>
             <button
               onClick={() => setActiveTab('unsolvedClaims')}
-              className={`flex items-center gap-2.5 px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
+              className={`flex items-center gap-2 max-[400px]:gap-1 md:gap-3 px-2 sm:px-4 py-4 rounded-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer border-2 ${
                 activeTab === 'unsolvedClaims'
-                  ? 'bg-black text-white border-gray-400 scale-105'
-                  : 'bg-white text-black hover:bg-gray-100 border-gray-400'
+                  ? 'bg-black text-white border-gray-500 scale-105'
+                  : 'bg-white text-black hover:bg-gray-100 border-gray-500 hover:border-green-600'
               }`}
             >
               <ClipboardList size={20} strokeWidth={2.5} />
-              <span className="text-base">Unsolved Claims</span>
+              <span className="text-sm sm:text-md md:text-lg">Unsolved Claims</span>
               <span className={`ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                 activeTab === 'unsolvedClaims'
                   ? 'bg-white text-black'

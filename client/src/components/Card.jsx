@@ -75,7 +75,7 @@ export default function Card({ post }) {
                   <>
                     <span className="mx-1">•</span>
                     <Phone size={16} strokeWidth={2.5} />
-                    <span className="truncate max-w-[120px]">{post.contact}</span>
+                    <span className="truncate max-w-30">{post.contact}</span>
                   </>
                 )}
               </div>

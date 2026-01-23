@@ -1,6 +1,10 @@
 // API Service Layer - Connects frontend to backend
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// In development, use Vite's proxy (/api) so it works from any device on the LAN.
+// In production, use the configured VITE_API_URL.
+const API_BASE_URL = import.meta.env.PROD
+  ? (import.meta.env.VITE_API_URL || '')
+  : '/api';
 
 // Helper function for API requests
 

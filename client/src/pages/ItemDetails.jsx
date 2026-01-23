@@ -211,7 +211,7 @@ export default function ItemDetails() {
           {/* Left Column - Images */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div className="relative bg-white rounded-xl overflow-hidden shadow-lg border-2 border-gray-400 h-96 lg:h-[500px] flex items-center">
+            <div className="relative bg-white rounded-xl overflow-hidden shadow-lg border-2 border-gray-400 h-96 lg:h-125 flex items-center">
               {item.images && item.images.length > 0 ? (
                 <>
                   <img

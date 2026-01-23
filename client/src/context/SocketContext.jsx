@@ -6,7 +6,9 @@ const SocketContext = createContext();
 
 export const useSocket = () => useContext(SocketContext);
 
-const SOCKET_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const SOCKET_URL = import.meta.env.PROD
+  ? (import.meta.env.VITE_API_URL || "")
+  : `http://${window.location.hostname}:3000`;
 
 export const SocketProvider = ({ children }) => {
   const { currentUser, backendUser } = useAuth();

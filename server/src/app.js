@@ -15,7 +15,25 @@ const httpServer = createServer(app);
 const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:", "https://iiuc-lost-found.vercel.app"],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://iiuc-lost-found.vercel.app",
+    ];
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    // or from allowed origins, or from any 192.168.x.x LAN IP for dev
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      /^http:\/\/192\.168\.\d+\.\d+(:\d+)?$/.test(origin) ||
+      /^http:\/\/10\.\d+\.\d+\.\d+(:\d+)?$/.test(origin) ||
+      /^http:\/\/172\.(1[6-9]|2\d|3[01])\.\d+\.\d+(:\d+)?$/.test(origin)
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 };
 
@@ -40,6 +58,6 @@ app.get("/ping", (req, res) => {
   res.send("Server is awake! 🟢");
 });
 
-httpServer.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+httpServer.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

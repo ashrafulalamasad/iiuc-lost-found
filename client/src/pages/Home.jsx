@@ -126,7 +126,7 @@ export default function Home() {
               }}
             >
               {[...posts, ...posts].map((item, idx) => (
-                <div key={`${item.id}-${idx}`} className="w-[400px] shrink-0">
+                <div key={`${item.id}-${idx}`} className="w-100 shrink-0">
                   <Card post={item} />
                 </div>
               ))}

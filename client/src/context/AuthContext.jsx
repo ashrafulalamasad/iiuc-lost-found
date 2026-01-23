@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
-import { auth, googleProvider } from "../firebase";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, signInWithGoogle, handleRedirectResult } from "../firebase";
 import { authAPI } from "../services/api";
 
 const AuthContext = createContext();
@@ -39,7 +39,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async () => {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithGoogle();
+    // On mobile, signInWithRedirect returns null (page redirects)
+    if (!result) return null;
     const user = result.user;
 
     // ============ EMAIL RESTRICTION TOGGLE ============
@@ -76,6 +78,15 @@ export const AuthProvider = ({ children }) => {
       await syncWithBackend(currentUser);
     }
   };
+
+  // Handle redirect result on page load (for production mobile redirect fallback)
+  useEffect(() => {
+    if (window.location.protocol === 'https:') {
+      handleRedirectResult().catch((error) => {
+        console.error('Redirect result error:', error);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
