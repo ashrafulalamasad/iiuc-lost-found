@@ -17,6 +17,15 @@ export default function Profile() {
   const [unsolvedClaims, setUnsolvedClaims] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Pagination state per tab
+  const [tabPages, setTabPages] = useState({
+    reports: 1,
+    claims: 1,
+    pendingReports: 1,
+    unsolvedClaims: 1,
+  });
+  const itemsPerPage = 10;
+
   // Get the photo URL - try photoURL first, then fallback to providerData
   
   const getPhotoURL = () => {
@@ -49,6 +58,129 @@ export default function Profile() {
       });
     }
     return 'N/A';
+  };
+
+  // Pagination helpers
+  const setTabPage = (tab, page) => {
+    setTabPages(prev => ({ ...prev, [tab]: page }));
+  };
+
+  const getPaginatedItems = (items, tab) => {
+    const page = tabPages[tab];
+    const start = (page - 1) * itemsPerPage;
+    return items.slice(start, start + itemsPerPage);
+  };
+
+  const renderPagination = (items, tab) => {
+    const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
+    const currentPage = tabPages[tab];
+
+    if (totalPages <= 1) return null;
+
+    const pages = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i);
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push('...');
+        pages.push(currentPage - 1);
+        pages.push(currentPage);
+        pages.push(currentPage + 1);
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+
+    return (
+      <div className="mt-12 mb-8">
+        <div className="flex flex-col items-center gap-4">
+          <div className="text-center">
+            <p className="text-sm sm:text-base font-semibold text-gray-600">
+              Page <span className="text-green-600 font-bold">{currentPage}</span> of{' '}
+              <span className="text-green-600 font-bold">{totalPages}</span>
+              <span className="mx-2">&bull;</span>
+              <span className="text-gray-700">{items.length} total items</span>
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+            {/* Previous button */}
+            <button
+              onClick={() => {
+                setTabPage(tab, Math.max(1, currentPage - 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              disabled={currentPage === 1}
+              className={`px-3 max-[400px]:px-2 sm:px-4 py-2 max-[400px]:py-1.5 sm:py-2.5 rounded-lg font-bold transition-all duration-200 border-2 text-xs sm:text-sm ${
+                currentPage === 1
+                  ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+                  : 'bg-white text-black border-gray-400 hover:bg-green-600 hover:text-white hover:border-black hover:scale-105 hover:shadow-lg cursor-pointer'
+              }`}
+            >
+              Previous
+            </button>
+
+            {/* Page numbers */}
+            {pages.map((page, idx) => {
+              if (page === '...') {
+                return (
+                  <span
+                    key={`ellipsis-${idx}`}
+                    className="px-2 max-[400px]:px-1 text-gray-500 font-bold"
+                  >
+                    ...
+                  </span>
+                );
+              }
+
+              return (
+                <button
+                  key={page}
+                  onClick={() => {
+                    setTabPage(tab, page);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className={`min-w-9 max-[400px]:min-w-7 sm:min-w-10 px-3 max-[400px]:px-2 sm:px-4 py-2 max-[400px]:py-1.5 sm:py-2.5 rounded-lg font-bold transition-all duration-200 border-2 text-xs sm:text-sm ${
+                    currentPage === page
+                      ? 'bg-green-600 text-white border-black scale-110 shadow-xl'
+                      : 'bg-white text-black border-gray-400 hover:bg-gray-100 hover:border-green-600 hover:scale-105 hover:shadow-lg cursor-pointer'
+                  }`}
+                >
+                  {page}
+                </button>
+              );
+            })}
+
+            {/* Next button */}
+            <button
+              onClick={() => {
+                setTabPage(tab, Math.min(totalPages, currentPage + 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              disabled={currentPage === totalPages}
+              className={`px-3 max-[400px]:px-2 sm:px-4 py-2 max-[400px]:py-1.5 sm:py-2.5 rounded-lg font-bold transition-all duration-200 border-2 text-xs sm:text-sm ${
+                currentPage === totalPages
+                  ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+                  : 'bg-white text-black border-gray-400 hover:bg-green-600 hover:text-white hover:border-black hover:scale-105 hover:shadow-lg cursor-pointer'
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   // Fetch user's reports and claims
@@ -267,11 +399,14 @@ export default function Profile() {
                   <span className="text-black font-bold text-lg">Loading your reports...</span>
                 </div>
               ) : userReports.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {userReports.map(post => (
-                    <Card key={post.id} post={post} isOwner={true} />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {getPaginatedItems(userReports, 'reports').map(post => (
+                      <Card key={post.id} post={post} isOwner={true} />
+                    ))}
+                  </div>
+                  {renderPagination(userReports, 'reports')}
+                </>
               ) : (
                 <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
                   <div className="p-4 bg-gray-100 border-2 border-gray-400 rounded-full w-fit mx-auto mb-5">
@@ -293,11 +428,14 @@ export default function Profile() {
                   <span className="text-black font-bold text-lg">Loading your claims...</span>
                 </div>
               ) : userClaims.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {userClaims.map(claim => (
-                    <Card key={claim.id} post={transformReport(claim.report)} />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {getPaginatedItems(userClaims, 'claims').map(claim => (
+                      <Card key={claim.id} post={transformReport(claim.report)} />
+                    ))}
+                  </div>
+                  {renderPagination(userClaims, 'claims')}
+                </>
               ) : (
                 <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
                   <div className="p-4 bg-gray-100 border-2 border-gray-400 rounded-full w-fit mx-auto mb-5">
@@ -319,11 +457,14 @@ export default function Profile() {
                   <span className="text-black font-bold text-lg">Loading pending reports...</span>
                 </div>
               ) : pendingReports.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {pendingReports.map(post => (
-                    <Card key={post.id} post={post} isOwner={true} />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {getPaginatedItems(pendingReports, 'pendingReports').map(post => (
+                      <Card key={post.id} post={post} isOwner={true} />
+                    ))}
+                  </div>
+                  {renderPagination(pendingReports, 'pendingReports')}
+                </>
               ) : (
                 <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
                   <div className="p-4 bg-amber-100 border-2 border-amber-500 rounded-full w-fit mx-auto mb-5">
@@ -345,11 +486,14 @@ export default function Profile() {
                   <span className="text-black font-bold text-lg">Loading unsolved claims...</span>
                 </div>
               ) : unsolvedClaims.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {unsolvedClaims.map(claim => (
-                    <Card key={claim.id} post={transformReport(claim.report)} />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {getPaginatedItems(unsolvedClaims, 'unsolvedClaims').map(claim => (
+                      <Card key={claim.id} post={transformReport(claim.report)} />
+                    ))}
+                  </div>
+                  {renderPagination(unsolvedClaims, 'unsolvedClaims')}
+                </>
               ) : (
                 <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-400 hover:border-green-600 transition-colors shadow-lg">
                   <div className="p-4 bg-gray-100 border-2 border-gray-400 rounded-full w-fit mx-auto mb-5">
