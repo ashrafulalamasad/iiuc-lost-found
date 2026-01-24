@@ -14,6 +14,7 @@ import Chat from "./pages/Chat";
 import GenderModal from "./components/GenderModal";
 import { useAuth } from "./context/AuthContext";
 import { authAPI } from "./services/api";
+import { Analytics } from "@vercel/analytics/react"
 
 function ProtectedRoute({ children }) {
   const { currentUser, loading } = useAuth();
@@ -123,6 +124,7 @@ function App() {
       </main>
 
       <Footer />
+      <Analytics />
     </div>
   );
 }
