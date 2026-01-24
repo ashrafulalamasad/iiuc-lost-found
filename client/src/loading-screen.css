@@ -1,0 +1,292 @@
+/* ============================================================
+   Loading Screen — IIUC Lost & Found
+   ============================================================ */
+
+.ls-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #15803d 0%, transparent 60%),
+    radial-gradient(900px 600px at 110% 110%, #047857 0%, transparent 55%),
+    radial-gradient(700px 500px at -10% 110%, #365314 0%, transparent 50%),
+    linear-gradient(160deg, #020e07 0%, #052e1b 55%, #03190f 100%);
+  color: #f0fdf4;
+  transition:
+    opacity 0.6s ease,
+    visibility 0.6s ease;
+}
+
+.ls-overlay.ls-exiting {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---------- Animated background ---------- */
+
+.ls-grid {
+  position: absolute;
+  inset: -2px;
+  background-image:
+    linear-gradient(rgba(134, 239, 172, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(134, 239, 172, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    #000 0%,
+    transparent 72%
+  );
+  animation: ls-grid-pan 22s linear infinite;
+}
+
+@keyframes ls-grid-pan {
+  to {
+    background-position: 56px 56px;
+  }
+}
+
+.ls-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.55;
+  animation: ls-float 9s ease-in-out infinite;
+}
+.ls-orb-1 {
+  width: 340px;
+  height: 340px;
+  top: -90px;
+  left: -70px;
+  background: #22c55e;
+}
+.ls-orb-2 {
+  width: 420px;
+  height: 420px;
+  bottom: -140px;
+  right: -110px;
+  background: #16a34a;
+  animation-delay: -3s;
+}
+.ls-orb-3 {
+  width: 260px;
+  height: 260px;
+  top: 55%;
+  left: 62%;
+  background: #65a30d;
+  opacity: 0.4;
+  animation-delay: -5.5s;
+}
+
+@keyframes ls-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(26px, -34px, 0) scale(1.12);
+  }
+}
+
+/* ---------- Content ---------- */
+
+.ls-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ---------- Radar ---------- */
+
+.ls-radar {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  display: grid;
+  place-items: center;
+}
+
+.ls-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(52, 211, 153, 0.4);
+  animation: ls-pulse 2.6s ease-out infinite;
+}
+.ls-ring-2 {
+  animation-delay: 0.85s;
+}
+.ls-ring-3 {
+  animation-delay: 1.7s;
+}
+
+@keyframes ls-pulse {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+.ls-sweep {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(52, 211, 153, 0) 0deg,
+    rgba(52, 211, 153, 0) 300deg,
+    rgba(52, 211, 153, 0.55) 355deg,
+    rgba(134, 239, 172, 0.9) 360deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 26%, #000 27%);
+  mask: radial-gradient(circle, transparent 26%, #000 27%);
+  animation: ls-spin 1.8s linear infinite;
+}
+
+@keyframes ls-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ls-logo {
+  position: relative;
+  z-index: 3;
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #4ade80, #15803d);
+  box-shadow:
+    0 0 0 1px rgba(134, 239, 172, 0.3),
+    0 12px 40px rgba(34, 197, 94, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  animation: ls-bob 2.4s ease-in-out infinite;
+}
+
+.ls-logo img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+@keyframes ls-bob {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-7px) scale(1.05);
+  }
+}
+
+/* ---------- Text ---------- */
+
+.ls-title {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  color: #f0fdf4;
+  text-shadow: 0 4px 24px rgba(2, 20, 10, 0.6);
+}
+
+.ls-grad {
+  background: linear-gradient(90deg, #4ade80, #a3e635, #4ade80);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ls-shimmer 3s linear infinite;
+}
+
+@keyframes ls-shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.ls-tagline {
+  margin: 0;
+  /* System stack on purpose: this renders before index.css (Inter) loads,
+     so a late font swap would make the text visibly change size/shape. */
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  font-size: clamp(0.8rem, 2.6vw, 0.95rem);
+  line-height: 1.5;
+  color: rgba(187, 247, 208, 0.85);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Progress bar ---------- */
+
+.ls-bar {
+  position: relative;
+  width: min(340px, 74vw);
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(134, 239, 172, 0.16);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(2, 20, 10, 0.5);
+}
+
+.ls-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22c55e, #84cc16, #34d399);
+  background-size: 200% auto;
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.8);
+  transition: width 0.25s ease-out;
+  animation: ls-shimmer 1.8s linear infinite;
+}
+
+.ls-percent {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  color: rgba(187, 247, 208, 0.9);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Accessibility ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ls-orb,
+  .ls-grid,
+  .ls-ring,
+  .ls-sweep,
+  .ls-logo,
+  .ls-grad,
+  .ls-fill {
+    animation: none !important;
+  }
+  .ls-fill {
+    animation: none !important;
+    transition: none;
+  }
+}

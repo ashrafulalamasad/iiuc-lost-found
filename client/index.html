@@ -5,12 +5,367 @@
     <link rel="icon" type="image/svg+xml" href="/iiuc-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IIUC Lost & Found</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Expletus+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Orbitron:wght@400..900&family=Play:wght@400;700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Expletus+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Orbitron:wght@400..900&family=Play:wght@400;700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Pre-React loader: shown instantly before the JS bundle boots up -->
+    <!-- Markup + styles are IDENTICAL to src/components/LoadingScreen.jsx -->
+    <!-- so the handoff to React is invisible. -->
+    <div id="initial-loader" class="ls-overlay" aria-hidden="true">
+      <span class="ls-orb ls-orb-1"></span>
+      <span class="ls-orb ls-orb-2"></span>
+      <span class="ls-orb ls-orb-3"></span>
+      <span class="ls-grid"></span>
+
+      <div class="ls-content">
+        <div class="ls-radar">
+          <span class="ls-ring"></span>
+          <span class="ls-ring ls-ring-2"></span>
+          <span class="ls-ring ls-ring-3"></span>
+          <span class="ls-sweep"></span>
+          <div class="ls-logo">
+            <img src="/search.png" alt="" draggable="false" />
+          </div>
+        </div>
+
+        <div class="ls-text">
+          <h1 class="ls-title">
+            IIUC <span class="ls-grad">Lost</span> &amp;
+            <span class="ls-grad">Found</span>
+          </h1>
+          <p class="ls-tagline">Every lost item has a way home…</p>
+        </div>
+
+        <div class="ls-bar"><div class="ls-fill"></div></div>
+      </div>
+    </div>
+
+    <style>
+      /* ===== Shared loading-screen styles (single source of truth) ===== */
+      .ls-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #f0fdf4;
+        background:
+          radial-gradient(
+            1200px 700px at 50% -10%,
+            #15803d 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 600px at 110% 110%,
+            #047857 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            700px 500px at -10% 110%,
+            #365314 0%,
+            transparent 50%
+          ),
+          linear-gradient(160deg, #020e07 0%, #052e1b 55%, #03190f 100%);
+        transition:
+          opacity 0.6s ease,
+          visibility 0.6s ease;
+      }
+      .ls-overlay.ls-exiting,
+      #initial-loader.ls-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .ls-grid {
+        position: absolute;
+        inset: -2px;
+        background-image:
+          linear-gradient(rgba(134, 239, 172, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(134, 239, 172, 0.08) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(
+          circle at 50% 50%,
+          #000 0%,
+          transparent 72%
+        );
+        -webkit-mask-image: radial-gradient(
+          circle at 50% 50%,
+          #000 0%,
+          transparent 72%
+        );
+        animation: ls-grid-pan 22s linear infinite;
+      }
+      @keyframes ls-grid-pan {
+        to {
+          background-position: 56px 56px;
+        }
+      }
+
+      .ls-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(46px);
+        opacity: 0.55;
+        animation: ls-float 9s ease-in-out infinite;
+      }
+      .ls-orb-1 {
+        width: 340px;
+        height: 340px;
+        top: -90px;
+        left: -70px;
+        background: #22c55e;
+      }
+      .ls-orb-2 {
+        width: 420px;
+        height: 420px;
+        bottom: -140px;
+        right: -110px;
+        background: #16a34a;
+        animation-delay: -3s;
+      }
+      .ls-orb-3 {
+        width: 260px;
+        height: 260px;
+        top: 55%;
+        left: 62%;
+        background: #65a30d;
+        opacity: 0.4;
+        animation-delay: -5.5s;
+      }
+      @keyframes ls-float {
+        0%,
+        100% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          transform: translate3d(26px, -34px, 0) scale(1.12);
+        }
+      }
+
+      .ls-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.75rem;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .ls-radar {
+        position: relative;
+        width: 168px;
+        height: 168px;
+        display: grid;
+        place-items: center;
+      }
+      .ls-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 1.5px solid rgba(52, 211, 153, 0.4);
+        animation: ls-pulse 2.6s ease-out infinite;
+      }
+      .ls-ring-2 {
+        animation-delay: 0.85s;
+      }
+      .ls-ring-3 {
+        animation-delay: 1.7s;
+      }
+      @keyframes ls-pulse {
+        0% {
+          transform: scale(0.55);
+          opacity: 0.9;
+        }
+        100% {
+          transform: scale(1.25);
+          opacity: 0;
+        }
+      }
+      .ls-sweep {
+        position: absolute;
+        inset: 12px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 0deg,
+          rgba(52, 211, 153, 0) 0deg,
+          rgba(52, 211, 153, 0) 300deg,
+          rgba(52, 211, 153, 0.55) 355deg,
+          rgba(134, 239, 172, 0.9) 360deg
+        );
+        -webkit-mask: radial-gradient(circle, transparent 26%, #000 27%);
+        mask: radial-gradient(circle, transparent 26%, #000 27%);
+        animation: ls-spin 1.8s linear infinite;
+      }
+      @keyframes ls-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .ls-logo {
+        position: relative;
+        z-index: 3;
+        width: 76px;
+        height: 76px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #4ade80, #15803d);
+        box-shadow:
+          0 0 0 1px rgba(134, 239, 172, 0.3),
+          0 12px 40px rgba(34, 197, 94, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        animation: ls-bob 2.4s ease-in-out infinite;
+      }
+      .ls-logo img {
+        width: 42px;
+        height: 42px;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
+      }
+      @keyframes ls-bob {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-7px) scale(1.05);
+        }
+      }
+
+      .ls-title {
+        margin: 0;
+        font-family: "Orbitron", sans-serif;
+        font-weight: 700;
+        font-size: clamp(1.6rem, 5vw, 2.6rem);
+        letter-spacing: 0.06em;
+        line-height: 1.15;
+        color: #f0fdf4;
+        text-shadow: 0 4px 24px rgba(2, 20, 10, 0.6);
+      }
+      .ls-grad {
+        background: linear-gradient(90deg, #4ade80, #a3e635, #4ade80);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: ls-shimmer 3s linear infinite;
+      }
+      @keyframes ls-shimmer {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      .ls-tagline {
+        margin: 0;
+        /* System stack: must match loading-screen.css exactly so the pre-React
+           loader and the React loader render the tagline identically. */
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        font-size: clamp(0.8rem, 2.6vw, 0.95rem);
+        line-height: 1.5;
+        color: rgba(187, 247, 208, 0.85);
+        letter-spacing: 0.02em;
+      }
+
+      .ls-bar {
+        position: relative;
+        width: min(340px, 74vw);
+        height: 5px;
+        border-radius: 999px;
+        background: rgba(134, 239, 172, 0.16);
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(2, 20, 10, 0.5);
+      }
+      .ls-fill {
+        height: 100%;
+        width: 6%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #22c55e, #84cc16, #34d399);
+        background-size: 200% auto;
+        box-shadow: 0 0 14px rgba(52, 211, 153, 0.8);
+        animation:
+          ls-creep 3.5s ease-out forwards,
+          ls-shimmer 1.8s linear infinite;
+      }
+      @keyframes ls-creep {
+        0% {
+          width: 6%;
+        }
+        60% {
+          width: 70%;
+        }
+        100% {
+          width: 88%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ls-orb,
+        .ls-grid,
+        .ls-ring,
+        .ls-sweep,
+        .ls-logo,
+        .ls-grad,
+        .ls-fill {
+          animation: none !important;
+        }
+      }
+    </style>
+
+    <script>
+      // Hide the pre-React loader once React takes over the #root node.
+      // React renders an identical loader, so this crossfade is invisible.
+      (function () {
+        var loader = document.getElementById("initial-loader");
+        if (!loader) return;
+        function hide() {
+          loader.classList.add("ls-hidden");
+          setTimeout(function () {
+            loader.remove();
+          }, 700);
+        }
+        var root = document.getElementById("root");
+        if (root && root.childNodes.length) {
+          hide();
+          return;
+        }
+        var observer = new MutationObserver(function () {
+          if (root && root.childNodes.length) {
+            observer.disconnect();
+            hide();
+          }
+        });
+        observer.observe(root, { childList: true });
+        window.addEventListener("load", function () {
+          setTimeout(function () {
+            observer.disconnect();
+            if (document.getElementById("initial-loader")) hide();
+          }, 4000);
+        });
+      })();
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

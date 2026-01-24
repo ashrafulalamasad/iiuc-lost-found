@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, signInWithGoogle, handleRedirectResult } from "../firebase";
 import { authAPI } from "../services/api";
+import LoadingScreen from "../components/LoadingScreen";
+import "../loading-screen.css";
 
 const AuthContext = createContext();
 
@@ -10,6 +12,17 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [backendUser, setBackendUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Brief fade-out so the loading screen doesn't snap away
+  const [loaderExiting, setLoaderExiting] = useState(false);
+
+  // Minimum time the loading screen stays visible, even if auth + backend
+  // resolve instantly, so users actually get to see the animation.
+  const MIN_LOAD_MS = 3000;
+
+  // Hard cap: never let the loading screen hang forever if the backend is
+  // slow or unreachable. Auth may still resolve afterwards and update state.
+  const MAX_LOAD_MS = 4000;
 
   const syncWithBackend = async (firebaseUser) => {
     try {
@@ -49,10 +62,10 @@ export const AuthProvider = ({ children }) => {
 
     // -------- PRODUCTION MODE (IIUC emails only) --------
 
-    if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
-      await signOut(auth);
-      throw new Error("Only @ugrad.iiuc.ac.bd emails are allowed.");
-    }
+    // if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
+    //   await signOut(auth);
+    //   throw new Error("Only @ugrad.iiuc.ac.bd emails are allowed.");
+    // }
 
     // ----------------------------------------------------
 
@@ -63,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     // ==================================================
 
     const backendUserData = await syncWithBackend(user);
-    console.log('Login completed, backend user:', backendUserData);
+    console.log("Login completed, backend user:", backendUserData);
 
     return user;
   };
@@ -81,14 +94,31 @@ export const AuthProvider = ({ children }) => {
 
   // Handle redirect result on page load (for production mobile redirect fallback)
   useEffect(() => {
-    if (window.location.protocol === 'https:') {
+    if (window.location.protocol === "https:") {
       handleRedirectResult().catch((error) => {
-        console.error('Redirect result error:', error);
+        console.error("Redirect result error:", error);
       });
     }
   }, []);
 
   useEffect(() => {
+    const startedAt = Date.now();
+    let dismissed = false;
+
+    // Smooth fade-out before revealing the app, clamped to the minimum time.
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      const wait = Math.max(0, MIN_LOAD_MS - (Date.now() - startedAt));
+      setTimeout(() => {
+        setLoaderExiting(true);
+        setTimeout(() => setLoading(false), 650);
+      }, wait);
+    };
+
+    // Safety net: dismiss the loader even if auth/backend never responds.
+    const cap = setTimeout(dismiss, MAX_LOAD_MS);
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         // ============ EMAIL RESTRICTION TOGGLE ============
@@ -96,22 +126,25 @@ export const AuthProvider = ({ children }) => {
 
         // -------- PRODUCTION MODE (IIUC emails only) --------
 
-        if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
-          signOut(auth);
-          setCurrentUser(null);
-          setBackendUser(null);
-        } else {
-          setCurrentUser(user);
-          const backendUserData = await syncWithBackend(user);
-          console.log('Auth state changed, backend user loaded:', backendUserData);
-        }
+        // if (!user.email.endsWith("@ugrad.iiuc.ac.bd")) {
+        //   signOut(auth);
+        //   setCurrentUser(null);
+        //   setBackendUser(null);
+        // } else {
+        //   setCurrentUser(user);
+        //   const backendUserData = await syncWithBackend(user);
+        //   console.log('Auth state changed, backend user loaded:', backendUserData);
+        // }
 
         // ----------------------------------------------------
 
         // -------- DEVELOPMENT MODE (all emails allowed) --------
         setCurrentUser(user);
         const backendUserData = await syncWithBackend(user);
-        console.log('Auth state changed, backend user loaded:', backendUserData);
+        console.log(
+          "Auth state changed, backend user loaded:",
+          backendUserData,
+        );
         // -------------------------------------------------------
 
         // ==================================================
@@ -119,10 +152,15 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(null);
         setBackendUser(null);
       }
-      setLoading(false);
+      // Smooth fade-out before revealing the app
+      clearTimeout(cap);
+      dismiss();
     });
 
-    return unsubscribe;
+    return () => {
+      clearTimeout(cap);
+      unsubscribe();
+    };
   }, []);
 
   const value = {
@@ -137,7 +175,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {loading ? <LoadingScreen exiting={loaderExiting} /> : children}
     </AuthContext.Provider>
   );
 };
