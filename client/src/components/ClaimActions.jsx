@@ -290,14 +290,14 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
 
   return (
     <>
-      <div style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div>
         {content}
       </div>
 
       {/* Message Warning Dialog */}
       {showMessageWarning && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border-2 border-gray-400" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border-2 border-gray-400">
             <div className="flex items-start gap-4 mb-6">
               <div className={`p-3 rounded-full ${
                 isOppositeGender ? 'bg-red-100' : 'bg-gray-100'
@@ -352,7 +352,7 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
       {/* Cancel Confirmation Dialog */}
       {showCancelDialog && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border-2 border-gray-400" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border-2 border-gray-400">
             <div className="flex items-start gap-4 mb-6">
               <div className="p-3 bg-amber-100 rounded-full">
                 <AlertCircle size={24} className="text-amber-600" strokeWidth={2.5} />
@@ -386,7 +386,7 @@ export default function ClaimActions({ report, claim, currentUserId, onClaimItem
       {/* Reject Confirmation Dialog */}
       {showRejectDialog && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border-2 border-gray-400" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border-2 border-gray-400">
             <div className="flex items-start gap-4 mb-6">
               <div className="p-3 bg-red-100 rounded-full">
                 <AlertCircle size={24} className="text-red-600" strokeWidth={2.5} />

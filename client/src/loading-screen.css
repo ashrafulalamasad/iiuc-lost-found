@@ -1,24 +1,18 @@
-/* ============================================================
-   Loading Screen — IIUC Lost & Found
-   ============================================================ */
+/* IIUC Lost & Found loading experience */
 
 .ls-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   background:
-    radial-gradient(1200px 700px at 50% -10%, #15803d 0%, transparent 60%),
-    radial-gradient(900px 600px at 110% 110%, #047857 0%, transparent 55%),
-    radial-gradient(700px 500px at -10% 110%, #365314 0%, transparent 50%),
-    linear-gradient(160deg, #020e07 0%, #052e1b 55%, #03190f 100%);
-  color: #f0fdf4;
-  transition:
-    opacity 0.6s ease,
-    visibility 0.6s ease;
+    radial-gradient(circle at 8% 12%, rgba(187, 247, 208, 0.8), transparent 24%),
+    radial-gradient(circle at 92% 88%, rgba(254, 243, 199, 0.8), transparent 28%),
+    #f4f8f5;
+  color: #0f172a;
+  transition: opacity 0.55s ease, visibility 0.55s ease;
 }
 
 .ls-overlay.ls-exiting {
@@ -27,266 +21,209 @@
   pointer-events: none;
 }
 
-/* ---------- Animated background ---------- */
-
-.ls-grid {
-  position: absolute;
-  inset: -2px;
-  background-image:
-    linear-gradient(rgba(134, 239, 172, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(134, 239, 172, 0.08) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 72%);
-  -webkit-mask-image: radial-gradient(
-    circle at 50% 50%,
-    #000 0%,
-    transparent 72%
-  );
-  animation: ls-grid-pan 22s linear infinite;
-}
-
-@keyframes ls-grid-pan {
-  to {
-    background-position: 56px 56px;
-  }
-}
-
-.ls-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(46px);
-  opacity: 0.55;
-  animation: ls-float 9s ease-in-out infinite;
-}
-.ls-orb-1 {
-  width: 340px;
-  height: 340px;
-  top: -90px;
-  left: -70px;
-  background: #22c55e;
-}
-.ls-orb-2 {
-  width: 420px;
-  height: 420px;
-  bottom: -140px;
-  right: -110px;
-  background: #16a34a;
-  animation-delay: -3s;
-}
-.ls-orb-3 {
-  width: 260px;
-  height: 260px;
-  top: 55%;
-  left: 62%;
-  background: #65a30d;
-  opacity: 0.4;
-  animation-delay: -5.5s;
-}
-
-@keyframes ls-float {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(26px, -34px, 0) scale(1.12);
-  }
-}
-
-/* ---------- Content ---------- */
-
-.ls-content {
+.ls-panel {
   position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.75rem;
-  padding: 2rem;
+  width: min(430px, calc(100vw - 2rem));
+  padding: clamp(2rem, 7vw, 3.5rem) clamp(1.5rem, 7vw, 3.5rem);
+  overflow: hidden;
   text-align: center;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #d5e4d9;
+  border-radius: 1.75rem;
+  box-shadow: 0 28px 80px rgba(22, 101, 52, 0.14), 0 2px 6px rgba(15, 23, 42, 0.04);
+  animation: ls-panel-in 0.7s ease both;
 }
 
-/* ---------- Radar ---------- */
-
-.ls-radar {
-  position: relative;
-  width: 168px;
-  height: 168px;
-  display: grid;
-  place-items: center;
-}
-
-.ls-ring {
+.ls-panel::before {
   position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1.5px solid rgba(52, 211, 153, 0.4);
-  animation: ls-pulse 2.6s ease-out infinite;
-}
-.ls-ring-2 {
-  animation-delay: 0.85s;
-}
-.ls-ring-3 {
-  animation-delay: 1.7s;
+  inset: 0 0 auto;
+  height: 5px;
+  content: "";
+  background: linear-gradient(90deg, #16a34a, #84cc16, #f59e0b);
 }
 
-@keyframes ls-pulse {
-  0% {
-    transform: scale(0.55);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1.25);
+@keyframes ls-panel-in {
+  from {
     opacity: 0;
+    transform: translateY(10px);
   }
-}
-
-.ls-sweep {
-  position: absolute;
-  inset: 12px;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
-    rgba(52, 211, 153, 0) 0deg,
-    rgba(52, 211, 153, 0) 300deg,
-    rgba(52, 211, 153, 0.55) 355deg,
-    rgba(134, 239, 172, 0.9) 360deg
-  );
-  -webkit-mask: radial-gradient(circle, transparent 26%, #000 27%);
-  mask: radial-gradient(circle, transparent 26%, #000 27%);
-  animation: ls-spin 1.8s linear infinite;
-}
-
-@keyframes ls-spin {
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+.ls-brand {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 1.75rem;
+  overflow: visible;
 }
 
 .ls-logo {
-  position: relative;
-  z-index: 3;
-  width: 76px;
-  height: 76px;
   display: grid;
+  width: 88px;
+  height: 88px;
   place-items: center;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #4ade80, #15803d);
-  box-shadow:
-    0 0 0 1px rgba(134, 239, 172, 0.3),
-    0 12px 40px rgba(34, 197, 94, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  animation: ls-bob 2.4s ease-in-out infinite;
+  background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+  border: 1px solid #86efac;
+  border-radius: 1.5rem;
+  box-shadow: 0 14px 28px rgba(22, 163, 74, 0.14), inset 0 1px 0 #fff;
+  animation: ls-logo-bob 2.8s ease-in-out infinite;
 }
 
 .ls-logo img {
-  width: 42px;
-  height: 42px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
 }
 
-@keyframes ls-bob {
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
+.ls-status-dot {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: -5px;
+  width: 11px;
+  height: 11px;
+  margin: 0;
+  background: #22c55e;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 3px #bbf7d0;
+  animation: ls-status-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes ls-logo-bob {
+  0%, 100% {
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-7px) scale(1.05);
+    transform: translateY(-4px);
   }
 }
 
-/* ---------- Text ---------- */
+@keyframes ls-status-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(187, 247, 208, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(187, 247, 208, 0.35);
+  }
+}
+
+.ls-text {
+  margin-bottom: 2rem;
+}
 
 .ls-title {
   margin: 0;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(1.6rem, 5vw, 2.6rem);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  line-height: 1.15;
-  color: #f0fdf4;
-  text-shadow: 0 4px 24px rgba(2, 20, 10, 0.6);
+  color: #0f172a;
+  font-family: "Plus Jakarta Sans", "Space Grotesk", sans-serif;
+  font-size: clamp(1.7rem, 7vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
 }
 
-.ls-grad {
-  background: linear-gradient(90deg, #4ade80, #a3e635, #4ade80);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: ls-shimmer 3s linear infinite;
-}
-
-@keyframes ls-shimmer {
-  to {
-    background-position: 200% center;
-  }
+.ls-title span {
+  color: #15803d;
 }
 
 .ls-tagline {
-  margin: 0;
-  /* System stack on purpose: this renders before index.css (Inter) loads,
-     so a late font swap would make the text visibly change size/shape. */
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-  font-size: clamp(0.8rem, 2.6vw, 0.95rem);
+  margin: 0.7rem 0 0;
+  color: #64748b;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
   line-height: 1.5;
-  color: rgba(187, 247, 208, 0.85);
-  letter-spacing: 0.02em;
 }
-
-/* ---------- Progress bar ---------- */
 
 .ls-bar {
   position: relative;
-  width: min(340px, 74vw);
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(134, 239, 172, 0.16);
+  width: 100%;
+  height: 8px;
   overflow: hidden;
-  box-shadow: inset 0 1px 2px rgba(2, 20, 10, 0.5);
+  background: #e8f0ea;
+  border-radius: 999px;
 }
 
 .ls-fill {
+  width: 34%;
   height: 100%;
+  background: linear-gradient(90deg, #16a34a, #84cc16);
   border-radius: inherit;
-  background: linear-gradient(90deg, #22c55e, #84cc16, #34d399);
-  background-size: 200% auto;
-  box-shadow: 0 0 14px rgba(52, 211, 153, 0.8);
-  transition: width 0.25s ease-out;
-  animation: ls-shimmer 1.8s linear infinite;
+  animation: ls-progress 1.9s ease-in-out infinite;
 }
 
-.ls-percent {
-  font-family: "Orbitron", sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.22em;
-  color: rgba(187, 247, 208, 0.9);
-  font-variant-numeric: tabular-nums;
+@keyframes ls-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  50% {
+    transform: translateX(90%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
 }
 
-/* ---------- Accessibility ---------- */
+.ls-loading-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.9rem;
+}
+
+.ls-loading-label {
+  margin: 0;
+  color: #94a3b8;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ls-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.ls-dots span {
+  width: 5px;
+  height: 5px;
+  background: #22c55e;
+  border-radius: 999px;
+  animation: ls-dot 1.2s ease-in-out infinite;
+}
+
+.ls-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.ls-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes ls-dot {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .ls-orb,
-  .ls-grid,
-  .ls-ring,
-  .ls-sweep,
+  .ls-panel,
   .ls-logo,
-  .ls-grad,
-  .ls-fill {
+  .ls-status-dot,
+  .ls-fill,
+  .ls-dots span {
     animation: none !important;
-  }
-  .ls-fill {
-    animation: none !important;
-    transition: none;
   }
 }

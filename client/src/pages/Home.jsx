@@ -82,7 +82,7 @@ export default function Home() {
 
   // export default function Home() {
   return (
-    <div style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-black min-h-[70vh] sm:min-h-[90vh] flex items-center justify-center">
         {/* Background Image & Overlay */}
@@ -187,78 +187,82 @@ export default function Home() {
       </section>
 
       {/* Dashboard Statistics */}
-      <section className="py-20 bg-gray-50">
+      <section className="bg-white py-20 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
+          <div className="relative mb-12 text-center">
+            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-slate-600">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              Community in action
+            </span>
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
               Community Impact
             </h2>
-            <p className="text-gray-600 text-sm sm:text-base lg:text-lg font-medium">
+            <p className="mx-auto max-w-xl text-sm leading-relaxed text-slate-500 sm:text-base lg:text-lg">
               See how our platform is making a difference
             </p>
           </div>
 
-          <div className="grid grid-cols-2 min-[500px]:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
+          <div className="relative grid grid-cols-2 gap-3 min-[500px]:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 sm:gap-5">
             {/* Total Items */}
-            <div className="bg-white hover:bg-blue-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-blue-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-blue-100 border-2 border-blue-600 rounded-xl flex items-center justify-center mb-3">
+            <div className="group flex aspect-square flex-col items-center justify-center rounded-2xl border-2 border-slate-300 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400 hover:shadow-lg hover:shadow-slate-200/70 sm:p-5">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-110 group-hover:bg-emerald-50 group-hover:text-emerald-700 lg:h-14 lg:w-14">
                 <Package
-                  className="text-blue-600 w-6 h-6 lg:w-7 lg:h-7"
+                  className="h-6 w-6 lg:h-7 lg:w-7"
                   strokeWidth={2.5}
                 />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+              <p className="mb-2 text-xs font-bold text-slate-500 sm:text-sm lg:text-base">
                 Total Reported
               </p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+              <h3 className="text-3xl font-bold text-slate-950 lg:text-4xl">
                 {stats.total}
               </h3>
             </div>
 
             {/* Items Solved */}
-            <div className="bg-white hover:bg-green-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-green-100 border-2 border-green-600 rounded-xl flex items-center justify-center mb-3">
+            <div className="group flex aspect-square flex-col items-center justify-center rounded-2xl border-2 border-slate-300 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400 hover:shadow-lg hover:shadow-slate-200/70 sm:p-5">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-110 group-hover:bg-emerald-50 group-hover:text-emerald-700 lg:h-14 lg:w-14">
                 <CheckCircle
-                  className="text-green-700 w-6 h-6 lg:w-7 lg:h-7"
+                  className="h-6 w-6 lg:h-7 lg:w-7"
                   strokeWidth={2.5}
                 />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+              <p className="mb-2 text-xs font-bold text-slate-500 sm:text-sm lg:text-base">
                 Items Returned
               </p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+              <h3 className="text-3xl font-bold text-slate-950 lg:text-4xl">
                 {stats.solved}
               </h3>
             </div>
 
             {/* Pending Items */}
-            <div className="bg-white hover:bg-amber-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-amber-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-amber-100 border-2 border-amber-600 rounded-xl flex items-center justify-center mb-3">
+            <div className="group flex aspect-square flex-col items-center justify-center rounded-2xl border-2 border-slate-300 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400 hover:shadow-lg hover:shadow-slate-200/70 sm:p-5">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-110 group-hover:bg-emerald-50 group-hover:text-emerald-700 lg:h-14 lg:w-14">
                 <AlertCircle
-                  className="text-amber-700 w-6 h-6 lg:w-7 lg:h-7"
+                  className="h-6 w-6 lg:h-7 lg:w-7"
                   strokeWidth={2.5}
                 />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+              <p className="mb-2 text-xs font-bold text-slate-500 sm:text-sm lg:text-base">
                 Pending Items
               </p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+              <h3 className="text-3xl font-bold text-slate-950 lg:text-4xl">
                 {stats.pending}
               </h3>
             </div>
 
             {/* Success Rate */}
-            <div className="bg-white hover:bg-purple-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-purple-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-purple-100 border-2 border-purple-600 rounded-xl flex items-center justify-center mb-3">
+            <div className="group flex aspect-square flex-col items-center justify-center rounded-2xl border-2 border-slate-300 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400 hover:shadow-lg hover:shadow-slate-200/70 sm:p-5">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-110 group-hover:bg-emerald-50 group-hover:text-emerald-700 lg:h-14 lg:w-14">
                 <TrendingUp
-                  className="text-purple-700 w-6 h-6 lg:w-7 lg:h-7"
+                  className="h-6 w-6 lg:h-7 lg:w-7"
                   strokeWidth={2.5}
                 />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+              <p className="mb-2 text-xs font-bold text-slate-500 sm:text-sm lg:text-base">
                 Success Rate
               </p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+              <h3 className="text-3xl font-bold text-slate-950 lg:text-4xl">
                 {stats.total > 0
                   ? Math.round((stats.solved / stats.total) * 100)
                   : 0}
@@ -267,17 +271,17 @@ export default function Home() {
             </div>
 
             {/* Active Users */}
-            <div className="bg-white hover:bg-rose-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-rose-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-rose-100 border-2 border-rose-600 rounded-xl flex items-center justify-center mb-3">
+            <div className="group flex aspect-square flex-col items-center justify-center rounded-2xl border-2 border-slate-300 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400 hover:shadow-lg hover:shadow-slate-200/70 sm:p-5">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-110 group-hover:bg-emerald-50 group-hover:text-emerald-700 lg:h-14 lg:w-14">
                 <Users
-                  className="text-rose-700 w-6 h-6 lg:w-7 lg:h-7"
+                  className="h-6 w-6 lg:h-7 lg:w-7"
                   strokeWidth={2.5}
                 />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+              <p className="mb-2 text-xs font-bold text-slate-500 sm:text-sm lg:text-base">
                 Active Users
               </p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+              <h3 className="text-3xl font-bold text-slate-950 lg:text-4xl">
                 {stats.activeUsers}
               </h3>
             </div>
@@ -286,18 +290,21 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-white">
+      <section className="bg-white py-20 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 max-[400px]:px-2 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
+          <div className="mb-12 text-center sm:mb-16">
+            <span className="mb-4 inline-block text-xs font-bold uppercase tracking-[0.2em] text-green-700">
+              A simple path to making a difference
+            </span>
+            <h2 className="mb-4 text-3xl font-bold text-slate-950 sm:text-4xl lg:text-5xl">
               How It Works
             </h2>
-            <p className="text-gray-600 text-md sm:text-base lg:text-lg font-medium">
+            <p className="mx-auto max-w-xl text-sm font-medium leading-relaxed text-slate-500 sm:text-base lg:text-lg">
               Simple steps to help the community.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {[
               {
                 icon: Users,
@@ -332,15 +339,18 @@ export default function Home() {
             ].map((step, idx) => (
               <div
                 key={idx}
-                className="relative flex flex-col items-center text-center group border-2 border-gray-400 rounded-xl transition-all duration-300 shadow-lg group-hover:border-green-600 hover:border-green-600 hover:scale-105 hover:-translate-y-2 group-hover:scale-105 group-hover:-translate-y-2 p-2"
+                className="group relative flex min-h-[190px] flex-col items-center rounded-2xl border-2 border-slate-200 bg-slate-50 p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-400 hover:bg-white hover:shadow-xl hover:shadow-green-900/10 sm:min-h-64 sm:p-6"
               >
-                <div className="w-16 h-16 bg-gray-100 text-black border-2 border-gray-400 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 shadow-lg group-hover:bg-green-600 group-hover:border-green-600 group-hover:text-black">
-                  <step.icon size={36} strokeWidth={2.5} />
+                <span className="absolute right-5 top-4 text-sm font-bold text-slate-500 transition-colors group-hover:text-green-600">
+                  0{idx + 1}
+                </span>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-900 shadow-md ring-1 ring-slate-200 transition-all duration-300 group-hover:bg-green-600 group-hover:text-white group-hover:ring-green-600 sm:mb-6 sm:h-16 sm:w-16">
+                  <step.icon size={28} className="sm:h-9 sm:w-9" strokeWidth={2.5} />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2">
+                <h3 className="mb-2 text-base font-bold text-slate-950 sm:text-2xl">
                   {step.title}
                 </h3>
-                <p className="text-md max-[400px]:text-sm md:text-lg text-gray-700 font-medium">
+                <p className="text-xs font-medium leading-relaxed text-slate-500 sm:text-base">
                   {step.desc}
                 </p>
               </div>

@@ -153,7 +153,7 @@ const Inbox = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-28 pb-10" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="min-h-screen bg-gray-50 pt-28 pb-10">
         <div className="max-w-2xl mx-auto px-4">
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
@@ -164,7 +164,7 @@ const Inbox = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-10" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="min-h-screen bg-gray-50 pt-28 pb-10">
       <div className="max-w-3xl mx-auto px-4 max-[400px]:px-2 h-[calc(100vh-8rem)] flex flex-col">
         {/* Header */}
         <div className="mb-2 shrink-0">

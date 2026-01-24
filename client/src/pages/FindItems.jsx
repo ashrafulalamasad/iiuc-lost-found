@@ -63,7 +63,7 @@ export default function FindItems() {
   }, [selectedCategory, selectedStatus, currentPage]);
 
   return (
-    <div className="pt-24 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="pt-24 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <BackButton />
         <div className="flex flex-col md:flex-row gap-8">

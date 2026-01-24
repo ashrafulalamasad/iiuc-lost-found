@@ -10,7 +10,7 @@ export default function Card({ post }) {
   const categoryDisplay = getCategoryLabel(post.category) || post.category;
   
   return (
-    <div className="group bg-white rounded-xl border-2 border-gray-400 overflow-hidden hover:shadow-2xl hover:border-green-600 transition-all duration-200 flex flex-col h-full" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="group bg-white rounded-xl border-2 border-gray-400 overflow-hidden hover:shadow-2xl hover:border-green-600 transition-all duration-200 flex flex-col h-full">
       {/* Image Section */}
       <div className="relative h-64 bg-gray-100 overflow-hidden border-b-2 border-gray-300">
         {post.images && post.images.length > 0 ? (

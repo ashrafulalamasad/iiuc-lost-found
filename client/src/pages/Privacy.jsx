@@ -10,6 +10,7 @@ import {
   Bell,
   Users2,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import BackButton from "../components/BackButton";
 
 const sections = [
@@ -63,35 +64,32 @@ const sections = [
 export default function Privacy() {
   return (
     <div
-      className="pt-28 pb-12 min-h-screen"
-      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+      className="min-h-screen bg-gray-50 pb-16 pt-28"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <BackButton />
 
         {/* Hero */}
-        <div className="relative bg-linear-to-br from-green-600 via-emerald-700 to-green-800 rounded-2xl shadow-2xl px-6 py-10 sm:px-12 sm:py-14 mb-12 text-center overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
+        <div className="relative mb-10 overflow-hidden rounded-3xl border-2 border-black bg-green-600 px-6 py-10 text-center shadow-[8px_8px_0_#111827] sm:px-12 sm:py-14">
+          <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full border-[18px] border-white/15"></div>
+          <div className="absolute -bottom-24 -left-8 h-56 w-56 rounded-full border-[24px] border-black/10"></div>
           <div className="relative z-10">
-            <div className="w-16 h-16 mx-auto mb-5 bg-white/15 rounded-2xl flex items-center justify-center text-white">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-black bg-white text-black shadow-lg">
               <ShieldCheck size={34} />
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-5 tracking-tight">
+            <h1 className="mb-5 text-4xl font-extrabold tracking-tight text-black sm:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-lg sm:text-xl text-white leading-relaxed max-w-3xl mx-auto">
+            <p className="mx-auto max-w-3xl text-lg font-medium leading-relaxed text-black sm:text-xl">
               Your privacy matters. Here is exactly what we collect, who sees
               it, and how long we keep it.
-            </p>
-            <p className="mt-6 inline-block text-sm sm:text-base bg-white/15 text-white px-5 py-2 rounded-full">
-              Last updated: 17 September 2026
             </p>
           </div>
         </div>
 
         {/* In Short */}
-        <div className="bg-green-50 rounded-2xl border-3 border-green-600 px-6 sm:px-10 py-8 mb-10">
-          <h2 className="text-2xl font-bold text-black mb-4">In Short</h2>
+        <div className="mb-10 rounded-2xl border-2 border-green-600 bg-green-50 px-6 py-8 shadow-sm sm:px-10">
+          <h2 className="mb-4 text-2xl font-extrabold text-black">In Short</h2>
           <ul className="space-y-3 text-black">
             <li className="flex items-start gap-3">
               <span className="text-green-700 font-bold mt-0.5">✓</span>
@@ -129,10 +127,10 @@ export default function Privacy() {
           {sections.map((section, idx) => (
             <div
               key={idx}
-              className="bg-gray-200 rounded-xl border-3 border-black px-5 sm:px-8 py-6 hover:border-green-600 hover:bg-gray-300 transition-all"
+              className="rounded-2xl border-2 border-gray-300 bg-white px-5 py-6 shadow-sm transition-all hover:-translate-y-1 hover:border-green-600 hover:shadow-lg sm:px-8"
             >
-              <h3 className="font-bold text-black text-xl sm:text-2xl mb-3 flex items-center gap-3">
-                <span className="w-10 h-10 shrink-0 bg-linear-to-br from-green-500 to-emerald-600 text-white rounded-lg flex items-center justify-center">
+              <h3 className="mb-3 flex items-center gap-3 text-xl font-extrabold text-black sm:text-2xl">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-black bg-green-500 text-black">
                   <section.icon size={20} />
                 </span>
                 {section.title}
@@ -144,14 +142,14 @@ export default function Privacy() {
           ))}
         </div>
 
-        <div className="mt-10 text-center text-gray-700 text-sm sm:text-base bg-gray-200 rounded-xl border-3 border-black px-6 py-6">
+        <div className="mt-10 rounded-2xl border-2 border-gray-300 bg-white px-6 py-6 text-center text-sm font-medium text-gray-700 shadow-sm sm:text-base">
           Have a privacy concern? Reach out through the{" "}
-          <a
-            href="/about"
+          <Link
+            to="/about"
             className="text-green-700 hover:underline font-semibold"
           >
             About page
-          </a>
+          </Link>
           .
         </div>
       </div>

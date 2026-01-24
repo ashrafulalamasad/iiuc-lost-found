@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const BackButton = () => {
   const navigate = useNavigate();
   return (
-    <div style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div>
       <button
         onClick={() => navigate(-1)}
         className="inline-flex items-center gap-2 text-3xl font-bold text-black hover:text-green-700 mb-8 transition-colors group"

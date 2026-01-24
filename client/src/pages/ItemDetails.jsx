@@ -67,7 +67,7 @@ export default function ItemDetails() {
   // Loading state
   if (loading) {
     return (
-      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex items-center gap-3">
           <Loader2 size={40} className="animate-spin text-green-600" strokeWidth={3} />
           <span className="text-xl font-semibold text-black">Loading item details...</span>
@@ -79,7 +79,7 @@ export default function ItemDetails() {
   // Error state
   if (error || !item) {
     return (
-      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-black mb-4">Item Not Found</h1>
           <p className="text-gray-700 mb-8 text-lg font-medium">{error || "The item you're looking for doesn't exist."}</p>
@@ -204,7 +204,7 @@ export default function ItemDetails() {
   };
 
   return (
-    <div className="pt-24 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="pt-24 min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <BackButton />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

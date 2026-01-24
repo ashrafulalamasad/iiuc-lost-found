@@ -217,7 +217,7 @@ export default function Profile() {
   }, [currentUser]);
 
   return (
-    <div className="pt-28 pb-12 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="pt-28 pb-12 min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-3 max-[400px]:px-2 sm:px-6 lg:px-8">
         <BackButton />
         <div className="bg-white rounded-xl shadow-xl border-2 border-gray-400 overflow-hidden hover:shadow-2xl transition-shadow duration-300">

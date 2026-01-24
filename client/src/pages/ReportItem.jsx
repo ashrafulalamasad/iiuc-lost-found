@@ -113,7 +113,7 @@ export default function ReportItem() {
   // Redirect to login if not authenticated
   if (!currentUser) {
     return (
-      <div className="pt-30 pb-12 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="pt-30 pb-12 min-h-screen bg-gray-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-xl shadow-lg border-2 border-gray-400 p-8 text-center">
             <h1 className="text-2xl font-bold text-black mb-4">Login Required</h1>
@@ -131,7 +131,7 @@ export default function ReportItem() {
   }
 
   return (
-    <div className="pt-30 pb-12 min-h-screen bg-gray-50" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="pt-30 pb-12 min-h-screen bg-gray-50">
       <div className="max-w-3xl mx-auto px-4 max-[400px]:px-2 sm:px-6 lg:px-8">
         <BackButton />
         <div className="bg-white rounded-xl shadow-lg border-2 border-gray-400 p-6 max-[400px]:p-4 sm:p-8">

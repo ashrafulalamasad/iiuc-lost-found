@@ -186,7 +186,7 @@ const Chat = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-28 pb-10" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="min-h-screen bg-gray-50 pt-28 pb-10">
         <div className="max-w-2xl mx-auto px-4">
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
@@ -198,7 +198,7 @@ const Chat = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-28 pb-10" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+      <div className="min-h-screen bg-gray-50 pt-28 pb-10">
         <div className="max-w-2xl mx-auto px-4">
           <div className="bg-red-50 border-2 border-red-500 text-red-700 px-4 py-3 rounded-xl font-bold shadow-lg">
             {error}
@@ -214,7 +214,7 @@ const Chat = () => {
   const groupedMessages = groupMessagesByDate(messages);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-4 flex flex-col" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="min-h-screen bg-gray-50 pt-24 pb-4 flex flex-col">
       <div className="max-w-2xl mx-auto px-4 flex flex-col flex-1 w-full">
         {/* Chat Header */}
         <div className="bg-white rounded-t-xl shadow-lg border-2 border-gray-400 p-4 flex items-center gap-4">

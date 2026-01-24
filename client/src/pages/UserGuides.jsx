@@ -63,23 +63,23 @@ const tips = [
 export default function UserGuides() {
   return (
     <div
-      className="pt-28 pb-12 min-h-screen"
-      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+      className="min-h-screen bg-gray-50 pb-16 pt-28"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <BackButton />
 
         {/* Hero */}
-        <div className="relative bg-linear-to-br from-green-600 via-emerald-700 to-green-800 rounded-2xl shadow-2xl px-6 py-10 sm:px-12 sm:py-14 mb-10 text-center overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
+        <div className="relative mb-10 overflow-hidden rounded-3xl border-2 border-black bg-green-600 px-6 py-10 text-center shadow-[8px_8px_0_#111827] sm:px-12 sm:py-14">
+          <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full border-[18px] border-white/15"></div>
+          <div className="absolute -bottom-24 -left-8 h-56 w-56 rounded-full border-[24px] border-black/10"></div>
           <div className="relative z-10">
-            <div className="w-16 h-16 mx-auto mb-5 bg-white/15 rounded-2xl flex items-center justify-center text-white">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-black bg-white text-black shadow-lg">
               <BookOpen size={34} />
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-5 tracking-tight">
+            <h1 className="mb-5 text-4xl font-extrabold tracking-tight text-black sm:text-5xl">
               User Guides
             </h1>
-            <p className="text-lg sm:text-xl text-white leading-relaxed max-w-3xl mx-auto">
+            <p className="mx-auto max-w-3xl text-lg font-medium leading-relaxed text-black sm:text-xl">
               Everything you need to find what you lost, report what you found,
               and get items home safely.
             </p>
@@ -87,8 +87,8 @@ export default function UserGuides() {
         </div>
 
         {/* Video walkthrough */}
-        <div className="bg-gray-200 rounded-2xl border-3 border-black p-5 sm:p-8 mb-10">
-          <p className="mb-5 font-bold text-lg sm:text-xl text-center bg-amber-500 text-black py-3 px-4 rounded-lg">
+        <div className="mb-10 rounded-2xl border-2 border-gray-300 bg-white p-5 shadow-sm sm:p-8">
+          <p className="mb-5 rounded-xl border-2 border-black bg-amber-500 px-4 py-3 text-center text-lg font-extrabold text-black sm:text-xl">
             🎥 Watch this complete walkthrough video to get started
           </p>
           <YoutubePlayer
@@ -98,33 +98,32 @@ export default function UserGuides() {
         </div>
 
         {/* Step-by-step */}
-        <h2 className="text-3xl sm:text-4xl font-bold text-black mb-6 text-center">
+        <h2 className="mb-6 text-center text-3xl font-extrabold text-black sm:text-4xl">
           Step by Step
         </h2>
         <div className="space-y-5 mb-12">
           {steps.map((s, idx) => (
             <div
               key={idx}
-              className="bg-gray-200 rounded-xl border-3 border-black px-5 sm:px-8 py-6 hover:border-green-600 hover:bg-gray-300 transition-all"
+              className="relative rounded-2xl border-2 border-gray-300 bg-white px-5 pb-6 pt-12 shadow-sm transition-all hover:-translate-y-1 hover:border-green-600 hover:shadow-lg sm:px-8 sm:pt-12"
             >
-              <h3 className="font-bold text-black text-xl sm:text-2xl mb-3 flex items-center gap-3">
-                <span className="w-10 h-10 shrink-0 bg-linear-to-br from-green-500 to-emerald-600 text-white rounded-lg flex items-center justify-center">
+              <h3 className="mb-3 flex items-center gap-3 text-xl font-extrabold text-black sm:text-2xl">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-black bg-green-500 text-black">
                   <s.icon size={20} />
                 </span>
-                <span className="text-green-700 text-base font-bold">
-                  {s.step}
-                </span>
-                <span className="sr-only">:</span>
-                {s.title}
+                <span className="min-w-0 break-words">{s.title}</span>
               </h3>
+              <span className="absolute left-5 top-4 rounded-full border border-green-300 bg-green-50 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-green-700 sm:left-8">
+                {s.step}
+              </span>
               <p className="text-black leading-relaxed sm:pl-13">{s.body}</p>
             </div>
           ))}
         </div>
 
         {/* Tips */}
-        <div className="bg-green-50 rounded-2xl border-3 border-green-600 px-6 sm:px-10 py-8">
-          <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+        <div className="rounded-2xl border-2 border-green-600 bg-green-50 px-6 py-8 shadow-sm sm:px-10">
+          <h2 className="mb-6 flex items-center gap-3 text-2xl font-extrabold text-black">
             <Lightbulb size={26} className="text-green-700" />
             Tips for a Faster Reunion
           </h2>

@@ -1,87 +1,183 @@
 # IIUC Lost & Found
 
-Welcome to the IIUC Lost & Found platform! This web application helps students and staff at IIUC report, find, and claim lost items on campus, making it easier to reconnect people with their belongings.
+IIUC Lost & Found is a full-stack platform for students and staff of
+International Islamic University Chittagong to report found items, search
+existing reports, submit claims, and arrange safe handovers.
 
----
+## Features
 
-## 🚀 Features
+- Google authentication with Firebase.
+- Report found items with descriptions, locations, categories, and images.
+- Browse and filter found-item reports.
+- Submit, review, accept, reject, or cancel claims.
+- Claim-based private messaging with real-time Socket.IO updates.
+- User profiles with personal reports and claims.
+- Solved-item tracking and community impact statistics.
+- Responsive interface for mobile, tablet, and desktop.
+- Terms of Service, Privacy Policy, About, and User Guide pages.
 
-- **Report Lost Items:** Easily submit details and photos of lost items.
-- **Find Items:** Browse and search for items found on campus.
-- **Claim Process:** Securely claim items with verification steps.
-- **User Profiles:** Manage your reports and claims in your personal dashboard.
-- **Authentication:** Sign up and log in securely.
-- **Image Uploads:** Upload images for better identification.
-- **Responsive Design:** Works smoothly on mobile and desktop.
+## How it works
 
----
+1. Sign in with Google.
+2. Search the existing reports if you lost an item.
+3. Report an item if you found it.
+4. Submit a claim when a report may belong to you.
+5. Verify ownership and arrange a safe handover through the claim chat.
+6. Mark the item as solved after it is returned.
 
-## 🛠️ Tech Stack
+## Technology
 
-**Frontend:**
-- React (Vite)
-- Firebase (for authentication)
-- Tailwind CSS
+### Frontend
+
+- React 19 and Vite
 - React Router
+- Tailwind CSS
+- Firebase Authentication
+- Framer Motion
+- Lucide React
+- Socket.IO client
 
-**Backend:**
-- Node.js (Express)
-- Prisma ORM
-- PostgreSQL (or your configured database)
-- Cloudinary (for image uploads)
+### Backend
 
+- Node.js and Express
+- PostgreSQL with Prisma ORM
+- Cloudinary image storage
+- Socket.IO real-time messaging
+- Zod request validation
 
----
+## Project structure
 
-## ⚡ Getting Started
+```text
+iiuc-lost-found/
+├── client/                 # React frontend
+│   ├── public/             # Static assets
+│   └── src/
+│       ├── components/     # Shared UI components
+│       ├── context/        # Auth and socket state
+│       ├── pages/          # Application pages
+│       └── services/       # API and data helpers
+├── server/                 # Express backend
+│   ├── prisma/             # Schema and migrations
+│   └── src/
+│       ├── controllers/    # Request handlers
+│       ├── routes/         # API routes
+│       └── socket/         # Real-time events
+└── README.md
+```
+
+## Getting started
 
 ### Prerequisites
-- Node.js & npm
-- PostgreSQL (or your preferred database)
 
-### Setup
+- Node.js and npm
+- PostgreSQL
+- Firebase project with Google sign-in enabled
+- Cloudinary account
 
-1. **Clone the repository:**
-	```bash
-	git clone https://github.com/yourusername/iiuc-lost-found.git
-	cd iiuc-lost-found
-	```
-2. **Install dependencies:**
-	```bash
-	cd client && npm install
-	cd ../server && npm install
-	```
-3. **Configure environment variables:**
-	- Create a `.env` file in `server/` and add your `DATABASE_URL` and Cloudinary credentials.
-	- Set up Firebase config in `client/src/firebase.js`.
-4. **Run database migrations:**
-	```bash
-	npx prisma migrate deploy
-	```
-5. **Start the backend server:**
-	```bash
-	npm start
-	```
-6. **Start the frontend app:**
-	```bash
-	cd ../client
-	npm run dev
-	```
+### Install dependencies
 
----
+```bash
+git clone https://github.com/ashrafulalamasad/iiuc-lost-found.git
+cd iiuc-lost-found
 
-## 📝 Usage
+cd server
+npm install
 
-1. Register or log in.
-2. Report a lost item or browse found items.
-3. Claim items by following the verification process.
-4. Manage your reports and claims in your profile.
+cd ../client
+npm install
+```
 
----
+### Configure environment variables
 
-## 🤝 Contributing
+Create `client/.env` from `client/.env.example`:
 
-Contributions are welcome! Please open issues or submit pull requests for improvements, bug fixes, or new features.
+```env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+VITE_API_URL=
+```
 
----
+Create `server/.env` with:
 
+```env
+DATABASE_URL=
+PORT=3000
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+Never commit `.env` files or private credentials.
+
+### Prepare the database
+
+Run from `server/`:
+
+```bash
+npx prisma generate
+npx prisma migrate deploy
+```
+
+### Run the application
+
+Start the backend from `server/`:
+
+```bash
+npm run dev
+```
+
+Start the frontend from `client/` in a second terminal:
+
+```bash
+npm run dev
+```
+
+The frontend runs on `http://localhost:5173` and the backend runs on port
+`3000` by default.
+
+## Useful commands
+
+### Client
+
+```bash
+npm run dev       # Start development server
+npm run build     # Create production build
+npm run preview   # Preview production build
+npm run lint      # Run ESLint
+```
+
+### Server
+
+```bash
+npm start         # Start backend
+npm run dev       # Start backend with Nodemon
+npm run build     # Generate Prisma client and compile
+npx prisma studio # Open Prisma Studio
+```
+
+## Main routes
+
+| Route | Description |
+| --- | --- |
+| `/` | Home page and community statistics |
+| `/login` | Google sign-in |
+| `/find` | Browse and filter found items |
+| `/item/:id` | View item details and claims |
+| `/report` | Create a found-item report |
+| `/profile` | Manage profile, reports, and claims |
+| `/inbox` | View claim conversations |
+| `/chat/:claimId` | Open a claim chat |
+| `/about` | Project information |
+| `/terms` | Terms of Service |
+| `/privacy` | Privacy Policy |
+| `/guides` | User guides |
+
+## Contributing
+
+Create a focused branch, reuse existing components and API helpers, and run
+the relevant lint/build checks before opening a pull request. For bug reports,
+include reproduction steps, expected behavior, and actual behavior.
