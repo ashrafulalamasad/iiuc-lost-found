@@ -1,9 +1,22 @@
-import { useState, useEffect } from 'react';
-import { Search, PlusCircle, ArrowRight, ShieldCheck, Users, CheckCircle, TrendingUp, Package, AlertCircle, Loader2, Hand, MessageCircleMore } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Button from '../components/Button';
-import Card from '../components/Card';
-import { reportsAPI, authAPI, transformReports } from '../services/api';
+import { useState, useEffect } from "react";
+import {
+  Search,
+  PlusCircle,
+  ArrowRight,
+  ShieldCheck,
+  Users,
+  CheckCircle,
+  TrendingUp,
+  Package,
+  AlertCircle,
+  Loader2,
+  Hand,
+  MessageCircleMore,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import Button from "../components/Button";
+import Card from "../components/Card";
+import { reportsAPI, authAPI, transformReports } from "../services/api";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -25,11 +38,13 @@ export default function Home() {
         if (response.data?.reports) {
           const transformedPosts = transformReports(response.data.reports);
           setPosts(transformedPosts);
-          
+
           // Calculate stats from real data
           const total = transformedPosts.length;
-          const solved = transformedPosts.filter(p => p.status === 'solved').length;
-          setStats(prev => ({
+          const solved = transformedPosts.filter(
+            (p) => p.status === "solved",
+          ).length;
+          setStats((prev) => ({
             ...prev,
             total,
             solved,
@@ -40,13 +55,13 @@ export default function Home() {
         // Fetch user count
         const userCountResponse = await authAPI.getUserCount();
         if (userCountResponse.data?.count !== undefined) {
-          setStats(prev => ({
+          setStats((prev) => ({
             ...prev,
             activeUsers: userCountResponse.data.count,
           }));
         }
       } catch (err) {
-        console.error('Failed to fetch reports:', err);
+        console.error("Failed to fetch reports:", err);
         // Keep empty posts array on error
       } finally {
         setLoading(false);
@@ -56,25 +71,39 @@ export default function Home() {
     fetchReports();
   }, []);
 
-// export default function Home() {
+  // Recently Reported strip: prefer the latest UNSOLVED items (max 10).
+  // If fewer than 10 unsolved exist, top up with the newest solved ones.
+  // posts are already sorted newest-first from the backend.
+  const recentPosts = (() => {
+    const unsolved = posts.filter((p) => p.status !== "solved");
+    const solved = posts.filter((p) => p.status === "solved");
+    return [...unsolved, ...solved].slice(0, 10);
+  })();
+
+  // export default function Home() {
   return (
     <div style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-black min-h-[70vh] sm:min-h-[90vh] flex items-center justify-center">
         {/* Background Image & Overlay */}
         <div className="absolute inset-0 z-0">
-          <img src="/iiuc-drone-bg.png" alt="IIUC Campus" className="w-full h-full object-cover saturate-150" />
+          <img
+            src="/iiuc-drone-bg.png"
+            alt="IIUC Campus"
+            className="w-full h-full object-cover saturate-150"
+          />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
           <h1 className="text-4xl max-[400px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold italic text-outline-black text-amber-700 mb-24 tracking-tight">
-            Find What's Lost,<br />
+            Find What's Lost,
+            <br />
             Return What's Found.
           </h1>
-          
+
           <div className="flex max-[450px]:flex-col items-center justify-center gap-3 sm:gap-6">
-            <Button 
-              to="/find" 
+            <Button
+              to="/find"
               icon={Search}
               bgColor="bg-green-600"
               textColor="text-black"
@@ -84,8 +113,8 @@ export default function Home() {
             >
               Find Lost Items
             </Button>
-            <Button 
-              to="/report" 
+            <Button
+              to="/report"
               icon={PlusCircle}
               bgColor="bg-black"
               textColor="text-white"
@@ -102,31 +131,46 @@ export default function Home() {
       {/* Infinite Slideshow */}
       <section className="py-20 bg-gray-50 overflow-hidden">
         <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-10 mb-10 flex items-center justify-between">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black">Recently Reported</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black">
+            Recently Reported
+          </h2>
           <div className="w-sm ml-12 flex items-center justify-end gap-2">
-            <Button to="/find" icon={ArrowRight} bgColor="bg-green-600" textColor="text-black" hoverBgColor="bg-black" hoverTextColor="group-hover/btn:text-white">
+            <Button
+              to="/find"
+              icon={ArrowRight}
+              bgColor="bg-green-600"
+              textColor="text-black"
+              hoverBgColor="bg-black"
+              hoverTextColor="group-hover/btn:text-white"
+            >
               View All
             </Button>
           </div>
         </div>
-        
+
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={32} className="animate-spin text-green-600" strokeWidth={2.5} />
-            <span className="ml-3 text-black font-bold">Loading recent items...</span>
+            <Loader2
+              size={32}
+              className="animate-spin text-green-600"
+              strokeWidth={2.5}
+            />
+            <span className="ml-3 text-black font-bold">
+              Loading recent items...
+            </span>
           </div>
-        ) : posts.length > 0 ? (
+        ) : recentPosts.length > 0 ? (
           <div className="flex overflow-hidden">
-            <motion.div 
+            <motion.div
               className="flex gap-6 px-4"
               animate={{ x: ["0%", "-50%"] }}
-              transition={{ 
-                repeat: Infinity, 
-                ease: "linear", 
-                duration: posts.length * 4
+              transition={{
+                repeat: Infinity,
+                ease: "linear",
+                duration: recentPosts.length * 4,
               }}
             >
-              {[...posts, ...posts].map((item, idx) => (
+              {[...recentPosts, ...recentPosts].map((item, idx) => (
                 <div key={`${item.id}-${idx}`} className="w-100 shrink-0">
                   <Card post={item} />
                 </div>
@@ -135,7 +179,9 @@ export default function Home() {
           </div>
         ) : (
           <div className="text-center py-20">
-            <p className="text-gray-600 font-medium">No items reported yet. Be the first to help!</p>
+            <p className="text-gray-600 font-medium">
+              No items reported yet. Be the first to help!
+            </p>
           </div>
         )}
       </section>
@@ -144,55 +190,93 @@ export default function Home() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">Community Impact</h2>
-            <p className="text-gray-600 text-sm sm:text-base lg:text-lg font-medium">See how our platform is making a difference</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
+              Community Impact
+            </h2>
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg font-medium">
+              See how our platform is making a difference
+            </p>
           </div>
 
           <div className="grid grid-cols-2 min-[500px]:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
             {/* Total Items */}
             <div className="bg-white hover:bg-blue-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-blue-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-blue-100 border-2 border-blue-600 rounded-xl flex items-center justify-center mb-3">
-                <Package className="text-blue-600 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+                <Package
+                  className="text-blue-600 w-6 h-6 lg:w-7 lg:h-7"
+                  strokeWidth={2.5}
+                />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Total Reported</p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">{stats.total}</h3>
+              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+                Total Reported
+              </p>
+              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+                {stats.total}
+              </h3>
             </div>
 
             {/* Items Solved */}
             <div className="bg-white hover:bg-green-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-green-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-green-100 border-2 border-green-600 rounded-xl flex items-center justify-center mb-3">
-                <CheckCircle className="text-green-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+                <CheckCircle
+                  className="text-green-700 w-6 h-6 lg:w-7 lg:h-7"
+                  strokeWidth={2.5}
+                />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Items Returned</p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">{stats.solved}</h3>
+              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+                Items Returned
+              </p>
+              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+                {stats.solved}
+              </h3>
             </div>
 
             {/* Pending Items */}
             <div className="bg-white hover:bg-amber-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-amber-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-amber-100 border-2 border-amber-600 rounded-xl flex items-center justify-center mb-3">
-                <AlertCircle className="text-amber-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+                <AlertCircle
+                  className="text-amber-700 w-6 h-6 lg:w-7 lg:h-7"
+                  strokeWidth={2.5}
+                />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Pending Items</p>
-              <h3 className="text-3xl lg:text-4xl font-bold text-black">{stats.pending}</h3>
+              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+                Pending Items
+              </p>
+              <h3 className="text-3xl lg:text-4xl font-bold text-black">
+                {stats.pending}
+              </h3>
             </div>
 
             {/* Success Rate */}
             <div className="bg-white hover:bg-purple-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-purple-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-purple-100 border-2 border-purple-600 rounded-xl flex items-center justify-center mb-3">
-                <TrendingUp className="text-purple-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+                <TrendingUp
+                  className="text-purple-700 w-6 h-6 lg:w-7 lg:h-7"
+                  strokeWidth={2.5}
+                />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Success Rate</p>
+              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+                Success Rate
+              </p>
               <h3 className="text-3xl lg:text-4xl font-bold text-black">
-                {stats.total > 0 ? Math.round((stats.solved / stats.total) * 100) : 0}%
+                {stats.total > 0
+                  ? Math.round((stats.solved / stats.total) * 100)
+                  : 0}
+                %
               </h3>
             </div>
 
             {/* Active Users */}
             <div className="bg-white hover:bg-rose-50 rounded-xl p-4 shadow-lg aspect-square flex flex-col justify-center items-center border-2 border-gray-500 hover:shadow-xl hover:scale-105 hover:border-rose-600 transition-all duration-300 w-40 sm:w-45 lg:w-60 h-40 sm:h-45 lg:h-60">
               <div className="w-12 h-12 lg:w-14 lg:h-14 bg-rose-100 border-2 border-rose-600 rounded-xl flex items-center justify-center mb-3">
-                <Users className="text-rose-700 w-6 h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
+                <Users
+                  className="text-rose-700 w-6 h-6 lg:w-7 lg:h-7"
+                  strokeWidth={2.5}
+                />
               </div>
-              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">Active Users</p>
+              <p className="text-gray-600 text-sm lg:text-base font-bold mb-2">
+                Active Users
+              </p>
               <h3 className="text-3xl lg:text-4xl font-bold text-black">
                 {stats.activeUsers}
               </h3>
@@ -205,18 +289,46 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 max-[400px]:px-2 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">How It Works</h2>
-            <p className="text-gray-600 text-md sm:text-base lg:text-lg font-medium">Simple steps to help the community.</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
+              How It Works
+            </h2>
+            <p className="text-gray-600 text-md sm:text-base lg:text-lg font-medium">
+              Simple steps to help the community.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
             {[
-              { icon: Users, title: 'Login', desc: 'Sign in with your university email.' },
-              { icon: PlusCircle, title: 'Report', desc: 'Post details about the item you found.' },
-              { icon: Hand, title: 'Claim', desc: 'Claim an item you believe is yours.' },
-              { icon: MessageCircleMore, title: 'Communicate', desc: 'Chat securely within the platform.' },
-              { icon: ShieldCheck, title: 'Connect', desc: 'Owner verifies and contacts you.' },
-              { icon: CheckCircle, title: 'Solve', desc: 'Return the item and mark as solved.' },
+              {
+                icon: Users,
+                title: "Login",
+                desc: "Sign in with your university email.",
+              },
+              {
+                icon: PlusCircle,
+                title: "Report",
+                desc: "Post details about the item you found.",
+              },
+              {
+                icon: Hand,
+                title: "Claim",
+                desc: "Claim an item you believe is yours.",
+              },
+              {
+                icon: MessageCircleMore,
+                title: "Communicate",
+                desc: "Chat securely within the platform.",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Connect",
+                desc: "Owner verifies and contacts you.",
+              },
+              {
+                icon: CheckCircle,
+                title: "Solve",
+                desc: "Return the item and mark as solved.",
+              },
             ].map((step, idx) => (
               <div
                 key={idx}
@@ -225,8 +337,12 @@ export default function Home() {
                 <div className="w-16 h-16 bg-gray-100 text-black border-2 border-gray-400 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 shadow-lg group-hover:bg-green-600 group-hover:border-green-600 group-hover:text-black">
                   <step.icon size={36} strokeWidth={2.5} />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2">{step.title}</h3>
-                <p className="text-md max-[400px]:text-sm md:text-lg text-gray-700 font-medium">{step.desc}</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-md max-[400px]:text-sm md:text-lg text-gray-700 font-medium">
+                  {step.desc}
+                </p>
               </div>
             ))}
           </div>
